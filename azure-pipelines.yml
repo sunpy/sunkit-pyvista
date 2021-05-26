@@ -36,7 +36,7 @@ stages:
         envs:
           - macos: py37
           - windows: py38
-          - linux: py39
+          - linux: py38
           - linux: build_docs
             posargs: " "
             pytest: false

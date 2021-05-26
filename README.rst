@@ -2,8 +2,8 @@
 ---------------------------------------------------
 
 .. image:: https://readthedocs.org/projects/sunkit-pyvista/badge/?version=latest
-:target: https://docs.sunpy.org/projects/sunkit-pyvista/en/latest/?badge=latest
-:alt: Documentation Status
+   :target: https://docs.sunpy.org/projects/sunkit-pyvista/en/latest/?badge=latest
+   :alt: Documentation Status
 
 License
 -------

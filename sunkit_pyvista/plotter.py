@@ -134,11 +134,10 @@ class SunpyPlotter:
         self.plotter.add_mesh(arrow, **kwargs)
         return arrow
 
-    
 from sunpy.data.sample import AIA_335_IMAGE
 from sunpy.map import Map
 
-
+pv.start_xvfb()
 m = Map(AIA_335_IMAGE)
 m.plot()
 plotter = SunpyPlotter()

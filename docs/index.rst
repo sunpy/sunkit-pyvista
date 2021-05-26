@@ -7,6 +7,8 @@ This is the documentation for sunkit-pyvista.
    :maxdepth: 2
    :caption: Contents:
 
+   api
+
 
 
 Indices and tables

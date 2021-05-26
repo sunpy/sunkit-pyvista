@@ -2,3 +2,4 @@
 
 from .version import __version__
 from .plotter import *
+from .draw import *

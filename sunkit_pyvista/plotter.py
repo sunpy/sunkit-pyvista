@@ -146,11 +146,3 @@ map_mesh = plotter.plot_map(m)
 line_mesh = plotter.plot_solar_axis()
 quad_mesh = plotter.plot_quadrangle(m)
 plotter.show()
-# combined_mesh = map_mesh + quad_mesh
-
-# blocks = pv.MultiBlock([line_mesh])
-# merged = blocks.combine()
-# # merged
-# pv.save_meshio('/home/jeffrey/jupy/tmp.vtk', merged)
-# plotter = pv.Plotter()
-# plotter.add_m

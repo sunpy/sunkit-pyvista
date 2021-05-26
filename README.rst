@@ -1,6 +1,10 @@
 3D visualisation of solar physics data with pyvista
 ---------------------------------------------------
 
+.. image:: https://readthedocs.org/projects/sunkit-pyvista/badge/?version=latest
+:target: https://docs.sunpy.org/projects/sunkit-pyvista/en/latest/?badge=latest
+:alt: Documentation Status
+
 License
 -------
 

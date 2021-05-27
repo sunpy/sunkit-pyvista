@@ -13,6 +13,9 @@ from matplotlib.patches import Polygon
 from astropy.constants import R_sun
 
 
+__all__ = ['Draw']
+
+
 class Draw:
     def __init__(self, coordinate_frame=None):
         if coordinate_frame is None:

@@ -7,9 +7,8 @@ import astropy.units as u
 from astropy.constants import R_sun
 from astropy.coordinates import SkyCoord
 
-from sunpy.coordinates import HeliocentricInertial
 from sunpy.map.maputils import all_corner_coords_from_map
-from .draw import Draw
+from sunkit_pyvista.draw import Draw
 
 
 __all__ = ['SunpyPlotter']
@@ -20,14 +19,15 @@ class SunpyPlotter:
     A plotter for 3D data.
     This class wraps `pyvsita.Plotter` to provide coordinate-aware plotting.
     For now, all coordinates are converted to
-    a specific frame (`~sunpy.coordinates.HeliocentricInertial` by default),
     and distance units are such that :math:`R_{sun} = 1`.
+
     Parameters
     ----------
     coordinate_frame : astropy.coordinates.BaseFrame
         Coordinate frame of the plot. The x, y, z axes of the pyvista plotter
         will be the x, y, z axes in this coordinate system.
     """
+
     def __init__(self, coordinate_frame=None):
         self._plotter = pv.Plotter()
         self.draw = Draw(coordinate_frame)
@@ -85,8 +85,10 @@ class SunpyPlotter:
         """
         Plot a quadrangle on the map from the given map
         """
-        bottom_left = SkyCoord(40*u.deg, -45*u.deg, frame='heliographic_stonyhurst', obstime=m.date)
-        coords = self.draw.draw_quadrangle(m, bottom_left, width=10*u.deg, height=90*u.deg)
+        bottom_left = SkyCoord(40 * u.deg, -45 * u.deg,
+                               frame='heliographic_stonyhurst', obstime=m.date)
+        coords = self.draw.draw_quadrangle(
+            m, bottom_left, width=10 * u.deg, height=90 * u.deg)
         coords -= 0.001
         mesh = pv.StructuredGrid(coords[:, 0], coords[:, 1], coords[:, 2])
         self.plotter.add_mesh(mesh, color='lightblue', line_width=2.0)
@@ -112,6 +114,7 @@ class SunpyPlotter:
     def plot_solar_axis(self, length=2.5, arrow_kwargs={}, **kwargs):
         """
         Plot the solar rotation axis as an arrow.
+
         Parameters
         ----------
         length : float
@@ -120,7 +123,7 @@ class SunpyPlotter:
             Keyword arguments to be handed to `pyvista.Arrow`.
             ``start``, ``direction``, and ``scale`` cannot be manually
             specified, as they are automatically set.
-        **kwargs :
+        kwargs :
             Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
         defaults = {'shaft_radius': 0.01,
@@ -133,15 +136,3 @@ class SunpyPlotter:
                          **defaults)
         self.plotter.add_mesh(arrow, **kwargs)
         return arrow
-
-from sunpy.data.sample import AIA_335_IMAGE
-from sunpy.map import Map
-
-# pv.start_xvfb()
-m = Map(AIA_335_IMAGE)
-m.plot()
-plotter = SunpyPlotter()
-map_mesh = plotter.plot_map(m)
-line_mesh = plotter.plot_solar_axis()
-quad_mesh = plotter.plot_quadrangle(m)
-# plotter.show()

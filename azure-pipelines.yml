@@ -40,3 +40,7 @@ stages:
           - linux: build_docs
             posargs: " "
             pytest: false
+          - linux: codestyle
+            name: style_check
+            pytest: false
+            libraries: {}

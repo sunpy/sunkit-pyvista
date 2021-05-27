@@ -8,7 +8,7 @@ This example shows how to plot a GenericMap in 3D.
 from sunpy.data.sample import AIA_193_IMAGE
 from sunpy.map import Map
 from sunkit_pyvista import SunpyPlotter
-from pyvirtualdisplay import 
+from pyvirtualdisplay import DisplayXvfb
 
 display = Display(visible=0, size=(1200, 1000))
 display.start()

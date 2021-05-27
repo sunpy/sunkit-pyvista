@@ -1,4 +1,6 @@
-# Licensed under a 3-clause BSD style license - see LICENSE.rst
+try:
+    from .version import __version__
+except ImportError:
+    __version__ = "0.0.0.0"
 
 from .plotter import *
-from .version import __version__

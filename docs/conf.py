@@ -69,18 +69,18 @@ intersphinx_mapping = {'https://docs.python.org/': None}
 
 from sphinx_gallery.sorting import ExampleTitleSortKey
 
-import pyvista
-import numpy as np
-# necessary when building the sphinx gallery
-pyvista.BUILDING_GALLERY = True
-pyvista.OFF_SCREEN = True
+# import pyvista
+# import numpy as np
+# # necessary when building the sphinx gallery
+# pyvista.BUILDING_GALLERY = True
+# pyvista.OFF_SCREEN = True
 
-# Optional - set parameters like theme or window size
-pyvista.set_plot_theme('document')
-pyvista.rcParams['window_size'] = np.array([1024, 768]) * 2
+# # Optional - set parameters like theme or window size
+# pyvista.set_plot_theme('document')
+# pyvista.rcParams['window_size'] = np.array([1024, 768]) * 2
 
 sphinx_gallery_conf = {
-    'filename_pattern': '^((?!skip_).)*$',
+    # 'filename_pattern': '^((?!skip_).)*$',
      'examples_dirs': os.path.join('..', 'examples'),
     'within_subsection_order': ExampleTitleSortKey,
     'gallery_dirs': os.path.join('generated', 'gallery'),
@@ -91,5 +91,5 @@ sphinx_gallery_conf = {
     'plot_gallery': True,
     'remove_config_comments': True,
     'doc_module': ('sunpy'),
-    "image_scrapers": ('pyvista', 'matplotlib' ),
+    # "image_scrapers": ('pyvista', 'matplotlib' ),
 }

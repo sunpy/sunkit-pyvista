@@ -29,7 +29,7 @@ class SunpyPlotter:
     """
 
     def __init__(self, coordinate_frame=None):
-        self._plotter = pv.Plotter()
+        self._plotter = pv.Plotter(off_screen=True)
         self.draw = Draw(coordinate_frame)
 
     @property

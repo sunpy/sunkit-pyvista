@@ -19,6 +19,7 @@ release = __version__
 
 # Use the sunpy theme
 from sunpy_sphinx_theme.conf import *
+from sphinx_gallery.sorting import ExampleTitleSortKey
 
 # -- General configuration ---------------------------------------------------
 

@@ -19,6 +19,7 @@ class SunpyPlotter:
     For now, all coordinates are converted to
     a specific frame (`~sunpy.coordinates.HeliocentricInertial` by default),
     and distance units are such that :math:`R_{sun} = 1`.
+
     Parameters
     ----------
     coordinate_frame : astropy.coordinates.BaseFrame
@@ -29,7 +30,7 @@ class SunpyPlotter:
         if coordinate_frame is None:
             coordinate_frame = HeliocentricInertial()
         self._coordinate_frame = coordinate_frame
-        self._plotter = pv.Plotter()
+        self._plotter = pv.Plotter(off_screen=True)
 
     @property
     def coordinate_frame(self):
@@ -113,6 +114,7 @@ class SunpyPlotter:
     def plot_solar_axis(self, length=2.5, arrow_kwargs={}, **kwargs):
         """
         Plot the solar rotation axis as an arrow.
+
         Parameters
         ----------
         length : float

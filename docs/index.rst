@@ -8,6 +8,7 @@ This is the documentation for sunkit-pyvista.
    :caption: Contents:
 
    api
+   generated/gallery/index
 
 
 

@@ -89,6 +89,6 @@ sphinx_gallery_conf = {
     'only_warn_on_example_error': True,
     'plot_gallery': True,
     'remove_config_comments': True,
-    'doc_module': ('sunpy'),
+    'doc_module': ('sunkit_pyvista'),
     # "image_scrapers": ('pyvista', 'matplotlib' ),
 }

@@ -201,26 +201,14 @@ $RECYCLE.BIN/
 .vscode/*
 .vs/*
 
-### Extra Python Items and SunPy Specific
+### Extra Python Items and sunkit_pyvista Specific
 .hypothesis
 .pytest_cache
-sunpydata.sqlite
-sunpydata.sqlite-journal
-sunpy/_compiler.c
-sunpy/cython_version.py
-sunpy/_version.py
 docs/_build
 docs/generated
 docs/api/
-docs/whatsnew/latest_changelog.txt
-examples/**/*.asdf
-examples/**/*.csv
-figure_test_images*
-tags
-sunpy_map.asdf
 baseline
-docs/guide/data_types/figure.png
-october_M1_flares.csv
+sunkit_pyvista/version.py
 
 ### Pycharm(?)
 .idea

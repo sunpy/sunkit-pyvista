@@ -26,8 +26,11 @@ TODO: Add when we release a version
 Developing
 ==========
 
-If you want to develop SunPy you will need to install from GitHub.
-For detailed installation instructions, see `Development installation`_ in the SunPy docs.
+If you want to develop sunkit-pyvista you will need to install it from GitHub.
+For detailed installation instructions, see `Development installation`_ in the sunpy docs.
+These are for "sunpy" but the same works for sunkt-pyvista with a quick name substitution.
+
+.. _Development installation:  https://docs.sunpy.org/en/latest/dev_guide/contents/newcomers.html#setting-up-a-development-environment
 
 Getting Help
 ============

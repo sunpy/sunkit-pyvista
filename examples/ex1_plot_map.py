@@ -6,7 +6,6 @@ sunpy can interface with the `pyvista` package to produce interactive 3D plots.
 """
 ###############################################################################
 # Start by importing the required modules
-import os
 from sys import platform
 
 import astropy.constants as const
@@ -21,8 +20,6 @@ import pyvista as pv
 
 if platform == "linux":
     pv.start_xvfb()
-ROOT = os.path.join(os.path.dirname(__file__), '../')
-
 ###############################################################################
 # Import some sample data
 m = Map(AIA_193_IMAGE)
@@ -46,7 +43,4 @@ line = SkyCoord(lon=[180, 190, 200] * u.deg,
 plotter.plot_line(line)
 
 # Uncomment this line to show the plot when running locally
-plotter.show(cpos=(-100,0,0), screenshot=os.path.join(ROOT, "docs/generated/ex1_plot_map.png"))
-
-###############################################################################
-# .. image:: ../ex1_plot_map.png
+plotter.show(cpos=(-100,0,0))

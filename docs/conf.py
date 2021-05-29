@@ -37,6 +37,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx_automodapi.automodapi',
     'sphinx_automodapi.smart_resolver',
+    'sphinx_gallery.gen_gallery',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -65,3 +66,18 @@ intersphinx_mapping = {'https://docs.python.org/': None}
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 # html_static_path = ['_static']
+
+sphinx_gallery_conf = {
+    # 'filename_pattern': '^((?!skip_).)*$',
+    'examples_dirs': os.path.join('..', 'examples'),
+    'within_subsection_order': ExampleTitleSortKey,
+    'gallery_dirs': os.path.join('generated', 'gallery'),
+    # Comes from the theme.
+    'default_thumb_file': os.path.join(html_static_path[0], 'img', 'sunpy_icon_128x128.png'),
+    'abort_on_example_error': False,
+    'only_warn_on_example_error': True,
+    'plot_gallery': True,
+    'remove_config_comments': True,
+    'doc_module': ('sunpy'),
+    # "image_scrapers": ('pyvista', 'matplotlib' ),
+}

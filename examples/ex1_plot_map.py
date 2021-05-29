@@ -38,3 +38,8 @@ plotter.plot_line(line)
 
 # Uncomment this line to show the plot when running locally
 # plotter.show()
+
+plotter.show(cpos=(-100,0,0), screenshot=os.path.join(ROOT, "docs/generated/ex1_plot_map.png"))
+
+# %%
+# .. image:: ../ex1_plot_map.png

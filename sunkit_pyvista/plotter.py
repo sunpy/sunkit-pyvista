@@ -62,9 +62,11 @@ class SunpyPlotter:
     def _pyvista_mesh(self, m):
         """
         Create a mesh from a map.
+
         Parameters
         ----------
         m : sunpy.map.Map
+
         Returns
         -------
         pyvista.StructuredGrid
@@ -83,6 +85,7 @@ class SunpyPlotter:
     def plot_map(self, m, **kwargs):
         """
         Plot a map.
+
         Parameters
         ----------
         m : sunpy.map.Map
@@ -97,6 +100,7 @@ class SunpyPlotter:
     def plot_line(self, coords, **kwargs):
         """
         Plot a line from a set of coordinates.
+
         Parameters
         ----------
         coords : astropy.coordinates.SkyCoord

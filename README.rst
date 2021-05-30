@@ -1,48 +1,65 @@
-3D visualisation of solar physics data with pyvista
----------------------------------------------------
+**************
+sunkit-pyvista
+**************
 
-.. image:: https://readthedocs.org/projects/sunkit-pyvista/badge/?version=latest
+|Latest Version| |Latest Documentation| |codecov| |matrix| |Powered by NumFOCUS|
+
+.. |Latest Documentation| image:: https://readthedocs.org/projects/sunkit-pyvista/badge/?version=latest
    :target: https://docs.sunpy.org/projects/sunkit-pyvista/en/latest/?badge=latest
    :alt: Documentation Status
+.. |Latest Version| image:: https://img.shields.io/pypi/v/sunkit-pyvista.svg
+   :target: https://pypi.python.org/pypi/sunkit-pyvista/
+.. |matrix| image:: https://img.shields.io/matrix/sunpy:openastronomy.org.svg?colorB=%23FE7900&label=Chat&logo=matrix&server_fqdn=openastronomy.modular.im
+   :target: https://openastronomy.element.io/#/room/#sunpy:openastronomy.org
+.. |codecov| image:: https://codecov.io/gh/sunpy/sunkit-pyvista/branch/main/graph/badge.svg
+   :target: https://codecov.io/gh/sunpy/sunkit-pyvista
+.. |Powered by NumFOCUS| image:: https://img.shields.io/badge/powered%20by-NumFOCUS-orange.svg?style=flat&colorA=E1523D&colorB=007D8A
+   :target: https://numfocus.org
 
-License
--------
+The goal of sunkit-pyvista is to allow 3D visualization of solar physics data with pyvista.
 
-This project is Copyright (c) sunkit-pyvista contributors and licensed under
-the terms of the BSD 3-Clause license. This package is based upon
-the `Openastronomy packaging guide <https://github.com/OpenAstronomy/packaging-guide>`_
-which is licensed under the BSD 3-clause licence. See the licenses folder for
-more information.
+Installation
+============
 
+TODO: Add when we release a version
+
+Developing
+==========
+
+If you want to develop sunkit-pyvista you will need to install it from GitHub.
+For detailed installation instructions, see `Development installation`_ in the sunpy docs.
+These are for "sunpy" but the same works for sunkt-pyvista with a quick name substitution.
+
+.. _Development installation:  https://docs.sunpy.org/en/latest/dev_guide/contents/newcomers.html#setting-up-a-development-environment
+
+Getting Help
+============
+
+For more information or to ask questions about sunkit-pyvista, check out:
+
+-  `sunkit-pyvista Documentation`_
+-  `SunPy Element Channel`_
+
+.. _sunkit-pyvista Documentation: https://docs.sunpy.org/projects/sunkit-pyvista/en/latest/
+.. _SunPy Element Channel: https://app.element.io/#/room/#sunpy:openastronomy.org
 
 Contributing
-------------
+============
 
-We love contributions! sunkit-pyvista is open source,
-built on open source, and we'd love to have you hang out in our community.
+If you would like to get involved, check out the `Developers Guide`_ section of the SunPy docs.
+Stop by our chat room `#sunpy:openastronomy.org`_ if you have any questions.
+Help is always welcome so let us know what you like to work on, or check out the `issues page`_ for the list of known outstanding items.
 
-**Imposter syndrome disclaimer**: We want your help. No, really.
+For more information on contributing to SunPy, please read our `Newcomers' guide`_.
 
-There may be a little voice inside your head that is telling you that you're not
-ready to be an open source contributor; that your skills aren't nearly good
-enough to contribute. What could you possibly offer a project like this one?
+.. _Developers Guide: https://docs.sunpy.org/en/latest/dev_guide/index.html
+.. _`#sunpy:openastronomy.org`: https://app.element.io/#/room/#sunpy:openastronomy.org
+.. _issues page: https://github.com/sunpy/sunkit-pyvista/issues
+.. _Newcomers' guide: https://docs.sunpy.org/en/latest/dev_guide/contents/newcomers.html
 
-We assure you - the little voice in your head is wrong. If you can write code at
-all, you can contribute code to open source. Contributing to open source
-projects is a fantastic way to advance one's coding skills. Writing perfect code
-isn't the measure of a good developer (that would disqualify all of us!); it's
-trying to create something, making mistakes, and learning from those
-mistakes. That's how we all improve, and we are happy to help others learn.
+Code of Conduct
+===============
 
-Being an open source contributor doesn't just mean writing code, either. You can
-help out by writing documentation, tests, or even giving feedback about the
-project (and yes - that includes giving feedback about the contribution
-process). Some of these contributions may be the most valuable to the project as
-a whole, because you're coming to the project with fresh eyes, so you can see
-the errors and assumptions that seasoned contributors have glossed over.
+When you are interacting with the SunPy community you are asked to follow our `Code of Conduct`_.
 
-Note: This disclaimer was originally written by
-`Adrienne Lowe <https://github.com/adriennefriend>`_ for a
-`PyCon talk <https://www.youtube.com/watch?v=6Uj746j9Heo>`_, and was adapted by
-sunkit-pyvista based on its use in the README file for the
-`MetPy project <https://github.com/Unidata/MetPy>`_.
+.. _Code of Conduct: https://sunpy.org/coc

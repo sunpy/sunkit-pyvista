@@ -21,16 +21,6 @@ release = __version__
 from sunpy_sphinx_theme.conf import *
 from sphinx_gallery.sorting import ExampleTitleSortKey
 
-import pyvista
-import numpy as np
-# necessary when building the sphinx gallery
-pyvista.BUILDING_GALLERY = True
-pyvista.OFF_SCREEN = True
-
-# Optional - set parameters like theme or window size
-pyvista.set_plot_theme('document')
-pyvista.rcParams['window_size'] = np.array([1024, 768]) * 2
-
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be

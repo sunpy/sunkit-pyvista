@@ -1,1 +1,2 @@
-Addition of code to plot a GenericMap
+Creation of SunpyPlotter class which allows for plotting of a GenericMap through pyvista.
+Example showing the demonstration of the usage of the class and it's methods.

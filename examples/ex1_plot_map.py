@@ -6,6 +6,8 @@ Three dimensional plots with sunpy Maps
 Using sunkit-pyvista, one can interface with the `pyvista` package to
 produce interactive 3D plots for sunpy Maps.
 """
+import pyvista as pv
+
 import astropy.constants as const
 import astropy.units as u
 from astropy.coordinates import SkyCoord
@@ -13,6 +15,8 @@ from sunpy.data.sample import AIA_193_IMAGE
 from sunpy.map import Map
 
 from sunkit_pyvista import SunpyPlotter
+
+pv.start_xvfb()
 
 ###############################################################################
 # Import some sample data

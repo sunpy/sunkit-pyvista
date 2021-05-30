@@ -1,2 +1,2 @@
-Creation of SunpyPlotter class which allows for plotting of a GenericMap through pyvista.
+Creation of :class:`~sunkit_pyvista.plotter.SunpyPlotter` class which allows for plotting of a :class:`~sunpy.map.GenericMap` through pyvista.
 Example showing the demonstration of the usage of the class and it's methods.

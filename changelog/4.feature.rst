@@ -1,2 +1,2 @@
 Creation of :class:`~sunkit_pyvista.plotter.SunpyPlotter` class which allows for plotting of a :class:`~sunpy.map.GenericMap` through pyvista.
-Example showing the demonstration of the usage of the class and it's methods.
+Added example for :ref:`sphx_glr_generated_gallery_plot_map_in_3d.py`, showing the demonstration of the usage of the class and it's methods.

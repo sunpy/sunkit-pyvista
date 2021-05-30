@@ -79,7 +79,7 @@ intersphinx_mapping = {'https://docs.python.org/': None}
 # html_static_path = ['_static']
 
 sphinx_gallery_conf = {
-    # 'filename_pattern': '^((?!skip_).)*$',
+    'filename_pattern': '^((?!skip_).)*$',
     'examples_dirs': os.path.join('..', 'examples'),
     'within_subsection_order': ExampleTitleSortKey,
     'gallery_dirs': os.path.join('generated', 'gallery'),
@@ -90,5 +90,4 @@ sphinx_gallery_conf = {
     'plot_gallery': True,
     'remove_config_comments': True,
     'doc_module': ('sunpy'),
-    # "image_scrapers": ('pyvista', 'matplotlib' ),
 }

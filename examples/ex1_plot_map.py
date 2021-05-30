@@ -23,7 +23,6 @@ if platform == "linux":
 ###############################################################################
 # Import some sample data
 m = Map(AIA_193_IMAGE)
-
 ###############################################################################
 # 3D plots are done on "plotter" objects, which are similar to matplotlib axes.
 # sunpy has a built in `PyVistaPlotter` class that can be used to plot maps

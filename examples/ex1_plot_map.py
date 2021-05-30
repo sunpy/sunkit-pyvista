@@ -8,15 +8,15 @@ sunpy can interface with the `pyvista` package to produce interactive 3D plots.
 # Start by importing the required modules
 from sys import platform
 
+import pyvista as pv
+
 import astropy.constants as const
 import astropy.units as u
 from astropy.coordinates import SkyCoord
-
 from sunpy.data.sample import AIA_193_IMAGE
 from sunpy.map import Map
-from sunkit_pyvista import SunpyPlotter
 
-import pyvista as pv
+from sunkit_pyvista import SunpyPlotter
 
 if platform == "linux":
     pv.start_xvfb()

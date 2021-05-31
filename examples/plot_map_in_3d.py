@@ -19,12 +19,12 @@ from sunkit_pyvista import SunpyPlotter
 pv.start_xvfb()
 
 ###############################################################################
-# Import some sample data
+# We will firstly use an AIA 193 image from the sunpy sample data as the base image.
 m = Map(AIA_193_IMAGE)
 
 ###############################################################################
 # 3D plots are done on "plotter" objects, which are similar to matplotlib axes.
-# sunpy has a built in `PyVistaPlotter` class that can be used to plot maps
+# sunkit-pyvista has a built in `PyVistaPlotter` class that can be used to plot maps
 # and coordinate aware objects.
 
 # Start by creating a plotter
@@ -40,5 +40,4 @@ line = SkyCoord(lon=[180, 190, 200] * u.deg,
                 frame='heliocentricinertial')
 plotter.plot_line(line)
 
-# Uncomment this line to show the plot when running locally
 plotter.show(cpos=(-100, 0, 0))

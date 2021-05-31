@@ -65,11 +65,12 @@ class SunpyPlotter:
 
         Parameters
         ----------
-        m : sunpy.map.Map
+        m : `sunpy.map.Map`
+        	The map to use.
 
         Returns
         -------
-        pyvista.StructuredGrid
+        `pyvista.StructuredGrid`
         """
         corner_coords = all_corner_coords_from_map(m)
         nodes = self._coords_to_xyz(corner_coords.ravel())

@@ -8,6 +8,7 @@ This is the documentation for sunkit-pyvista.
    :maxdepth: 2
 
    api
+   generated/gallery/index
    changelog
 
 Indexes

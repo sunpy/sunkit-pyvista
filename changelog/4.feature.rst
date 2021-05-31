@@ -1,0 +1,1 @@
+Creation of :class:`~sunkit_pyvista.plotter.SunpyPlotter` class which allows for plotting of a :class:`~sunpy.map.GenericMap` through pyvista.

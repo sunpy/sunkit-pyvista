@@ -19,6 +19,7 @@ release = __version__
 
 # Use the sunpy theme
 from sunpy_sphinx_theme.conf import *
+from sphinx_gallery.sorting import ExampleTitleSortKey
 
 # -- General configuration ---------------------------------------------------
 
@@ -38,6 +39,7 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.todo',
     'sphinx.ext.viewcode',
+    'sphinx_gallery.gen_gallery'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -58,7 +60,24 @@ master_doc = 'index'
 # -- Options for intersphinx extension ---------------------------------------
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'https://docs.python.org/': None}
+
+intersphinx_mapping = {
+    "python": (
+        "https://docs.python.org/3/",
+        (None, "http://www.astropy.org/astropy-data/intersphinx/python3.inv"),
+    ),
+    "numpy": (
+        "https://numpy.org/doc/stable/",
+        (None, "http://www.astropy.org/astropy-data/intersphinx/numpy.inv"),
+    ),
+    "matplotlib": (
+        "https://matplotlib.org/",
+        (None, "http://www.astropy.org/astropy-data/intersphinx/matplotlib.inv"),
+    ),
+    "astropy": ("https://docs.astropy.org/en/stable/", None),
+    "sunpy": ("https://docs.sunpy.org/en/stable", None),
+    "pyvista": ("https://docs.pyvista.org/", None),
+}
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -66,3 +85,17 @@ intersphinx_mapping = {'https://docs.python.org/': None}
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 # html_static_path = ['_static']
+
+sphinx_gallery_conf = {
+    'filename_pattern': '^((?!skip_).)*$',
+    'examples_dirs': os.path.join('..', 'examples'),
+    'within_subsection_order': ExampleTitleSortKey,
+    'gallery_dirs': os.path.join('generated', 'gallery'),
+    # Comes from the theme.
+    'default_thumb_file': os.path.join(html_static_path[0], 'img', 'sunpy_icon_128x128.png'),
+    'abort_on_example_error': False,
+    'only_warn_on_example_error': True,
+    'plot_gallery': True,
+    'remove_config_comments': True,
+    'doc_module': ('sunkit_pyvista'),
+}

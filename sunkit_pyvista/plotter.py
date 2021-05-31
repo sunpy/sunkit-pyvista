@@ -105,8 +105,9 @@ class SunpyPlotter:
         Parameters
         ----------
         coords : astropy.coordinates.SkyCoord
+            Coordinates to plot as a line.
         **kwargs :
-            Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
+            Keyword arguments are passed to `pyvista.Plotter.add_mesh`.
         Notes
         -----
         This plots a `pyvista.Spline` object.

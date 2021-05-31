@@ -3,8 +3,8 @@
 Three dimensional plots with sunpy Maps
 =======================================
 
-Using sunkit-pyvista, one can interface with the `pyvista` package to
-produce interactive 3D plots for sunpy Maps.
+sunkit-pyvista also allows for rotation of maps to render the initial plot with the
+specified angle.
 """
 import pyvista as pv
 
@@ -16,16 +16,11 @@ from sunpy.map import Map
 
 from sunkit_pyvista import SunpyPlotter
 
-pv.start_xvfb()
+# pv.start_xvfb()
 
 ###############################################################################
-# We will firstly use an AIA 193 image from the sunpy sample data as the base image.
+# Import some sample data
 m = Map(AIA_193_IMAGE)
-
-###############################################################################
-# 3D plots are done on "plotter" objects, which are similar to matplotlib axes.
-# sunkit-pyvista has a built in `SunpyPlotter` class that can be used to plot maps
-# and coordinate aware objects.
 
 # Start by creating a plotter
 plotter = SunpyPlotter()
@@ -39,5 +34,9 @@ line = SkyCoord(lon=[180, 190, 200] * u.deg,
                 distance=[1, 2, 3] * const.R_sun,
                 frame='heliocentricinertial')
 plotter.plot_line(line)
+
+# `SunpyPlotter` provides a rotate method which accepts an angle. This rotates
+# all the rendered meshes to be rotated by that particular angle.
+plotter.rotate(angle=30 * u.deg)
 
 plotter.show(cpos=(-100, 0, 0))

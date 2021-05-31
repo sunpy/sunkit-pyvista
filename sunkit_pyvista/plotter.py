@@ -2,6 +2,7 @@ import functools
 
 import numpy as np
 import pyvista as pv
+import astropy.units as u
 
 from astropy.constants import R_sun
 from sunpy.coordinates import HeliocentricInertial
@@ -29,7 +30,8 @@ class SunpyPlotter:
         if coordinate_frame is None:
             coordinate_frame = HeliocentricInertial()
         self._coordinate_frame = coordinate_frame
-        self._plotter = pv.Plotter(off_screen=True)
+        self._plotter = pv.Plotter()
+        self.meshes = []
 
     @property
     def coordinate_frame(self):
@@ -97,6 +99,7 @@ class SunpyPlotter:
         cmap = kwargs.pop('cmap', m.cmap)
         mesh = self._pyvista_mesh(m)
         self.plotter.add_mesh(mesh, cmap=cmap, **kwargs)
+        self.meshes.append(mesh)
 
     def plot_line(self, coords, **kwargs):
         """
@@ -115,6 +118,7 @@ class SunpyPlotter:
         points = self._coords_to_xyz(coords)
         spline = pv.Spline(points)
         self.plotter.add_mesh(spline, **kwargs)
+        self.meshes.append(spline)
 
     def plot_solar_axis(self, length=2.5, arrow_kwargs={}, **kwargs):
         """
@@ -135,8 +139,15 @@ class SunpyPlotter:
                     'tip_length': 0.05,
                     'tip_radius': 0.02}
         defaults.update(arrow_kwargs)
-        arrow = pv.Arrow(start=(0, 0, -length / 2),
+        solar_axis = pv.Arrow(start=(0, 0, -length / 2),
                          direction=(0, 0, length),
                          scale='auto',
                          **defaults)
-        self.plotter.add_mesh(arrow, **kwargs)
+        self.plotter.add_mesh(solar_axis, **kwargs)
+        self.meshes.append(solar_axis)
+
+    def rotate(self, angle : u = 0.0*u.deg):
+        rotation_angle = angle.to_value(u.deg)
+        for mesh in self.meshes:
+            mesh.rotate_x(rotation_angle)
+

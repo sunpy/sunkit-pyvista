@@ -1,7 +1,7 @@
 """
-=======================================
-Three dimensional plots with sunpy Maps
-=======================================
+======================
+Rotation of sunpy Maps
+======================
 
 sunkit-pyvista also allows for rotation of maps to render the initial plot with the
 specified angle.
@@ -15,7 +15,7 @@ from sunpy.map import Map
 
 from sunkit_pyvista import SunpyPlotter
 
-# pv.start_xvfb()
+pv.start_xvfb()
 
 ###############################################################################
 # Import some sample data

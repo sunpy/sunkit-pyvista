@@ -66,7 +66,7 @@ class SunpyPlotter:
         Parameters
         ----------
         m : `sunpy.map.Map`
-        	The map to use.
+            The map to use.
 
         Returns
         -------

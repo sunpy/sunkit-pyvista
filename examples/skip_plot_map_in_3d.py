@@ -1,7 +1,7 @@
 """
-======================
-Rotation of sunpy Maps
-======================
+=======================================
+Three dimensional plots with sunpy Maps
+=======================================
 
 Using sunkit-pyvista, one can interface with the `pyvista` package to
 produce interactive 3D plots for sunpy Maps.

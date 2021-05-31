@@ -2,8 +2,8 @@ import functools
 
 import numpy as np
 import pyvista as pv
-import astropy.units as u
 
+import astropy.units as u
 from astropy.constants import R_sun
 from sunpy.coordinates import HeliocentricInertial
 from sunpy.map.maputils import all_corner_coords_from_map
@@ -140,14 +140,13 @@ class SunpyPlotter:
                     'tip_radius': 0.02}
         defaults.update(arrow_kwargs)
         solar_axis = pv.Arrow(start=(0, 0, -length / 2),
-                         direction=(0, 0, length),
-                         scale='auto',
-                         **defaults)
+                              direction=(0, 0, length),
+                              scale='auto',
+                              **defaults)
         self.plotter.add_mesh(solar_axis, **kwargs)
         self.meshes.append(solar_axis)
 
-    def rotate(self, angle : u = 0.0*u.deg):
+    def rotate(self, angle: u = 0.0 * u.deg):
         rotation_angle = angle.to_value(u.deg)
         for mesh in self.meshes:
             mesh.rotate_x(rotation_angle)
-

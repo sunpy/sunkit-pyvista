@@ -6,7 +6,6 @@ Three dimensional plots with sunpy Maps
 sunkit-pyvista also allows for rotation of maps to render the initial plot with the
 specified angle.
 """
-import pyvista as pv
 
 import astropy.constants as const
 import astropy.units as u

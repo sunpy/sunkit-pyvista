@@ -1,0 +1,1 @@
+Created :meth:`~sunkit_pyvista.plotter.SunpyPlotter.rotate` which allows for rotating a :class:`~sunpy.map.GenericMap` by a specified angle.

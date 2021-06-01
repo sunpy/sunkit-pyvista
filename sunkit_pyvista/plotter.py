@@ -89,7 +89,7 @@ class SunpyPlotter:
 
         Parameters
         ----------
-        m : sunpy.map.Map
+        m : `sunpy.map.Map`
             Map to be plotted.
         **kwargs :
             Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
@@ -104,7 +104,7 @@ class SunpyPlotter:
 
         Parameters
         ----------
-        coords : astropy.coordinates.SkyCoord
+        coords : `astropy.coordinates.SkyCoord`
             Coordinates to plot as a line.
         **kwargs :
             Keyword arguments are passed to `pyvista.Plotter.add_mesh`.

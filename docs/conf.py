@@ -57,6 +57,31 @@ source_suffix = '.rst'
 # The master toctree document.
 master_doc = 'index'
 
+# Enable nitpicky mode, which forces links to be non-broken
+nitpicky = True
+nitpick_ignore = [
+    # Prevents shpinx nitpicky mode picking up on optional
+    # (see https://github.com/sphinx-doc/sphinx/issues/6861)
+    ('py:class', 'optional'),
+    # See https://github.com/numpy/numpy/issues/10039
+    ('py:obj', 'numpy.datetime64'),
+    # There's no specific file or function classes to link to
+    ('py:class', 'file object'),
+    ('py:class', 'function'),
+    ('py:obj', 'function'),
+    ('py:class', 'any type'),
+    ('py:class', "Unit('pix')"),
+    ('py:class', "Unit('deg')"),
+    ('py:class', "Unit('arcsec')"),
+    ('py:class', "Unit('%')"),
+    ('py:class', "Unit('s')"),
+    ('py:class', "Unit('Angstrom')"),
+    ('py:class', "Unit('arcsec / pix')"),
+    ('py:class', "Unit('W / m2')"),
+    ('py:class', 'array-like'),
+    ('py:obj', 'parfive'),
+]
+
 # -- Options for intersphinx extension ---------------------------------------
 
 # Example configuration for intersphinx: refer to the Python standard library.

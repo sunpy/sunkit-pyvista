@@ -21,7 +21,7 @@ class SunpyPlotter:
 
     Parameters
     ----------
-    coordinate_frame : astropy.coordinates.BaseFrame
+    coordinate_frame : `astropy.coordinates.BaseFrame`
         Coordinate frame of the plot. The x, y, z axes of the pyvista plotter
         will be the x, y, z axes in this coordinate system.
     """

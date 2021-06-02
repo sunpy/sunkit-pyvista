@@ -21,7 +21,7 @@ class SunpyPlotter:
 
     Parameters
     ----------
-    coordinate_frame : astropy.coordinates.BaseFrame
+    coordinate_frame : `astropy.coordinates.BaseFrame`
         Coordinate frame of the plot. The x, y, z axes of the pyvista plotter
         will be the x, y, z axes in this coordinate system.
     """
@@ -89,7 +89,7 @@ class SunpyPlotter:
 
         Parameters
         ----------
-        m : sunpy.map.Map
+        m : `sunpy.map.Map`
             Map to be plotted.
         **kwargs :
             Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
@@ -104,7 +104,7 @@ class SunpyPlotter:
 
         Parameters
         ----------
-        coords : astropy.coordinates.SkyCoord
+        coords : `astropy.coordinates.SkyCoord`
             Coordinates to plot as a line.
         **kwargs :
             Keyword arguments are passed to `pyvista.Plotter.add_mesh`.

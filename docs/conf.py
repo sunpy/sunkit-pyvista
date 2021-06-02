@@ -80,6 +80,8 @@ nitpick_ignore = [
     ('py:class', "Unit('W / m2')"),
     ('py:class', 'array-like'),
     ('py:obj', 'parfive'),
+    ('py:class', 'string'),
+    ('py:class', 'floats'),
 ]
 
 # -- Options for intersphinx extension ---------------------------------------

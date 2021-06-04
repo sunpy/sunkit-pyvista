@@ -83,8 +83,10 @@ class SunpyPlotter:
         angle : `astropy.units.Quantity`
             The angle of rotation.
         """
+        print(self.plotter.camera.roll)
         rotation_angle = angle.to_value(u.deg)
         self.plotter.camera.roll += rotation_angle
+        print(self.plotter.camera.roll)
 
     def _pyvista_mesh(self, m):
         """

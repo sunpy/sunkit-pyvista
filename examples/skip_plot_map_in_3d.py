@@ -16,7 +16,7 @@ from sunpy.map import Map
 
 from sunkit_pyvista import SunpyPlotter
 
-pv.start_xvfb()
+# pv.start_xvfb()
 
 ###############################################################################
 # We will firstly use an AIA 193 image from the sunpy sample data as the base image.
@@ -41,8 +41,10 @@ line = SkyCoord(lon=[180, 190, 200] * u.deg,
 plotter.plot_line(line)
 
 # Define a SkyCoord for to set the positon of the camera
-camera_position = SkyCoord(180*u.deg, 0*u.deg, 8*const.R_sun, obstime=m.observer_coordinate.obstime, frame=frames.HeliocentricInertial)
+camera_position = SkyCoord(0*u.deg, 0*u.deg, 8*const.R_sun, obstime=m.observer_coordinate.obstime, frame=frames.HeliographicStonyhurst)
 plotter.set_camera_coordinates(camera_position)
 
 # Rotate the camera by a given angle
 plotter.rotate_camera(90*u.deg)
+
+plotter.show()

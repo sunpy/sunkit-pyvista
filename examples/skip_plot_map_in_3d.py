@@ -12,11 +12,12 @@ import astropy.constants as const
 import astropy.units as u
 from astropy.coordinates import SkyCoord
 from sunpy.data.sample import AIA_193_IMAGE
+from sunpy.coordinates import frames
 from sunpy.map import Map
 
 from sunkit_pyvista import SunpyPlotter
 
-pv.start_xvfb()
+# pv.start_xvfb()
 
 ###############################################################################
 # We will firstly use an AIA 193 image from the sunpy sample data as the base image.
@@ -39,5 +40,7 @@ line = SkyCoord(lon=[180, 190, 200] * u.deg,
                 distance=[1, 2, 3] * const.R_sun,
                 frame='heliocentricinertial')
 plotter.plot_line(line)
-
-plotter.show(cpos=(-100, 0, 0))
+# c = SkyCoord(-70000000.0*u.km, 70000000.0*u.km, 0*u.km, frame=frames.Helioprojective)
+c = SkyCoord(45*u.deg, 0*u.deg, 4*const.R_sun, frame=frames.HeliocentricInertial)
+plotter.set_camera_coordinates(c, transform=False)
+plotter.show()

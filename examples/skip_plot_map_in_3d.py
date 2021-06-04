@@ -40,7 +40,8 @@ line = SkyCoord(lon=[180, 190, 200] * u.deg,
                 distance=[1, 2, 3] * const.R_sun,
                 frame='heliocentricinertial')
 plotter.plot_line(line)
-# c = SkyCoord(-70000000.0*u.km, 70000000.0*u.km, 0*u.km, frame=frames.Helioprojective)
-c = SkyCoord(45*u.deg, 0*u.deg, 4*const.R_sun, frame=frames.HeliocentricInertial)
-plotter.set_camera_coordinates(c, transform=False)
+c = SkyCoord(180*u.deg, 0*u.deg, 8*const.R_sun, obstime=m.observer_coordinate.obstime, frame=frames.HeliocentricInertial)
+plotter.set_camera_coordinates(c)
+# plotter.plotter.camera.roll = 90
+plotter.rotate_camera(90*u.deg)
 plotter.show()

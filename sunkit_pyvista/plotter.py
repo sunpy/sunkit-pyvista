@@ -29,7 +29,7 @@ class SunpyPlotter:
         if coordinate_frame is None:
             coordinate_frame = HeliocentricInertial()
         self._coordinate_frame = coordinate_frame
-        self._plotter = pv.Plotter(off_screen=True)
+        self._plotter = pv.Plotter()
 
     @property
     def coordinate_frame(self):
@@ -52,12 +52,20 @@ class SunpyPlotter:
         """
         self.plotter.show(*args, **kwargs)
 
-    def _coords_to_xyz(self, coords):
-        coords = coords.transform_to(self.coordinate_frame)
+    def _coords_to_xyz(self, coords, transform=True):
+        if transform:
+            coords = coords.transform_to(self.coordinate_frame)
+
         coords.representation_type = 'cartesian'
         return np.column_stack((coords.x.to_value(R_sun),
                                 coords.y.to_value(R_sun),
                                 coords.z.to_value(R_sun)))
+
+    def set_camera_coordinates(self, coord, transform=False):
+        camera_position = self._coords_to_xyz(coord, transform=transform)
+        # camera_position *= -1
+        pos = tuple(camera_position[0])
+        self.plotter.camera.position = pos
 
     def _pyvista_mesh(self, m):
         """
@@ -97,6 +105,7 @@ class SunpyPlotter:
         cmap = kwargs.pop('cmap', m.cmap)
         mesh = self._pyvista_mesh(m)
         self.plotter.add_mesh(mesh, cmap=cmap, **kwargs)
+        self.plotter.set_focus(mesh.center)
 
     def plot_line(self, coords, **kwargs):
         """

@@ -126,7 +126,6 @@ class SunpyPlotter:
         cmap = kwargs.pop('cmap', m.cmap)
         mesh = self._pyvista_mesh(m)
         self.plotter.add_mesh(mesh, cmap=cmap, **kwargs)
-        # self.plotter.set_focus(mesh.center)
 
     def plot_line(self, coords, **kwargs):
         """

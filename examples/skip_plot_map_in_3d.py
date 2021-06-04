@@ -16,7 +16,7 @@ from sunpy.map import Map
 
 from sunkit_pyvista import SunpyPlotter
 
-# pv.start_xvfb()
+pv.start_xvfb()
 
 ###############################################################################
 # We will firstly use an AIA 193 image from the sunpy sample data as the base image.

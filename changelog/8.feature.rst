@@ -1,0 +1,2 @@
+Adds :meth:`~sunkit_pyvista.plotter.set_camera_coordinates` which allows for specifying the initial camera coordinates.
+Creation of :meh:`~sunkit_pyvista.plotter.rotate_camera` which allows for rotation of the plot by the specified angle.

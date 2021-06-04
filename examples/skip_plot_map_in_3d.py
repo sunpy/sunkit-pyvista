@@ -25,7 +25,7 @@ m = Map(AIA_193_IMAGE)
 
 ###############################################################################
 # 3D plots are done on "plotter" objects, which are similar to matplotlib axes.
-# sunkit-pyvista has a built in `PyVistaPlotter` class that can be used to plot maps
+# sunkit-pyvista has a built in `SunpyPlotter` class that can be used to plot maps
 # and coordinate aware objects.
 
 # Start by creating a plotter

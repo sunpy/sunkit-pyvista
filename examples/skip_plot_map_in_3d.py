@@ -6,13 +6,12 @@ Three dimensional plots with sunpy Maps
 Using sunkit-pyvista, one can interface with the `pyvista` package to
 produce interactive 3D plots for sunpy Maps.
 """
-import pyvista as pv
 
 import astropy.constants as const
 import astropy.units as u
 from astropy.coordinates import SkyCoord
-from sunpy.data.sample import AIA_193_IMAGE
 from sunpy.coordinates import frames
+from sunpy.data.sample import AIA_193_IMAGE
 from sunpy.map import Map
 
 from sunkit_pyvista import SunpyPlotter
@@ -40,8 +39,10 @@ line = SkyCoord(lon=[180, 190, 200] * u.deg,
                 distance=[1, 2, 3] * const.R_sun,
                 frame='heliocentricinertial')
 plotter.plot_line(line)
-c = SkyCoord(180*u.deg, 0*u.deg, 8*const.R_sun, obstime=m.observer_coordinate.obstime, frame=frames.HeliocentricInertial)
-plotter.set_camera_coordinates(c)
-# plotter.plotter.camera.roll = 90
+
+# Define a SkyCoord for to set the positon of the camera
+camera_position = SkyCoord(180*u.deg, 0*u.deg, 8*const.R_sun, obstime=m.observer_coordinate.obstime, frame=frames.HeliocentricInertial)
+plotter.set_camera_coordinates(camera_position)
+
+# Rotate the camera by a given angle
 plotter.rotate_camera(90*u.deg)
-plotter.show()

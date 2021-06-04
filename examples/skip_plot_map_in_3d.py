@@ -16,7 +16,6 @@ from sunpy.map import Map
 
 from sunkit_pyvista import SunpyPlotter
 
-
 ###############################################################################
 # We will firstly use an AIA 193 image from the sunpy sample data as the base image.
 m = Map(AIA_193_IMAGE)

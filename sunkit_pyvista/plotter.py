@@ -83,10 +83,8 @@ class SunpyPlotter:
         angle : `astropy.units.Quantity`
             The angle of rotation.
         """
-        print(self.plotter.camera.roll)
         rotation_angle = angle.to_value(u.deg)
         self.plotter.camera.roll += rotation_angle
-        print(self.plotter.camera.roll)
 
     def _pyvista_mesh(self, m):
         """
@@ -126,6 +124,7 @@ class SunpyPlotter:
         cmap = kwargs.pop('cmap', m.cmap)
         mesh = self._pyvista_mesh(m)
         self.plotter.add_mesh(mesh, cmap=cmap, **kwargs)
+        self._plotter.camera_position = 'xz'
 
     def plot_line(self, coords, **kwargs):
         """

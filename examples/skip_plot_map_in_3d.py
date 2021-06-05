@@ -43,6 +43,6 @@ camera_position = SkyCoord(0*u.deg, 0*u.deg, 8*const.R_sun, obstime=m.observer_c
 plotter.set_camera_coordinates(camera_position)
 
 # Rotate the camera by a given angle
-plotter.rotate_camera(90*u.deg)
+plotter.rotate_camera(-90*u.deg)
 
 plotter.show()

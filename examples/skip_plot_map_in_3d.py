@@ -39,10 +39,10 @@ line = SkyCoord(lon=[180, 190, 200] * u.deg,
 plotter.plot_line(line)
 
 # Define a SkyCoord for to set the positon of the camera
-camera_position = SkyCoord(0*u.deg, 0*u.deg, 8*const.R_sun, observer=m.observer_coordinate, frame=frames.HeliographicStonyhurst)
+camera_position = SkyCoord(0*u.deg, 0*u.deg, 8*const.R_sun, obstime=m.observer_coordinate.obstime, frame=frames.HeliographicStonyhurst)
 plotter.set_camera_coordinates(camera_position)
 
 # Rotate the camera by a given angle
-plotter.rotate_camera(-90*u.deg)
+plotter.rotate_camera(45*u.deg)
 
 plotter.show()

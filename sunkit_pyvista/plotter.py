@@ -31,7 +31,6 @@ class SunpyPlotter:
             coordinate_frame = HeliocentricInertial()
         self._coordinate_frame = coordinate_frame
         self._plotter = pv.Plotter()
-        self._plotter.show_axes()
 
     @property
     def coordinate_frame(self):
@@ -124,7 +123,6 @@ class SunpyPlotter:
         cmap = kwargs.pop('cmap', m.cmap)
         mesh = self._pyvista_mesh(m)
         self.plotter.add_mesh(mesh, cmap=cmap, **kwargs)
-        self._plotter.camera_position = 'xz'
 
     def plot_line(self, coords, **kwargs):
         """

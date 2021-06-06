@@ -83,7 +83,7 @@ class SunpyPlotter:
             The angle of rotation.
         """
         rotation_angle = angle.to_value(u.deg)
-        self.plotter.camera.roll += rotation_angle
+        self.plotter.camera.roll = rotation_angle
 
     def _pyvista_mesh(self, m):
         """

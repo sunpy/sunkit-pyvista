@@ -16,7 +16,6 @@ from sunpy.map import Map
 
 from sunkit_pyvista import SunpyPlotter
 
-pv.start_xvfb()
 
 ###############################################################################
 # We will firstly use an AIA 193 image from the sunpy sample data as the base image.
@@ -39,5 +38,6 @@ line = SkyCoord(lon=[180, 190, 200] * u.deg,
                 distance=[1, 2, 3] * const.R_sun,
                 frame='heliocentricinertial')
 plotter.plot_line(line)
-
+plotter.pfss()
 plotter.show(cpos=(-100, 0, 0))
+

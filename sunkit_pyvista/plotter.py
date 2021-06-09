@@ -29,7 +29,7 @@ class SunpyPlotter:
         if coordinate_frame is None:
             coordinate_frame = HeliocentricInertial()
         self._coordinate_frame = coordinate_frame
-        self._plotter = pv.Plotter(off_screen=True)
+        self._plotter = pv.Plotter()
 
     @property
     def coordinate_frame(self):
@@ -140,3 +140,50 @@ class SunpyPlotter:
                          scale='auto',
                          **defaults)
         self.plotter.add_mesh(arrow, **kwargs)
+
+    def pfss(self):
+        import astropy.constants as const
+        import astropy.units as u
+        from astropy.coordinates import SkyCoord
+        import matplotlib.pyplot as plt
+        from mpl_toolkits.mplot3d import Axes3D
+        import numpy as np
+        import sunpy.map
+
+        import pfsspy
+        from pfsspy import coords
+        from pfsspy import tracing
+        from pfsspy.sample_data import get_gong_map
+
+        gong_fname = get_gong_map()
+        gong_map = sunpy.map.Map(gong_fname)
+
+        nrho = 35
+        rss = 2.5
+
+        input = pfsspy.Input(gong_map, nrho, rss)
+        output = pfsspy.pfss(input)
+
+
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
+
+        tracer = tracing.PythonTracer()
+        r = 1.2 * const.R_sun
+        lat = np.linspace(-np.pi / 2, np.pi / 2, 8, endpoint=False)
+        lon = np.linspace(0, 2 * np.pi, 8, endpoint=False)
+        lat, lon = np.meshgrid(lat, lon, indexing='ij')
+        lat, lon = lat.ravel() * u.rad, lon.ravel() * u.rad
+
+        seeds = SkyCoord(lon, lat, r, frame=output.coordinate_frame)
+
+        field_lines = tracer.trace(seeds, output)
+
+        for field_line in field_lines:
+            mesh = self._coords_to_xyz(field_line.coords)
+            # coords = field_line.coords
+            # coords.representation_type = 'cartesian'
+            # mesh = np.column_stack((coords.x / const.R_sun,
+            # coords.y / const.R_sun,
+            # coords.z / const.R_sun))
+            self.plotter.add_mesh(mesh)

@@ -178,4 +178,4 @@ class SunpyPlotter:
         grid_data = np.concatenate(grid_data)
         field_line_mesh = pv.StructuredGrid(grid_data[:, 0], grid_data[:, 1], grid_data[:, 2])
 
-        self.plotter.add_mesh(field_line_mesh)
+        self.plotter.add_mesh(field_line_mesh, kwargs)

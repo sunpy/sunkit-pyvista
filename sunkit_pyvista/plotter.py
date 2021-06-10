@@ -1,9 +1,12 @@
 import functools
 
 import numpy as np
+import pfsspy
 import pyvista as pv
+from pfsspy import tracing
 
 from astropy.constants import R_sun
+from astropy.coordinates import SkyCoord
 from sunpy.coordinates import HeliocentricInertial
 from sunpy.map.maputils import all_corner_coords_from_map
 
@@ -30,6 +33,7 @@ class SunpyPlotter:
             coordinate_frame = HeliocentricInertial()
         self._coordinate_frame = coordinate_frame
         self._plotter = pv.Plotter()
+        self._plotter.show_axes()
 
     @property
     def coordinate_frame(self):
@@ -141,49 +145,35 @@ class SunpyPlotter:
                          **defaults)
         self.plotter.add_mesh(arrow, **kwargs)
 
-    def pfss(self):
-        import astropy.constants as const
-        import astropy.units as u
-        from astropy.coordinates import SkyCoord
-        import matplotlib.pyplot as plt
-        from mpl_toolkits.mplot3d import Axes3D
-        import numpy as np
-        import sunpy.map
+    def plot_field_lines(self, gong_map, lon, lat, radius, nrho=25, rss=2.5):
+        """
+        Plots the field lines from `pfsspy`.
 
-        import pfsspy
-        from pfsspy import coords
-        from pfsspy import tracing
-        from pfsspy.sample_data import get_gong_map
-
-        gong_fname = get_gong_map()
-        gong_map = sunpy.map.Map(gong_fname)
-
-        nrho = 35
-        rss = 2.5
-
-        input = pfsspy.Input(gong_map, nrho, rss)
-        output = pfsspy.pfss(input)
-
-
-        fig = plt.figure()
-        ax = fig.add_subplot(111, projection='3d')
-
+        Parameters
+        ----------
+        gong_map : `pfsspy.map.GongSynopticMap`
+            to produce the field lines
+        lon : `astropy.units.quantity`
+        lat : `astropy.units.quantity`
+        radius : `float`
+        nrho : `int`
+        rss : `int`
+        """
         tracer = tracing.PythonTracer()
-        r = 1.2 * const.R_sun
-        lat = np.linspace(-np.pi / 2, np.pi / 2, 8, endpoint=False)
-        lon = np.linspace(0, 2 * np.pi, 8, endpoint=False)
-        lat, lon = np.meshgrid(lat, lon, indexing='ij')
-        lat, lon = lat.ravel() * u.rad, lon.ravel() * u.rad
+        input_ = pfsspy.Input(gong_map, nrho, rss)
+        output_ = pfsspy.pfss(input_)
 
-        seeds = SkyCoord(lon, lat, r, frame=output.coordinate_frame)
+        seeds = SkyCoord(lon, lat, radius*R_sun,
+                         frame=gong_map.coordinate_frame)
 
-        field_lines = tracer.trace(seeds, output)
+        field_lines = tracer.trace(seeds, output_)
+        grid_data = []
 
         for field_line in field_lines:
-            mesh = self._coords_to_xyz(field_line.coords)
-            # coords = field_line.coords
-            # coords.representation_type = 'cartesian'
-            # mesh = np.column_stack((coords.x / const.R_sun,
-            # coords.y / const.R_sun,
-            # coords.z / const.R_sun))
-            self.plotter.add_mesh(mesh)
+            grid = self._coords_to_xyz(field_line.coords.ravel())
+            grid_data.append(grid)
+
+        grid_data = np.concatenate(grid_data)
+        field_line_mesh = pv.StructuredGrid(grid_data[:, 0], grid_data[:, 1], grid_data[:, 2])
+
+        self.plotter.add_mesh(field_line_mesh)

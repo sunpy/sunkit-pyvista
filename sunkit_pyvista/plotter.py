@@ -181,4 +181,5 @@ class SunpyPlotter:
         for field_line in field_lines:
             grid = self._coords_to_xyz(field_line.coords.ravel())
             field_line_mesh = pv.StructuredGrid(grid[:, 0], grid[:, 1], grid[:, 2])
-            self.plotter.add_mesh(field_line_mesh, **kwargs)
+            color = {0: 'black', -1: 'tab:blue', 1: 'tab:red'}.get(field_line.polarity)
+            self.plotter.add_mesh(field_line_mesh, color=color, **kwargs)

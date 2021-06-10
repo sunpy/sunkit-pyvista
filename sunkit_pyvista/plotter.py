@@ -3,6 +3,7 @@ import functools
 import numpy as np
 import pyvista as pv
 
+import astropy.units as u
 from astropy.constants import R_sun
 from sunpy.coordinates import HeliocentricInertial
 from sunpy.map.maputils import all_corner_coords_from_map
@@ -58,6 +59,31 @@ class SunpyPlotter:
         return np.column_stack((coords.x.to_value(R_sun),
                                 coords.y.to_value(R_sun),
                                 coords.z.to_value(R_sun)))
+
+    def set_camera_coordinates(self, coord):
+        """
+        Sets the inital camera position of the rendered plot.
+
+        Parameters
+        ----------
+        coords : `astropy.coordinates.SkyCoord`
+            Coordinates of the camera.
+        """
+        camera_position = self._coords_to_xyz(coord)
+        pos = tuple(camera_position[0])
+        self.plotter.camera.position = pos
+
+    def rotate_camera(self, angle: u.deg = None):
+        """
+        Rotates the camera by the specified value in degrees.
+
+        Parameters
+        ----------
+        angle : `astropy.units.Quantity`
+            The angle of rotation.
+        """
+        rotation_angle = angle.to_value(u.deg)
+        self.plotter.camera.roll = rotation_angle
 
     def _pyvista_mesh(self, m):
         """

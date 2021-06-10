@@ -1,12 +1,9 @@
 import functools
 
 import numpy as np
-import pfsspy
 import pyvista as pv
-from pfsspy import tracing
 
 from astropy.constants import R_sun
-from astropy.coordinates import SkyCoord
 from sunpy.coordinates import HeliocentricInertial
 from sunpy.map.maputils import all_corner_coords_from_map
 
@@ -145,37 +142,18 @@ class SunpyPlotter:
                          **defaults)
         self.plotter.add_mesh(arrow, **kwargs)
 
-    def plot_field_lines(self, gong_map, lon, lat, radius, nrho=25, rss=2.5, **kwargs):
+    def plot_field_lines(self, field_lines, **kwargs):
         """
         Plots the field lines from `pfsspy`.
 
         Parameters
         ----------
-        gong_map : `pfsspy.map.GongSynopticMap`
-            to produce the field lines
-        lon : `astropy.units.quantity`
-        lat : `astropy.units.quantity`
-        radius : `float`
-        nrho : `int`
-        rss : `int`
+        field_lines : `pfsspy.fieldline.FieldLines`
+            Field lines to be plotted
         **kwargs :
             Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
-        tracer = tracing.PythonTracer()
-        input_ = pfsspy.Input(gong_map, nrho, rss)
-        output_ = pfsspy.pfss(input_)
-
-        seeds = SkyCoord(lon, lat, radius*R_sun,
-                         frame=gong_map.coordinate_frame)
-
-        field_lines = tracer.trace(seeds, output_)
-        grid_data = []
-
         for field_line in field_lines:
             grid = self._coords_to_xyz(field_line.coords.ravel())
-            grid_data.append(grid)
-
-        grid_data = np.concatenate(grid_data)
-        field_line_mesh = pv.StructuredGrid(grid_data[:, 0], grid_data[:, 1], grid_data[:, 2])
-
-        self.plotter.add_mesh(field_line_mesh, kwargs)
+            field_line_mesh = pv.StructuredGrid(grid[:, 0], grid[:, 1], grid[:, 2])
+            self.plotter.add_mesh(field_line_mesh, **kwargs)

@@ -145,7 +145,7 @@ class SunpyPlotter:
                          **defaults)
         self.plotter.add_mesh(arrow, **kwargs)
 
-    def plot_field_lines(self, gong_map, lon, lat, radius, nrho=25, rss=2.5):
+    def plot_field_lines(self, gong_map, lon, lat, radius, nrho=25, rss=2.5, **kwargs):
         """
         Plots the field lines from `pfsspy`.
 
@@ -158,6 +158,8 @@ class SunpyPlotter:
         radius : `float`
         nrho : `int`
         rss : `int`
+        **kwargs :
+            Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
         tracer = tracing.PythonTracer()
         input_ = pfsspy.Input(gong_map, nrho, rss)

@@ -6,16 +6,14 @@ Plotting Field Lines from Pfsspy
 Sunkit-pyvista and can also be used to plot field lines from `pfsspy`.
 """
 
-import astropy.constants as const
-import astropy.units as u
 import numpy as np
+from pfsspy.sample_data import get_gong_map
 
-from astropy.coordinates import SkyCoord
+import astropy.units as u
 from sunpy.data.sample import AIA_193_IMAGE
 from sunpy.map import Map
 
 from sunkit_pyvista import SunpyPlotter
-from pfsspy.sample_data import get_gong_map
 
 ###############################################################################
 # We will firstly use an AIA 193 image from the sunpy sample data as the base image.

@@ -1,9 +1,9 @@
 """
 ================================
-Plotting Field Lines from Pfsspy
+Plotting Field Lines from pfsspy
 ================================
 
-Sunkit-pyvista and can also be used to plot field lines from `pfsspy`.
+sunkit-pyvista and can also be used to plot field lines from `pfsspy`.
 """
 
 import numpy as np

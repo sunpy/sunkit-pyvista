@@ -1,7 +1,7 @@
 """
-=======================================
-Three dimensional plots with sunpy Maps
-=======================================
+================================
+Plotting Field Lines from Pfsspy
+================================
 
 Sunkit-pyvista and can also be used to plot field lines from `pfsspy`.
 """

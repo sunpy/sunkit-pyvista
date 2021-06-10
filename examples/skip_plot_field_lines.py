@@ -7,9 +7,13 @@ Sunkit-pyvista and can also be used to plot field lines from `pfsspy`.
 """
 
 import numpy as np
+import pfsspy
+from pfsspy import tracing
 from pfsspy.sample_data import get_gong_map
 
 import astropy.units as u
+from astropy.constants import R_sun
+from astropy.coordinates import SkyCoord
 from sunpy.data.sample import AIA_193_IMAGE
 from sunpy.map import Map
 
@@ -41,12 +45,18 @@ lat = np.linspace(-np.pi / 2, np.pi / 2, 8, endpoint=False)
 lon = np.linspace(0, 2 * np.pi, 8, endpoint=False)
 # Make a 2D grid from these 1D points
 lat, lon = np.meshgrid(lat, lon, indexing='ij')
-
-# Create lon, lat and radial coordinate values by using a pfsspy map.
+# Create lon, lat and radial coordinate values by using a pfsspy
+# and trace them using tracer
 lat, lon = lat.ravel() * u.rad, lon.ravel() * u.rad
 radius = 1.2
+tracer = tracing.PythonTracer()
+input_ = pfsspy.Input(gong_map, nrho, rss)
+output_ = pfsspy.pfss(input_)
+seeds = SkyCoord(lon, lat, radius*R_sun,
+                 frame=gong_map.coordinate_frame)
+field_lines = tracer.trace(seeds, output_)
 
 # We plot the field lines
-plotter.plot_field_lines(gong_map, lon, lat, radius, nrho, rss)
+plotter.plot_field_lines(field_lines)
 
 plotter.show()

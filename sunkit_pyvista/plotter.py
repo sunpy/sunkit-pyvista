@@ -174,7 +174,7 @@ class SunpyPlotter:
         Parameters
         ----------
         field_lines : `pfsspy.fieldline.FieldLines`
-            Field lines to be plotted
+            Field lines to be plotted.
         **kwargs :
             Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """

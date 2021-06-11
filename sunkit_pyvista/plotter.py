@@ -59,7 +59,7 @@ class SunpyPlotter:
                                 coords.y.to_value(R_sun),
                                 coords.z.to_value(R_sun)))
 
-    def set_camera_coordinates(self, coord):
+    def set_camera_coordinate(self, coord):
         """
         Sets the inital camera position of the rendered plot.
 

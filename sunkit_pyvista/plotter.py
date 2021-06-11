@@ -73,18 +73,6 @@ class SunpyPlotter:
         pos = tuple(camera_position[0])
         self.plotter.camera.position = pos
 
-    def rotate_camera(self, angle: u.deg = None):
-        """
-        Rotates the camera by the specified value in degrees.
-
-        Parameters
-        ----------
-        angle : `astropy.units.Quantity`
-            The angle of rotation.
-        """
-        rotation_angle = angle.to_value(u.deg)
-        self.plotter.camera.roll = rotation_angle
-
     def _pyvista_mesh(self, m):
         """
         Create a mesh from a map.

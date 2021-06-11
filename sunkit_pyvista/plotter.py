@@ -84,7 +84,7 @@ class SunpyPlotter:
             The viewing angle.
         """
         view_angle = angle.to_value()
-        if not view_angle > 1 and view_angle <= 180:
+        if not view_angle > 0 and view_angle <= 180:
             raise ValueError("specified view angle must be "
                              "0 deg < angle <= 180 deg")
 
@@ -184,4 +184,3 @@ class SunpyPlotter:
                          scale='auto',
                          **defaults)
         self.plotter.add_mesh(arrow, **kwargs)
-

@@ -44,5 +44,4 @@ plotter.set_camera_coordinates(camera_position)
 
 # Rotate the camera by a given angle
 plotter.rotate_camera(45*u.deg)
-
 plotter.show()

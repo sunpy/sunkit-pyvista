@@ -5,7 +5,7 @@ import pyvista as pv
 
 import astropy.units as u
 from astropy.constants import R_sun
-from sunpy.coordinates import HeliocentricInertial
+from sunpy.coordinates import HeliocentricInertial, SkyCoord
 from sunpy.map.maputils import all_corner_coords_from_map
 
 __all__ = ['SunpyPlotter']
@@ -166,3 +166,27 @@ class SunpyPlotter:
                          scale='auto',
                          **defaults)
         self.plotter.add_mesh(arrow, **kwargs)
+
+    def plot_quadrangle(self, m, bottom_left, top_right, width, height, **kwargs):
+        """
+        Plots a quadrangle on the given map.
+        This draws a quadrangle that has corners at ``(bottom_left, top_right)``,
+        if ``width`` and ``height`` are specified, they are respectively added to the
+        longitude and latitude of the ``bottom_left`` coordinate to calculate a
+        ``top_right`` coordinate.
+
+        Parameters
+        ----------
+        bottom_left :
+        top_right :
+        width :
+        height :
+        **kwargs :
+        """
+        quadrangle_patch = m.draw_quadrangle(bottom_left, width, height, top_right, resolution=500)
+        quadrangle_coordinates = quadrangle_patch.get_xy()
+
+        c = SkyCoord(quadrangle_coordinates[:, 0]*u.deg, quadrangle_coordinates[:, 1]*u.deg,
+                     frame=bottom_left.frame, obstime=m.date)
+        mesh = self._coords_to_xyz(c)
+        self.plotter.add_mesh(mesh, **kwargs)

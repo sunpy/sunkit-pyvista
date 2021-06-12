@@ -41,8 +41,6 @@ plotter.plot_line(line)
 camera_position = m.observer_coordinate
 plotter.set_camera_coordinates(camera_position)
 
-# Rotate the camera by a given angle
-plotter.rotate_camera(45*u.deg)
 # Set the view angle of the plot
 plotter.set_view_angle(1*u.deg)
 

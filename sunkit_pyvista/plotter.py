@@ -3,7 +3,6 @@ import functools
 import numpy as np
 import pyvista as pv
 
-import astropy.units as u
 from astropy.constants import R_sun
 from sunpy.coordinates import HeliocentricInertial
 from sunpy.map.maputils import all_corner_coords_from_map
@@ -31,6 +30,7 @@ class SunpyPlotter:
             coordinate_frame = HeliocentricInertial()
         self._coordinate_frame = coordinate_frame
         self._plotter = pv.Plotter()
+        self.camera = self._plotter.camera()
 
     @property
     def coordinate_frame(self):
@@ -60,7 +60,7 @@ class SunpyPlotter:
                                 coords.y.to_value(R_sun),
                                 coords.z.to_value(R_sun)))
 
-    def set_camera_coordinates(self, coord):
+    def set_camera_coordinate(self, coord):
         """
         Sets the inital camera position of the rendered plot.
 
@@ -87,21 +87,10 @@ class SunpyPlotter:
         if not view_angle > 0 and view_angle <= 180:
             raise ValueError("specified view angle must be "
                              "0 deg < angle <= 180 deg")
-
+        # Default zoom = 1 where view angle = 30 degrees
+        # Zoom/view_angle = 1/30
         zoom_value = 30 / view_angle
         self.plotter.camera.zoom(zoom_value)
-
-    def rotate_camera(self, angle: u.deg = None):
-        """
-        Rotates the camera by the specified value in degrees.
-
-        Parameters
-        ----------
-        angle : `astropy.units.Quantity`
-            The angle of rotation.
-        """
-        rotation_angle = angle.to_value(u.deg)
-        self.plotter.camera.roll = rotation_angle
 
     def _pyvista_mesh(self, m):
         """
@@ -184,3 +173,20 @@ class SunpyPlotter:
                          scale='auto',
                          **defaults)
         self.plotter.add_mesh(arrow, **kwargs)
+
+    def plot_field_lines(self, field_lines, **kwargs):
+        """
+        Plots the field lines from `pfsspy`.
+
+        Parameters
+        ----------
+        field_lines : `pfsspy.fieldline.FieldLines`
+            Field lines to be plotted.
+        **kwargs :
+            Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
+        """
+        for field_line in field_lines:
+            grid = self._coords_to_xyz(field_line.coords.ravel())
+            field_line_mesh = pv.StructuredGrid(grid[:, 0], grid[:, 1], grid[:, 2])
+            color = {0: 'black', -1: 'tab:blue', 1: 'tab:red'}.get(field_line.polarity)
+            self.plotter.add_mesh(field_line_mesh, color=color, **kwargs)

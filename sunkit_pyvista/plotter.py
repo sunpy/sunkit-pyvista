@@ -5,7 +5,8 @@ import pyvista as pv
 
 import astropy.units as u
 from astropy.constants import R_sun
-from sunpy.coordinates import HeliocentricInertial, SkyCoord
+from astropy.coordinates import SkyCoord
+from sunpy.coordinates import HeliocentricInertial
 from sunpy.map.maputils import all_corner_coords_from_map
 
 __all__ = ['SunpyPlotter']
@@ -167,7 +168,7 @@ class SunpyPlotter:
                          **defaults)
         self.plotter.add_mesh(arrow, **kwargs)
 
-    def plot_quadrangle(self, m, bottom_left, top_right, width, height, **kwargs):
+    def plot_quadrangle(self, m, bottom_left, top_right=None, width: u.deg = None, height: u.deg = None, **kwargs):
         """
         Plots a quadrangle on the given map.
         This draws a quadrangle that has corners at ``(bottom_left, top_right)``,
@@ -177,16 +178,22 @@ class SunpyPlotter:
 
         Parameters
         ----------
-        bottom_left :
-        top_right :
-        width :
-        height :
-        **kwargs :
+        bottom_left :`~astropy.coordinates.SkyCoord`
+            The bottom-left coordinate of the quadrangle. It can
+            have shape ``(2,)`` to simultaneously define ``top_right``.
+        top_right : `~astropy.coordinates.SkyCoord`
+            The top-right coordinate of the quadrangle.
+        width : `astropy.units.Quantity`, optional
+            The width of the quadrangle. Required if ``top_right`` is omitted.
+        height : `astropy.units.Quantity`
+            The height of the quadrangle. Required if ``top_right`` is omitted.
+        **kwargs : Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
-        quadrangle_patch = m.draw_quadrangle(bottom_left, width, height, top_right, resolution=500)
+        quadrangle_patch = m.draw_quadrangle(bottom_left=bottom_left, top_right=top_right,
+                                             width=width, height=height, resolution=500)
         quadrangle_coordinates = quadrangle_patch.get_xy()
-
+        print(quadrangle_coordinates)
         c = SkyCoord(quadrangle_coordinates[:, 0]*u.deg, quadrangle_coordinates[:, 1]*u.deg,
-                     frame=bottom_left.frame, obstime=m.date)
+                     frame='heliographic_stonyhurst', obstime=m.date)
         mesh = self._coords_to_xyz(c)
         self.plotter.add_mesh(mesh, **kwargs)

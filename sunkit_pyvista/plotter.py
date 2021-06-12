@@ -180,7 +180,6 @@ class SunpyPlotter:
         quadrangle_patch = m.draw_quadrangle(bottom_left=bottom_left, top_right=top_right,
                                              width=width, height=height, resolution=500)
         quadrangle_coordinates = quadrangle_patch.get_xy()
-        print(quadrangle_coordinates)
         c = SkyCoord(quadrangle_coordinates[:, 0]*u.deg, quadrangle_coordinates[:, 1]*u.deg,
                      frame='heliographic_stonyhurst', obstime=m.date)
         mesh = self._coords_to_xyz(c)

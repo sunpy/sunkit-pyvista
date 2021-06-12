@@ -178,7 +178,7 @@ class SunpyPlotter:
         **kwargs : Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
         quadrangle_patch = m.draw_quadrangle(bottom_left=bottom_left, top_right=top_right,
-                                             width=width, height=height, resolution=500)
+                                             width=width, height=height, resolution=1000)
         quadrangle_coordinates = quadrangle_patch.get_xy()
         c = SkyCoord(quadrangle_coordinates[:, 0]*u.deg, quadrangle_coordinates[:, 1]*u.deg,
                      frame='heliographic_stonyhurst', obstime=m.date)

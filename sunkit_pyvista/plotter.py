@@ -3,6 +3,7 @@ import functools
 import numpy as np
 import pyvista as pv
 
+import astropy.units as u
 from astropy.constants import R_sun
 from sunpy.coordinates import HeliocentricInertial
 from sunpy.map.maputils import all_corner_coords_from_map

@@ -40,7 +40,7 @@ plotter.plot_line(line)
 
 # Define a SkyCoord for to set the positon of the camera
 camera_position = SkyCoord(0*u.deg, 0*u.deg, 8*const.R_sun, obstime=m.observer_coordinate.obstime, frame=frames.HeliographicStonyhurst)
-plotter.set_camera_coordinates(camera_position)
+plotter.set_camera_coordinate(camera_position)
 
 # Plot a quadrangle with width of 20 degrees and a height of 60 degrees
 bottom_left = SkyCoord(30*u.deg, -10*u.deg,

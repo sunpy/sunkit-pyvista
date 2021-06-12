@@ -1,1 +1,1 @@
-Adds :meth:`~sunkit_pyvista.plotter.SunpyPlotter.set_camera_coordinates` which allows for specifying the initial camera coordinates.
+Adds :meth:`~sunkit_pyvista.plotter.SunpyPlotter.set_camera_coordinate` which allows for specifying the initial camera coordinates.

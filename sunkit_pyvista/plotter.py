@@ -3,7 +3,6 @@ import functools
 import numpy as np
 import pyvista as pv
 
-import astropy.units as u
 from astropy.constants import R_sun
 from astropy.coordinates import SkyCoord
 from sunpy.coordinates import HeliocentricInertial
@@ -61,7 +60,7 @@ class SunpyPlotter:
                                 coords.y.to_value(R_sun),
                                 coords.z.to_value(R_sun)))
 
-    def set_camera_coordinates(self, coord):
+    def set_camera_coordinate(self, coord):
         """
         Sets the inital camera position of the rendered plot.
 
@@ -73,18 +72,6 @@ class SunpyPlotter:
         camera_position = self._coords_to_xyz(coord)
         pos = tuple(camera_position[0])
         self.plotter.camera.position = pos
-
-    def rotate_camera(self, angle: u.deg = None):
-        """
-        Rotates the camera by the specified value in degrees.
-
-        Parameters
-        ----------
-        angle : `astropy.units.Quantity`
-            The angle of rotation.
-        """
-        rotation_angle = angle.to_value(u.deg)
-        self.plotter.camera.roll = rotation_angle
 
     def _pyvista_mesh(self, m):
         """
@@ -197,3 +184,20 @@ class SunpyPlotter:
                      frame='heliographic_stonyhurst', obstime=m.date)
         mesh = self._coords_to_xyz(c)
         self.plotter.add_mesh(mesh, **kwargs)
+
+    def plot_field_lines(self, field_lines, **kwargs):
+        """
+        Plots the field lines from `pfsspy`.
+
+        Parameters
+        ----------
+        field_lines : `pfsspy.fieldline.FieldLines`
+            Field lines to be plotted.
+        **kwargs :
+            Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
+        """
+        for field_line in field_lines:
+            grid = self._coords_to_xyz(field_line.coords.ravel())
+            field_line_mesh = pv.StructuredGrid(grid[:, 0], grid[:, 1], grid[:, 2])
+            color = {0: 'black', -1: 'tab:blue', 1: 'tab:red'}.get(field_line.polarity)
+            self.plotter.add_mesh(field_line_mesh, color=color, **kwargs)

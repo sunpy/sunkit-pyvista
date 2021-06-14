@@ -186,7 +186,7 @@ class SunpyPlotter:
             Spacing for longitude and latitude grid, if length two it specifies
             (lon, lat) spacing.
         """
-        overlay = m.draw_grid()
+        overlay = m.draw_grid(grid_spacing=grid_spacing)
         plt.pause(1)
         x_coord = []
         y_coord = []

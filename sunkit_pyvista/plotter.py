@@ -1,8 +1,10 @@
 import functools
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pyvista as pv
 
+import astropy.units as u
 from astropy.constants import R_sun
 from sunpy.coordinates import HeliocentricInertial
 from sunpy.map.maputils import all_corner_coords_from_map
@@ -170,3 +172,30 @@ class SunpyPlotter:
             field_line_mesh = pv.StructuredGrid(grid[:, 0], grid[:, 1], grid[:, 2])
             color = {0: 'black', -1: 'tab:blue', 1: 'tab:red'}.get(field_line.polarity)
             self.plotter.add_mesh(field_line_mesh, color=color, **kwargs)
+
+    def plot_grid(self, m, grid_spacing: u.deg = 15*u.deg, **kwargs):
+        """
+        Plots a coordinate overlay on the mesh in the Heliographic Stonyhurst
+        coordinate system.
+
+        Parameters
+        ----------
+        m : `sunpy.map.Map`
+            Map on which the grid is to be plotted.
+        grid_spacing : `~astropy.units.Quantity`
+            Spacing for longitude and latitude grid, if length two it specifies
+            (lon, lat) spacing.
+        """
+        overlay = m.draw_grid()
+        plt.pause(1)
+        x_coord = []
+        y_coord = []
+        for coord in overlay:
+            for line in coord.grid_lines:
+                for grid_coordinate in line.vertices:
+                    x_coord.append(grid_coordinate[0])
+                    y_coord.append(grid_coordinate[1])
+
+        grid_skycoord = m.pixel_to_world(x_coord*u.pix, y_coord*u.pix)
+        grid_mesh = self._coords_to_xyz(grid_skycoord)
+        self.plotter.add_mesh(grid_mesh, **kwargs)

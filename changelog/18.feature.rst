@@ -1,0 +1,1 @@
+Added :meth:`~sunkit_pyvista.plotter.SunpyPlotter.plot_grid` method which allows for overlaying a mesh on the plot.

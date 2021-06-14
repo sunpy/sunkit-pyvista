@@ -42,4 +42,6 @@ plotter.plot_line(line)
 camera_position = SkyCoord(0*u.deg, 0*u.deg, 8*const.R_sun, obstime=m.observer_coordinate.obstime, frame=frames.HeliographicStonyhurst)
 plotter.set_camera_coordinates(camera_position)
 
+# Overlay a grid on the plot
+plotter.plot_grid(m)
 plotter.show()

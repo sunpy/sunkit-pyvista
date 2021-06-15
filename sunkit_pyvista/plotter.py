@@ -30,6 +30,7 @@ class SunpyPlotter:
             coordinate_frame = HeliocentricInertial()
         self._coordinate_frame = coordinate_frame
         self._plotter = pv.Plotter()
+        self.meshes = []
 
     @property
     def coordinate_frame(self):
@@ -110,6 +111,7 @@ class SunpyPlotter:
         cmap = kwargs.pop('cmap', m.cmap)
         mesh = self._pyvista_mesh(m)
         self.plotter.add_mesh(mesh, cmap=cmap, **kwargs)
+        self.meshes.append(mesh)
 
     def plot_line(self, coords, **kwargs):
         """
@@ -128,6 +130,7 @@ class SunpyPlotter:
         points = self._coords_to_xyz(coords)
         spline = pv.Spline(points)
         self.plotter.add_mesh(spline, **kwargs)
+        self.meshes.append(spline)
 
     def plot_solar_axis(self, length=2.5, arrow_kwargs={}, **kwargs):
         """
@@ -153,6 +156,7 @@ class SunpyPlotter:
                          scale='auto',
                          **defaults)
         self.plotter.add_mesh(arrow, **kwargs)
+        self.meshes.append(arrow)
 
     def plot_field_lines(self, field_lines, **kwargs):
         """
@@ -170,3 +174,19 @@ class SunpyPlotter:
             field_line_mesh = pv.StructuredGrid(grid[:, 0], grid[:, 1], grid[:, 2])
             color = {0: 'black', -1: 'tab:blue', 1: 'tab:red'}.get(field_line.polarity)
             self.plotter.add_mesh(field_line_mesh, color=color, **kwargs)
+            self.meshes.append(field_line_mesh)
+
+    def save(self, filename, **kwargs):
+        """
+        Saves a given plot to a vtm file.
+
+        Parameters
+        ----------
+        filename : `str`
+            Name of the file to save as, should end with vtm.
+        """
+        all_meshes = pv.MultiBlock(self.mesh)
+        if filename.endswith('vtm'):
+            all_meshes.save(filename)
+        else:
+            all_meshes.save(filename + '.vtm')

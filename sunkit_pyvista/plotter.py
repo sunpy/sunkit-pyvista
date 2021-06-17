@@ -31,7 +31,7 @@ class SunpyPlotter:
             coordinate_frame = HeliocentricInertial()
         self._coordinate_frame = coordinate_frame
         self._plotter = pv.Plotter()
-        self.camera = self._plotter.camera()
+        self.camera = self._plotter.camera
 
     @property
     def coordinate_frame(self):

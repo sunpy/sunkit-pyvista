@@ -3,6 +3,7 @@ import functools
 import numpy as np
 import pyvista as pv
 
+import astropy.units as u
 from astropy.constants import R_sun
 from sunpy.coordinates import HeliocentricInertial
 from sunpy.map.maputils import all_corner_coords_from_map
@@ -30,6 +31,7 @@ class SunpyPlotter:
             coordinate_frame = HeliocentricInertial()
         self._coordinate_frame = coordinate_frame
         self._plotter = pv.Plotter()
+        self.camera = self._plotter.camera
 
     @property
     def coordinate_frame(self):
@@ -71,6 +73,24 @@ class SunpyPlotter:
         camera_position = self._coords_to_xyz(coord)
         pos = tuple(camera_position[0])
         self.plotter.camera.position = pos
+
+    @u.quantity_input
+    def set_view_angle(self, angle: u.deg):
+        """
+        Sets the view angle of the camera to the specified value
+
+        Parameters
+        ----------
+        angle : `astropy.units.Quantity`
+            The viewing angle.
+        """
+        view_angle = angle.to_value(u.deg)
+        if not view_angle > 0 and view_angle <= 180:
+            raise ValueError("specified view angle must be "
+                             "0 deg < angle <= 180 deg")
+        # Zoom/view_angle = current view angle (default is set to 30 degrees) / 1
+        zoom_value = self.camera.view_angle / view_angle
+        self.plotter.camera.zoom(zoom_value)
 
     def _pyvista_mesh(self, m):
         """

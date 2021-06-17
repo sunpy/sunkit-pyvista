@@ -74,17 +74,16 @@ class SunpyPlotter:
         pos = tuple(camera_position[0])
         self.plotter.camera.position = pos
 
-    def set_view_angle(self, angle: u.deg = 30):
+    def set_view_angle(self, angle: u.deg):
         """
-        Sets the view angle of the camera by the specified value
-        in degrees.
+        Sets the view angle of the camera to the specified value
 
         Parameters
         ----------
         angle : `astropy.units.Quantity`
             The viewing angle.
         """
-        view_angle = angle.to_value()
+        view_angle = angle.to_value(u.deg)
         if not view_angle > 0 and view_angle <= 180:
             raise ValueError("specified view angle must be "
                              "0 deg < angle <= 180 deg")

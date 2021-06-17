@@ -38,8 +38,7 @@ line = SkyCoord(lon=[180, 190, 200] * u.deg,
 plotter.plot_line(line)
 
 # Define a SkyCoord for to set the positon of the camera
-camera_position = SkyCoord(m.observer_coordinate)
-plotter.set_camera_coordinate(camera_position)
+plotter.set_camera_coordinate(m.observer_coordinate)
 
 # Set the view angle of the plot
 plotter.set_view_angle(m.rsun_obs)

@@ -88,9 +88,8 @@ class SunpyPlotter:
         if not view_angle > 0 and view_angle <= 180:
             raise ValueError("specified view angle must be "
                              "0 deg < angle <= 180 deg")
-        # Default zoom = 1 where view angle = 30 degrees
-        # Zoom/view_angle = 1/30
-        zoom_value = 30 / view_angle
+        # Zoom/view_angle = current view angle (default is set to 30 degrees) / 1
+        zoom_value = self.camera.view_angle / view_angle
         self.plotter.camera.zoom(zoom_value)
 
     def _pyvista_mesh(self, m):

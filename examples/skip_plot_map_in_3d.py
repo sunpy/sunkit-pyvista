@@ -36,8 +36,6 @@ line = SkyCoord(lon=[180, 190, 200] * u.deg,
                 distance=[1, 2, 3] * const.R_sun,
                 frame='heliocentricinertial')
 plotter.plot_line(line)
-
-# Define a SkyCoord for to set the positon of the camera
 plotter.set_camera_coordinate(m.observer_coordinate)
 
 # Set the view angle of the plot

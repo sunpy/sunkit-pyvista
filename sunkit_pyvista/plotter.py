@@ -74,6 +74,7 @@ class SunpyPlotter:
         pos = tuple(camera_position[0])
         self.plotter.camera.position = pos
 
+    @u.quantity_input
     def set_view_angle(self, angle: u.deg):
         """
         Sets the view angle of the camera to the specified value

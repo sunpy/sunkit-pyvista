@@ -182,6 +182,7 @@ class SunpyPlotter:
         quadrangle_coordinates = quadrangle_patch.get_xy()
         c = SkyCoord(quadrangle_coordinates[:, 0]*u.deg, quadrangle_coordinates[:, 1]*u.deg,
                      frame='heliographic_stonyhurst', obstime=m.date)
+        c.transform_to(self.coordinate_frame)
         mesh = self._coords_to_xyz(c)
         self.plotter.add_mesh(mesh, **kwargs)
 

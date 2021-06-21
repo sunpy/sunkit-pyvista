@@ -127,9 +127,9 @@ class SunpyPlotter:
         **kwargs :
             Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
-        kwargs.pop('cmap', m.cmap)
+        cmap = kwargs.pop('cmap', m.cmap)
         mesh = self._pyvista_mesh(m)
-        self.plotter.add_mesh(mesh, cmap=None, **kwargs)
+        self.plotter.add_mesh(mesh, cmap=cmap, **kwargs)
 
     def plot_line(self, coords, **kwargs):
         """

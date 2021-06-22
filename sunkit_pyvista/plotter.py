@@ -5,9 +5,11 @@ import pyvista as pv
 
 import astropy.units as u
 from astropy.constants import R_sun
-from astropy.coordinates import SkyCoord
+from astropy.coordinates import Longitude, SkyCoord
 from sunpy.coordinates import HeliocentricInertial
+from sunpy.coordinates.utils import get_rectangle_coordinates
 from sunpy.map.maputils import all_corner_coords_from_map
+from sunpy.visualization._quadrangle import Quadrangle
 
 __all__ = ['SunpyPlotter']
 
@@ -175,7 +177,7 @@ class SunpyPlotter:
                          **defaults)
         self.plotter.add_mesh(arrow, **kwargs)
 
-    def plot_quadrangle(self, m, bottom_left, top_right=None, width: u.deg = None, height: u.deg = None, **kwargs):
+    def plot_quadrangle(self, bottom_left, top_right=None, width: u.deg = None, height: u.deg = None, **kwargs):
         """
         Plots a quadrangle on the given map.
         This draws a quadrangle that has corners at ``(bottom_left, top_right)``,
@@ -196,11 +198,14 @@ class SunpyPlotter:
             The height of the quadrangle. Required if ``top_right`` is omitted.
         **kwargs : Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
-        quadrangle_patch = m.draw_quadrangle(bottom_left=bottom_left, top_right=top_right,
-                                             width=width, height=height, resolution=1000)
+        bottom_left, top_right = get_rectangle_coordinates(
+            bottom_left, top_right=top_right, width=width, height=height)
+        width = Longitude(top_right.spherical.lon - bottom_left.spherical.lon)
+        height = top_right.spherical.lat - bottom_left.spherical.lat
+
+        quadrangle_patch = Quadrangle((bottom_left.lon, bottom_left.lat), width, height, resolution=1000)
         quadrangle_coordinates = quadrangle_patch.get_xy()
-        c = SkyCoord(quadrangle_coordinates[:, 0]*u.deg, quadrangle_coordinates[:, 1]*u.deg,
-                     frame='heliographic_stonyhurst', obstime=m.date)
+        c = SkyCoord(quadrangle_coordinates[:, 0]*u.deg, quadrangle_coordinates[:, 1]*u.deg, frame=bottom_left.frame)
         c.transform_to(self.coordinate_frame)
         mesh = self._coords_to_xyz(c)
         self.plotter.add_mesh(mesh, **kwargs)

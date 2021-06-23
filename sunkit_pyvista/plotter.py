@@ -35,6 +35,7 @@ class SunpyPlotter:
         self._coordinate_frame = coordinate_frame
         self._plotter = pv.Plotter()
         self.camera = self._plotter.camera
+        self.mesh_block = pv.MultiBlock([])
 
     @property
     def coordinate_frame(self):
@@ -131,8 +132,9 @@ class SunpyPlotter:
             Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
         cmap = kwargs.pop('cmap', m.cmap)
-        mesh = self._pyvista_mesh(m)
-        self.plotter.add_mesh(mesh, cmap=cmap, **kwargs)
+        map_mesh = self._pyvista_mesh(m)
+        self.plotter.add_mesh(map_mesh, cmap=cmap, **kwargs)
+        self.mesh_block.append(map_mesh)
 
     def plot_line(self, coords, **kwargs):
         """
@@ -151,6 +153,7 @@ class SunpyPlotter:
         points = self._coords_to_xyz(coords)
         spline = pv.Spline(points)
         self.plotter.add_mesh(spline, **kwargs)
+        self.mesh_block.append(spline)
 
     def plot_solar_axis(self, length=2.5, arrow_kwargs={}, **kwargs):
         """
@@ -171,11 +174,12 @@ class SunpyPlotter:
                     'tip_length': 0.05,
                     'tip_radius': 0.02}
         defaults.update(arrow_kwargs)
-        arrow = pv.Arrow(start=(0, 0, -length / 2),
-                         direction=(0, 0, length),
-                         scale='auto',
-                         **defaults)
-        self.plotter.add_mesh(arrow, **kwargs)
+        arrow_mesh = pv.Arrow(start=(0, 0, -length / 2),
+                              direction=(0, 0, length),
+                              scale='auto',
+                              **defaults)
+        self.plotter.add_mesh(arrow_mesh, **kwargs)
+        self.mesh_block.append(arrow_mesh)
 
     def plot_quadrangle(self, bottom_left, top_right=None, width: u.deg = None, height: u.deg = None, **kwargs):
         """
@@ -207,8 +211,9 @@ class SunpyPlotter:
         quadrangle_coordinates = quadrangle_patch.get_xy()
         c = SkyCoord(quadrangle_coordinates[:, 0]*u.deg, quadrangle_coordinates[:, 1]*u.deg, frame=bottom_left.frame)
         c.transform_to(self.coordinate_frame)
-        mesh = self._coords_to_xyz(c)
-        self.plotter.add_mesh(mesh, **kwargs)
+        quad_mesh = self._coords_to_xyz(c)
+        self.plotter.add_mesh(quad_mesh, **kwargs)
+        self.mesh_block.append(quad_mesh)
 
     def plot_field_lines(self, field_lines, **kwargs):
         """
@@ -221,8 +226,12 @@ class SunpyPlotter:
         **kwargs :
             Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
+        field_line_meshes = pv.MultiBlock([])
         for field_line in field_lines:
             grid = self._coords_to_xyz(field_line.coords.ravel())
             field_line_mesh = pv.StructuredGrid(grid[:, 0], grid[:, 1], grid[:, 2])
             color = {0: 'black', -1: 'tab:blue', 1: 'tab:red'}.get(field_line.polarity)
             self.plotter.add_mesh(field_line_mesh, color=color, **kwargs)
+            field_line_meshes.append(field_line_mesh)
+
+        self.mesh_block.append(field_line_meshes)

@@ -1,0 +1,1 @@
+Uses :class:`~pyvista.core.MultiBlock.plot_quadrangle` which allows for storing each mesh in an array for later access.

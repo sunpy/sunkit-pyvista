@@ -6,6 +6,7 @@ import pyvista as pv
 import astropy.units as u
 from astropy.constants import R_sun
 from astropy.coordinates import Longitude, SkyCoord
+from astropy.visualization import AsymmetricPercentileInterval
 from sunpy.coordinates import HeliocentricInertial
 from sunpy.coordinates.utils import get_rectangle_coordinates
 from sunpy.map.maputils import all_corner_coords_from_map
@@ -64,6 +65,14 @@ class SunpyPlotter:
                                 coords.y.to_value(R_sun),
                                 coords.z.to_value(R_sun)))
 
+    def _get_clim(self, data, clip_interval):
+        """
+        Get vmin, vmax of a data slice when clip_interval is specified.
+        """
+        percent_limits = clip_interval.to('%').value
+        vmin, vmax = AsymmetricPercentileInterval(*percent_limits).get_limits(data)
+        return [vmin, vmax]
+
     def set_camera_coordinate(self, coord):
         """
         Sets the inital camera position of the rendered plot.
@@ -119,7 +128,8 @@ class SunpyPlotter:
         grid['data'] = m.plot_settings['norm'](data)
         return grid
 
-    def plot_map(self, m, **kwargs):
+    @u.quantity_input
+    def plot_map(self, m, clip_interval: u.percent = None, **kwargs):
         """
         Plot a map.
 
@@ -132,7 +142,18 @@ class SunpyPlotter:
         """
         cmap = kwargs.pop('cmap', m.cmap)
         mesh = self._pyvista_mesh(m)
-        self.plotter.add_mesh(mesh, cmap=cmap, **kwargs)
+
+        if clip_interval is not None:
+            if len(clip_interval) == 2:
+                clim = self._get_clim(data=mesh['data'],
+                                      clip_interval=clip_interval)
+            else:
+                raise ValueError("Clip percentile interval must be "
+                                 "specified as two numbers.")
+        else:
+            clim = [0, 1]
+
+        self.plotter.add_mesh(mesh, cmap=cmap, clim=clim, **kwargs)
 
     def plot_line(self, coords, **kwargs):
         """

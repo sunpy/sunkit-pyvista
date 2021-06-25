@@ -5,7 +5,6 @@ Plotting Field Lines from pfsspy
 
 sunkit-pyvista can be used to plot field lines from `pfsspy`.
 """
-
 import numpy as np
 import pfsspy
 from pfsspy import tracing

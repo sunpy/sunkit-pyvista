@@ -9,7 +9,6 @@ from datetime import datetime
 # -- Project information -----------------------------------------------------
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 os.environ['HIDE_PARFIVE_PROGESS'] = 'True'
-
 project = 'sunkit-pyvista'
 author = 'SunPy Community'
 copyright = '{}, {}'.format(datetime.now().year, author)
@@ -30,6 +29,7 @@ extensions = [
     'sphinx_automodapi.automodapi',
     'sphinx_automodapi.smart_resolver',
     'sphinx_changelog',
+    'sphinx_gallery.gen_gallery',
     'sphinx.ext.autodoc',
     'sphinx.ext.coverage',
     'sphinx.ext.doctest',
@@ -39,7 +39,7 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.todo',
     'sphinx.ext.viewcode',
-    'sphinx_gallery.gen_gallery'
+    "jupyter_sphinx",
 ]
 
 # List of patterns, relative to source directory, that match files and
@@ -80,7 +80,6 @@ nitpick_ignore = [
     ('py:class', 'string'),
     ('py:class', 'floats'),
 ]
-
 # -- Options for intersphinx extension ---------------------------------------
 intersphinx_mapping = {
     "python": (
@@ -106,7 +105,6 @@ sphinx_gallery_conf = {
     'examples_dirs': os.path.join('..', 'examples'),
     'within_subsection_order': ExampleTitleSortKey,
     'gallery_dirs': os.path.join('generated', 'gallery'),
-    # Comes from the theme.
     'default_thumb_file': os.path.join(html_static_path[0], 'img', 'sunpy_icon_128x128.png'),
     'abort_on_example_error': False,
     'only_warn_on_example_error': True,
@@ -114,3 +112,24 @@ sphinx_gallery_conf = {
     'remove_config_comments': True,
     'doc_module': ('sunkit_pyvista'),
 }
+
+# -- pyvista configuration ---------------------------------------------------
+import pyvista
+import numpy as np
+
+# Manage errors
+pyvista.set_error_output_file("errors.txt")
+# necessary when building the sphinx gallery
+pyvista.BUILDING_GALLERY = True
+pyvista.OFF_SCREEN = True  # Not necessary - simply an insurance policy
+# Preferred plotting style for documentation
+pyvista.set_plot_theme("document")
+pyvista.global_theme.window_size = np.array([512, 512]) * 2
+
+# SG warnings
+import warnings
+warnings.filterwarnings(
+    "ignore",
+    category=UserWarning,
+    message="Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.",
+)

@@ -36,6 +36,7 @@ class SunpyPlotter:
     all_meshes : `dict`
         Stores a reference to all the plotted meshes in a dictionary.
     """
+
     def __init__(self, coordinate_frame=None):
         if coordinate_frame is None:
             coordinate_frame = HeliocentricInertial()
@@ -275,7 +276,8 @@ class SunpyPlotter:
 
         quadrangle_patch = Quadrangle((bottom_left.lon, bottom_left.lat), width, height, resolution=1000)
         quadrangle_coordinates = quadrangle_patch.get_xy()
-        c = SkyCoord(quadrangle_coordinates[:, 0]*u.deg, quadrangle_coordinates[:, 1]*u.deg, frame=bottom_left.frame)
+        c = SkyCoord(quadrangle_coordinates[:, 0]*u.deg,
+                     quadrangle_coordinates[:, 1]*u.deg, frame=bottom_left.frame)
         c.transform_to(self.coordinate_frame)
         quad_grid = self._coords_to_xyz(c)
         quad_mesh = pv.StructuredGrid(quad_grid[:, 0], quad_grid[:, 1], quad_grid[:, 2])

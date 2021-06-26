@@ -1,0 +1,2 @@
+:meth:`~sunkit_pyvista.plotter.SunpyPlotter.plot_map` accepts the keyword ``clip_interval`` as argument, which clips the data
+according to the percentile interval bounded by the two numbers.

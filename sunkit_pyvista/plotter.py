@@ -152,7 +152,6 @@ class SunpyPlotter:
                                  "specified as two numbers.")
         else:
             clim = [0, 1]
-
         self.plotter.add_mesh(mesh, cmap=cmap, clim=clim, **kwargs)
 
     def plot_line(self, coords, **kwargs):

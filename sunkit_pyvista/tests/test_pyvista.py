@@ -59,7 +59,7 @@ def test_plot_solar_axis(plotter):
     assert plotter.plotter.mesh.n_points == 101
 
 
-def test_plot_line(plotter):
+def test_plot_coordinates(plotter):
     line = SkyCoord(lon=[180, 190, 200] * u.deg,
                     lat=[0, 10, 20] * u.deg,
                     distance=[1, 2, 3] * const.R_sun,

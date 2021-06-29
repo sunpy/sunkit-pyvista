@@ -64,6 +64,6 @@ def test_plot_coordinates(plotter):
                     lat=[0, 10, 20] * u.deg,
                     distance=[1, 2, 3] * const.R_sun,
                     frame='heliocentricinertial')
-    plotter.plot_line(line)
+    plotter.plot_coordinates(line)
     assert plotter.plotter.mesh.n_cells == 1
     assert plotter.plotter.mesh.n_points == 3

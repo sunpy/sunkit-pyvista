@@ -1,19 +1,21 @@
 import functools
+from functools import partial
 
 import numpy as np
 import pyvista as pv
 import pyvistaqt as pvq
-from sunpy.map import GenericMap
+
 import astropy.units as u
 from astropy.constants import R_sun
 from astropy.coordinates import Longitude, SkyCoord
 from sunpy.coordinates import HeliocentricInertial
 from sunpy.coordinates.utils import get_rectangle_coordinates
+from sunpy.map import GenericMap
 from sunpy.map.maputils import all_corner_coords_from_map
-from sunpy.visualization._quadrangle import Quadrangle
-from sunkit_pyvista.mapsequence_animator import SequenceAnimator
 from sunpy.util import expand_list
-from functools import partial
+from sunpy.visualization._quadrangle import Quadrangle
+
+from sunkit_pyvista.mapsequence_animator import SequenceAnimator
 
 __all__ = ['SunpyPlotter']
 
@@ -63,7 +65,7 @@ class SunpyPlotter:
         self.plotter.show(*args, **kwargs)
 
     def _toggle_animation(self, state, animate):
-            animate.animation_state = state
+        animate.animation_state = state
 
     def _coords_to_xyz(self, coords):
         coords = coords.transform_to(self.coordinate_frame)
@@ -172,7 +174,7 @@ class SunpyPlotter:
         self.bg_plotter.add_mesh(map_meshes[0], cmap=color_maps[0], **kwargs)
         self.bg_plotter.add_checkbox_button_widget(
             partial(self._toggle_animation, animate=animate),
-                    value=False, color_on='green')
+            value=False, color_on='green')
         self.bg_plotter.add_callback(partial(animate,
                                      bg_plotter=self.bg_plotter,
                                      **kwargs), interval=16)
@@ -180,7 +182,7 @@ class SunpyPlotter:
         self.bg_plotter.enable_anti_aliasing()
         self.bg_plotter.hide_axes()
         self.bg_plotter.app.exec_()
-    
+
     def plot_line(self, coords, **kwargs):
         """
         Plot a line from a set of coordinates.

@@ -1,5 +1,6 @@
 import time
 
+
 class SequenceAnimator(object):
     def __init__(self, time, map_meshes, color_maps):
         self.angle = 0

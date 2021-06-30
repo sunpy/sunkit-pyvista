@@ -137,6 +137,9 @@ class SunpyPlotter:
         ----------
         m : `sunpy.map.Map`
             Map to be plotted.
+        clip_interval : two-element `~astropy.units.Quantity`, optional
+            If provided, the data will be clipped to the percentile
+            interval bounded by the two numbers.
         **kwargs :
             Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """

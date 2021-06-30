@@ -1,3 +1,4 @@
+import numpy as np
 import pytest
 import pyvista as pv
 
@@ -67,3 +68,16 @@ def test_plot_line(plotter):
     plotter.plot_line(line)
     assert plotter.plotter.mesh.n_cells == 1
     assert plotter.plotter.mesh.n_points == 3
+
+
+def test_clip_interval(aia171_test_map, plotter):
+    plotter.plot_map(aia171_test_map)
+    clim = plotter._get_clim(data=plotter.plotter.mesh['data'],
+                             clip_interval=(1, 99)*u.percent)
+    expected_clim = [0.006716044038535769, 0.8024368512284383]
+    assert np.allclose(clim, expected_clim)
+
+    expected_clim = [0, 1]
+    clim = plotter._get_clim(data=plotter.plotter.mesh['data'],
+                             clip_interval=(0, 100)*u.percent)
+    assert np.allclose(clim, expected_clim)

@@ -1,0 +1,2 @@
+Adds :meth:`~sunkit_pyvista.plotter.SunpyPlotter.plot_map_sequence` which allows for animations to be performed via
+the :class:`~sunkit_pyvista.mapsequence_animator.SequenceAnimator` class

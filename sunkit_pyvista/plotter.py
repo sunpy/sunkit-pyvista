@@ -2,7 +2,8 @@ import functools
 
 import numpy as np
 import pyvista as pv
-
+import pyvistaqt as pvq
+from sunpy.map import GenericMap
 import astropy.units as u
 from astropy.constants import R_sun
 from astropy.coordinates import Longitude, SkyCoord
@@ -10,6 +11,9 @@ from sunpy.coordinates import HeliocentricInertial
 from sunpy.coordinates.utils import get_rectangle_coordinates
 from sunpy.map.maputils import all_corner_coords_from_map
 from sunpy.visualization._quadrangle import Quadrangle
+from sunkit_pyvista.mapsequence_animator import SequenceAnimator
+from sunpy.util import expand_list
+from functools import partial
 
 __all__ = ['SunpyPlotter']
 
@@ -35,6 +39,7 @@ class SunpyPlotter:
         self._coordinate_frame = coordinate_frame
         self._plotter = pv.Plotter()
         self.camera = self._plotter.camera
+        self.bg_plotter = pvq.BackgroundPlotter()
 
     @property
     def coordinate_frame(self):
@@ -56,6 +61,9 @@ class SunpyPlotter:
         Show the plot.
         """
         self.plotter.show(*args, **kwargs)
+
+    def _toggle_animation(self, state, animate):
+            animate.animation_state = state
 
     def _coords_to_xyz(self, coords):
         coords = coords.transform_to(self.coordinate_frame)
@@ -133,7 +141,46 @@ class SunpyPlotter:
         cmap = kwargs.pop('cmap', m.cmap)
         mesh = self._pyvista_mesh(m)
         self.plotter.add_mesh(mesh, cmap=cmap, **kwargs)
+        return mesh
 
+    def plot_map_sequence(self, *args, interval=2, **kwargs):
+        """
+        Plot a sequence of maps as an animation.
+
+        Parameters
+        ----------
+        m : `sunpy.map.Map`
+            Map(s) to be plotted.
+        **kwargs :
+            Keyword arguments are handed to `pyvistaq.BackGroundplotter.add_mesh`.
+        """
+        map_meshes = []
+        color_maps = []
+
+        maps = expand_list(args)
+        for m in maps:
+            if not isinstance(m, GenericMap):
+                raise ValueError(
+                    'MapSequence expects pre-constructed map objects.')
+        for m in maps:
+            mesh = self._pyvista_mesh(m)
+            map_meshes.append(mesh)
+            color_maps.append(m.cmap)
+        animate = SequenceAnimator(time=interval, map_meshes=map_meshes,
+                                   color_maps=color_maps, **kwargs)
+
+        self.bg_plotter.add_mesh(map_meshes[0], cmap=color_maps[0], **kwargs)
+        self.bg_plotter.add_checkbox_button_widget(
+            partial(self._toggle_animation, animate=animate),
+                    value=False, color_on='green')
+        self.bg_plotter.add_callback(partial(animate,
+                                     bg_plotter=self.bg_plotter,
+                                     **kwargs), interval=16)
+        self.bg_plotter.add_text("Play", position=(70, 10))
+        self.bg_plotter.enable_anti_aliasing()
+        self.bg_plotter.hide_axes()
+        self.bg_plotter.app.exec_()
+    
     def plot_line(self, coords, **kwargs):
         """
         Plot a line from a set of coordinates.

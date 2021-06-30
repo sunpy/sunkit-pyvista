@@ -76,7 +76,7 @@ def test_plot_coordinates(plotter):
                       distance=1*const.R_sun,
                       frame='heliocentricinertial')
     plotter.plot_coordinates(sphere)
-    assert plotter.plotter.mesh.n_cells == 1
-    assert plotter.plotter.mesh.n_cells == 1
+    assert plotter.plotter.mesh.n_cells == 1680
+    assert plotter.plotter.mesh.n_cells == 842
     expected_center = [-0.5000000149011612, -0.5, 0.7071067690849304]
     assert np.allclose(plotter.plotter.mesh.center, expected_center)

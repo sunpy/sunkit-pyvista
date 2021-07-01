@@ -9,6 +9,7 @@ produce interactive 3D plots for sunpy Maps.
 
 import astropy.constants as const
 import astropy.units as u
+from astropy.constants import R_sun
 from astropy.coordinates import SkyCoord
 from sunpy.coordinates import frames
 from sunpy.data.sample import AIA_193_IMAGE
@@ -43,16 +44,11 @@ point = SkyCoord(lon=30 * u.deg,
                  lat=-10 * u.deg,
                  obstime=m.date,
                  frame=frames.HeliographicStonyhurst)
-plotter.plot_coordinates(point, color='yellow')
+plotter.plot_coordinates(point, color='blue')
 
-plotter.set_camera_coordinate(m.observer_coordinate)
-
-# Set the view angle of the plot
-plotter.set_view_angle(m.rsun_obs)
-
-# Plot a quadrangle with width of 20 degrees and a height of 60 degrees
-bottom_left = SkyCoord(30*u.deg, -10*u.deg,
+# Set the camera coordinate
+bottom_left = SkyCoord(30*u.deg, -10*u.deg, 7*R_sun,
                        frame=frames.HeliographicStonyhurst,
                        obstime=m.date)
-plotter.plot_quadrangle(bottom_left=bottom_left, width=20*u.deg, height=60*u.deg, color='blue')
+plotter.set_camera_coordinate(bottom_left)
 plotter.show()

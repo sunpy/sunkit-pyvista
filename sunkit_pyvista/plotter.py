@@ -143,12 +143,13 @@ class SunpyPlotter:
         ----------
         coords : `astropy.coordinates.SkyCoord`
             Coordinate(s) to plot as a center of sphere or line.
-        radius : `int`
+        radius : `int`, optional
             Radius of the sphere times the radius of the sun
             to be plotted when a single coordinate is passed.
             Defaults to ``0.05`` times the radius of the sun.
         **kwargs :
             Keyword arguments are passed to `pyvista.Plotter.add_mesh`.
+
         Notes
         -----
         This plots a `pyvista.Sphere` object if a single coordinate is passed

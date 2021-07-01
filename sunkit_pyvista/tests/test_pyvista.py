@@ -71,7 +71,7 @@ def test_plot_line(plotter):
 
 
 def test_clip_interval(aia171_test_map, plotter):
-    plotter.plot_map(aia171_test_map)
+    plotter.plot_map(aia171_test_map, clip_interval=(1, 99)*u.percent)
     clim = plotter._get_clim(data=plotter.plotter.mesh['data'],
                              clip_interval=(1, 99)*u.percent)
     expected_clim = [0.006716044038535769, 0.8024368512284383]
@@ -81,3 +81,7 @@ def test_clip_interval(aia171_test_map, plotter):
     clim = plotter._get_clim(data=plotter.plotter.mesh['data'],
                              clip_interval=(0, 100)*u.percent)
     assert np.allclose(clim, expected_clim)
+
+    with pytest.raises(ValueError, match=r"Clip percentile interval must be "
+                       r"specified as two numbers."):
+        plotter.plot_map(aia171_test_map, clip_interval=(1, 50, 99)*u.percent)

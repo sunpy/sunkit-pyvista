@@ -28,7 +28,7 @@ m = Map(AIA_193_IMAGE)
 # Start by creating a plotter
 plotter = SunpyPlotter()
 # Plot a map
-plotter.plot_map(m)
+plotter.plot_map(m, clip_interval=(0, 99)*u.percent)
 # Add an arrow to show the solar rotation axis
 plotter.plot_solar_axis()
 # Plot an arbitrary line

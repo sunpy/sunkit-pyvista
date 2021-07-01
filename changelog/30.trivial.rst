@@ -1,1 +1,1 @@
-Adds an example tutorial which deals with overplotting of the brightest pixel with :meth:`~sunkit_pyvista.plotter.SunpyPlotter.plot_coordinates`.
+Rearranged existing examples and added an example brightest pixel with :meth:`~sunkit_pyvista.plotter.SunpyPlotter.plot_coordinates`.

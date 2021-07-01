@@ -1,7 +1,7 @@
 """
-=======================================
-Three  with sunpy Maps
-=======================================
+=====================
+Adding extra features
+=====================
 
 sunkit-pyvista also extends features from `sunpy`, producing
 them in 3D.

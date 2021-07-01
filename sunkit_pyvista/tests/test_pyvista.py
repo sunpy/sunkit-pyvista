@@ -81,6 +81,7 @@ def test_plot_coordinates(plotter):
     expected_center = [-0.5000000149011612, -0.5, 0.7071067690849304]
     assert np.allclose(plotter.plotter.mesh.center, expected_center)
 
+
 def test_clip_interval(aia171_test_map, plotter):
     plotter.plot_map(aia171_test_map, clip_interval=(1, 99)*u.percent)
     clim = plotter._get_clim(data=plotter.plotter.mesh['data'],

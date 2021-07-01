@@ -36,7 +36,15 @@ line = SkyCoord(lon=[180, 190, 200] * u.deg,
                 lat=[0, 10, 20] * u.deg,
                 distance=[1, 2, 3] * const.R_sun,
                 frame='heliocentricinertial')
-plotter.plot_line(line)
+plotter.plot_coordinates(line)
+
+# Plot an arbitrary point
+point = SkyCoord(lon=30 * u.deg,
+                 lat=-10 * u.deg,
+                 obstime=m.date,
+                 frame=frames.HeliographicStonyhurst)
+plotter.plot_coordinates(point, color='yellow')
+
 plotter.set_camera_coordinate(m.observer_coordinate)
 
 # Set the view angle of the plot

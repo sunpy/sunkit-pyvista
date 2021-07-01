@@ -60,15 +60,26 @@ def test_plot_solar_axis(plotter):
     assert plotter.plotter.mesh.n_points == 101
 
 
-def test_plot_line(plotter):
+def test_plot_coordinates(plotter):
+    # Tests the plot for a line
     line = SkyCoord(lon=[180, 190, 200] * u.deg,
                     lat=[0, 10, 20] * u.deg,
                     distance=[1, 2, 3] * const.R_sun,
                     frame='heliocentricinertial')
-    plotter.plot_line(line)
+    plotter.plot_coordinates(line)
     assert plotter.plotter.mesh.n_cells == 1
     assert plotter.plotter.mesh.n_points == 3
 
+    # Tests plotting of a small sphere
+    sphere = SkyCoord(lon=225*u.deg,
+                      lat=45*u.deg,
+                      distance=1*const.R_sun,
+                      frame='heliocentricinertial')
+    plotter.plot_coordinates(sphere)
+    assert plotter.plotter.mesh.n_cells == 1680
+    assert plotter.plotter.mesh.n_points == 842
+    expected_center = [-0.5000000149011612, -0.5, 0.7071067690849304]
+    assert np.allclose(plotter.plotter.mesh.center, expected_center)
 
 def test_clip_interval(aia171_test_map, plotter):
     plotter.plot_map(aia171_test_map, clip_interval=(1, 99)*u.percent)

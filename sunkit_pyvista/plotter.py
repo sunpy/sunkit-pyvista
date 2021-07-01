@@ -157,23 +157,34 @@ class SunpyPlotter:
             clim = [0, 1]
         self.plotter.add_mesh(mesh, cmap=cmap, clim=clim, **kwargs)
 
-    def plot_line(self, coords, **kwargs):
+    def plot_coordinates(self, coords, radius=0.05, **kwargs):
         """
-        Plot a line from a set of coordinates.
+        Plot a sphere if a single coordinate is passed and
+        plots a line if multiple coordinates are passed.
 
         Parameters
         ----------
         coords : `astropy.coordinates.SkyCoord`
-            Coordinates to plot as a line.
+            Coordinate(s) to plot as a center of sphere or line.
+        radius : `int`, optional
+            Radius of the sphere times the radius of the sun
+            to be plotted when a single coordinate is passed.
+            Defaults to ``0.05`` times the radius of the sun.
         **kwargs :
             Keyword arguments are passed to `pyvista.Plotter.add_mesh`.
+
         Notes
         -----
-        This plots a `pyvista.Spline` object.
+        This plots a `pyvista.Sphere` object if a single coordinate is passed
+        and plots a `pyvista.Spline` object if multiple coordinates are passed.
+        ``radius`` is only considered when a sphere is plotted.
         """
         points = self._coords_to_xyz(coords)
-        spline = pv.Spline(points)
-        self.plotter.add_mesh(spline, **kwargs)
+        if points.shape[0] > 1:
+            point_mesh = pv.Spline(points)
+        else:
+            point_mesh = pv.Sphere(radius=radius, center=points[0])
+        self.plotter.add_mesh(point_mesh, smooth_shading=True, **kwargs)
 
     def plot_solar_axis(self, length=2.5, arrow_kwargs={}, **kwargs):
         """

@@ -6,6 +6,7 @@ import pyvista as pv
 import astropy.units as u
 from astropy.constants import R_sun
 from astropy.coordinates import Longitude, SkyCoord
+from astropy.visualization import AsymmetricPercentileInterval
 from sunpy.coordinates import HeliocentricInertial
 from sunpy.coordinates.utils import get_rectangle_coordinates
 from sunpy.map.maputils import all_corner_coords_from_map
@@ -35,7 +36,8 @@ class SunpyPlotter:
         self._coordinate_frame = coordinate_frame
         self._plotter = pv.Plotter()
         self.camera = self._plotter.camera
-        self.mesh_block = pv.MultiBlock([])
+        self.all_meshes = {}
+        self.mesh_block = pv.MultiBlock()
 
     @property
     def coordinate_frame(self):
@@ -58,12 +60,31 @@ class SunpyPlotter:
         """
         self.plotter.show(*args, **kwargs)
 
+    def _add_mesh_to_block(self, block_name, mesh):
+        """
+        Adds all of the to a :class:`~pyvista.core.MultiBlock`
+        as well as a dictionary that stores a reference to the meshes
+        """
+        if block_name in self.all_meshes:
+            self.all_meshes[block_name].append(mesh)
+        else:
+            self.all_meshes[block_name] = [mesh]
+        self.mesh_block.append(mesh)
+
     def _coords_to_xyz(self, coords):
         coords = coords.transform_to(self.coordinate_frame)
         coords.representation_type = 'cartesian'
         return np.column_stack((coords.x.to_value(R_sun),
                                 coords.y.to_value(R_sun),
                                 coords.z.to_value(R_sun)))
+
+    def _get_clim(self, data, clip_interval):
+        """
+        Get vmin, vmax of a data slice when clip_interval is specified.
+        """
+        percent_limits = clip_interval.to('%').value
+        vmin, vmax = AsymmetricPercentileInterval(*percent_limits).get_limits(data)
+        return [vmin, vmax]
 
     def set_camera_coordinate(self, coord):
         """
@@ -120,7 +141,8 @@ class SunpyPlotter:
         grid['data'] = m.plot_settings['norm'](data)
         return grid
 
-    def plot_map(self, m, **kwargs):
+    @u.quantity_input
+    def plot_map(self, m, clip_interval: u.percent = None, **kwargs):
         """
         Plot a map.
 
@@ -128,32 +150,55 @@ class SunpyPlotter:
         ----------
         m : `sunpy.map.Map`
             Map to be plotted.
+        clip_interval : two-element `~astropy.units.Quantity`, optional
+            If provided, the data will be clipped to the percentile
+            interval bounded by the two numbers.
         **kwargs :
             Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
         cmap = kwargs.pop('cmap', m.cmap)
         map_mesh = self._pyvista_mesh(m)
-        self.plotter.add_mesh(map_mesh, cmap=cmap, **kwargs)
-        self.mesh_block.append(map_mesh)
+        if clip_interval is not None:
+            if len(clip_interval) == 2:
+                clim = self._get_clim(data=map_mesh['data'],
+                                      clip_interval=clip_interval)
+            else:
+                raise ValueError("Clip percentile interval must be "
+                                 "specified as two numbers.")
+        else:
+            clim = [0, 1]
+        self.plotter.add_mesh(map_mesh, cmap=cmap, clim=clim, **kwargs)
+        self.all_meshes['maps'].append(map_mesh)
 
-    def plot_line(self, coords, **kwargs):
+    def plot_coordinates(self, coords, radius=0.05, **kwargs):
         """
-        Plot a line from a set of coordinates.
+        Plot a sphere if a single coordinate is passed and
+        plots a line if multiple coordinates are passed.
 
         Parameters
         ----------
         coords : `astropy.coordinates.SkyCoord`
-            Coordinates to plot as a line.
+            Coordinate(s) to plot as a center of sphere or line.
+        radius : `int`, optional
+            Radius of the sphere times the radius of the sun
+            to be plotted when a single coordinate is passed.
+            Defaults to ``0.05`` times the radius of the sun.
         **kwargs :
             Keyword arguments are passed to `pyvista.Plotter.add_mesh`.
+
         Notes
         -----
-        This plots a `pyvista.Spline` object.
+        This plots a `pyvista.Sphere` object if a single coordinate is passed
+        and plots a `pyvista.Spline` object if multiple coordinates are passed.
+        ``radius`` is only considered when a sphere is plotted.
         """
         points = self._coords_to_xyz(coords)
-        spline = pv.Spline(points)
-        self.plotter.add_mesh(spline, **kwargs)
-        self.mesh_block.append(spline)
+        if points.shape[0] > 1:
+            point_mesh = pv.Spline(points)
+        else:
+            point_mesh = pv.Sphere(radius=radius, center=points[0])
+        self.plotter.add_mesh(point_mesh, smooth_shading=True, **kwargs)
+        self._add_mesh_to_block(block_name='coordinates', mesh=point_mesh)
 
     def plot_solar_axis(self, length=2.5, arrow_kwargs={}, **kwargs):
         """
@@ -179,7 +224,7 @@ class SunpyPlotter:
                               scale='auto',
                               **defaults)
         self.plotter.add_mesh(arrow_mesh, **kwargs)
-        self.mesh_block.append(arrow_mesh)
+        self._add_mesh_to_block(block_name='solar_axis', mesh=arrow_mesh)
 
     def plot_quadrangle(self, bottom_left, top_right=None, width: u.deg = None, height: u.deg = None, **kwargs):
         """
@@ -213,7 +258,7 @@ class SunpyPlotter:
         c.transform_to(self.coordinate_frame)
         quad_mesh = self._coords_to_xyz(c)
         self.plotter.add_mesh(quad_mesh, **kwargs)
-        self.mesh_block.append(quad_mesh)
+        self._add_mesh_to_block(block_name='quadrangle', mesh=quad_mesh)
 
     def plot_field_lines(self, field_lines, **kwargs):
         """
@@ -234,4 +279,4 @@ class SunpyPlotter:
             self.plotter.add_mesh(field_line_mesh, color=color, **kwargs)
             field_line_meshes.append(field_line_mesh)
 
-        self.mesh_block.append(field_line_meshes)
+        self._add_mesh_to_block(block_name='field_lines', mesh=field_line_meshes)

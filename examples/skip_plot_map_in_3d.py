@@ -28,7 +28,7 @@ m = Map(AIA_193_IMAGE)
 # Start by creating a plotter
 plotter = SunpyPlotter()
 # Plot a map
-plotter.plot_map(m)
+plotter.plot_map(m, clip_interval=(0, 99)*u.percent)
 # Add an arrow to show the solar rotation axis
 plotter.plot_solar_axis()
 # Plot an arbitrary line
@@ -36,7 +36,15 @@ line = SkyCoord(lon=[180, 190, 200] * u.deg,
                 lat=[0, 10, 20] * u.deg,
                 distance=[1, 2, 3] * const.R_sun,
                 frame='heliocentricinertial')
-plotter.plot_line(line)
+plotter.plot_coordinates(line)
+
+# Plot an arbitrary point
+point = SkyCoord(lon=30 * u.deg,
+                 lat=-10 * u.deg,
+                 obstime=m.date,
+                 frame=frames.HeliographicStonyhurst)
+plotter.plot_coordinates(point, color='yellow')
+
 plotter.set_camera_coordinate(m.observer_coordinate)
 
 # Set the view angle of the plot

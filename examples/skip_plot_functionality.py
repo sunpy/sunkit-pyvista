@@ -3,8 +3,7 @@
 Adding extra features
 =====================
 
-sunkit-pyvista also extends features from `sunpy`, producing
-them in 3D.
+sunkit-pyvista also extends features from `sunpy`, producing them in 3D.
 """
 
 import numpy as np
@@ -22,6 +21,7 @@ from sunkit_pyvista import SunpyPlotter
 # We will firstly use an AIA 171 image from the sunpy sample data as the base image.
 m = Map(AIA_171_IMAGE)
 
+###############################################################################
 # Start by creating a plotter
 plotter = SunpyPlotter()
 # Plot a map
@@ -29,6 +29,7 @@ plotter.plot_map(m, clip_interval=(1, 99.9)*u.percent)
 # Add an arrow to show the solar rotation axis
 plotter.plot_solar_axis()
 
+###############################################################################
 # We can also plot an arbitrary point by passing a single coordinate to
 # :meth:`~sunkit_pyvista.plotter.SunpyPlotter.plot_coordinates`.
 # Plotting a point on the brightest pixel in the map

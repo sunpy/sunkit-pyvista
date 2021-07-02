@@ -97,3 +97,8 @@ def test_clip_interval(aia171_test_map, plotter):
     with pytest.raises(ValueError, match=r"Clip percentile interval must be "
                        r"specified as two numbers."):
         plotter.plot_map(aia171_test_map, clip_interval=(1, 50, 99)*u.percent)
+
+
+def test_multi_block(plotter):
+    plotter.plot_solar_axis()
+    assert plotter.all_meshes['solar_axis'][0] == plotter.mesh_block[0]

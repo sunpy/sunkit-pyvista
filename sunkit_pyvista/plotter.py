@@ -168,7 +168,7 @@ class SunpyPlotter:
         else:
             clim = [0, 1]
         self.plotter.add_mesh(map_mesh, cmap=cmap, clim=clim, **kwargs)
-        self.all_meshes['maps'].append(map_mesh)
+        self._add_mesh_to_block(block_name='map', mesh=map_mesh)
 
     def plot_coordinates(self, coords, radius=0.05, **kwargs):
         """

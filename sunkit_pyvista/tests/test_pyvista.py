@@ -1,6 +1,9 @@
 import numpy as np
+import pfsspy
 import pytest
 import pyvista as pv
+from pfsspy import tracing
+from pfsspy.sample_data import get_gong_map
 
 import astropy.constants as const
 import astropy.units as u
@@ -102,3 +105,25 @@ def test_clip_interval(aia171_test_map, plotter):
 def test_multi_block(plotter):
     plotter.plot_solar_axis()
     assert plotter.all_meshes['solar_axis'][0] == plotter.mesh_block[0]
+
+
+def test_field_lines(aia171_test_map, plotter):
+    gong_fname = get_gong_map()
+    gong_map = smap.Map(gong_fname)
+    nrho = 35
+    rss = 2.5
+    lat = np.linspace(-np.pi / 2, np.pi / 2, 8, endpoint=False)
+    lon = np.linspace(0, 2 * np.pi, 8, endpoint=False)
+    lat, lon = np.meshgrid(lat, lon, indexing='ij')
+    lat, lon = lat.ravel() * u.rad, lon.ravel() * u.rad
+    radius = 1.2
+    tracer = tracing.PythonTracer()
+    input_ = pfsspy.Input(gong_map, nrho, rss)
+    output_ = pfsspy.pfss(input_)
+    seeds = SkyCoord(lon, lat, radius*const.R_sun,
+                     frame=gong_map.coordinate_frame)
+    field_lines = tracer.trace(seeds, output_)
+    plotter.plot_field_lines(field_lines)
+
+    assert plotter.all_meshes['field_lines'][0] == plotter.mesh_block[0]
+    assert plotter.mesh_block[0].n_blocks == 64

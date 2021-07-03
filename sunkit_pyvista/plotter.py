@@ -97,7 +97,7 @@ class SunpyPlotter:
             The viewing angle.
         """
         view_angle = angle.to_value(u.deg)
-        if not view_angle > 0 and view_angle <= 180:
+        if not (view_angle > 0 and view_angle <= 180):
             raise ValueError("specified view angle must be "
                              "0 deg < angle <= 180 deg")
         # Zoom/view_angle = current view angle (default is set to 30 degrees) / 1

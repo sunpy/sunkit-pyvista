@@ -1,7 +1,7 @@
 """
-=====================
-Adding extra features
-=====================
+==================================
+Extending functionality from sunpy
+==================================
 
 sunkit-pyvista also extends ``draw_quadrangle``, and ``plot_coord`` from `sunpy`, producing them in 3D.
 """

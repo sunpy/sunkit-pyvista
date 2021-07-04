@@ -1,0 +1,1 @@
+Rearranged existing examples and added an example brightest pixel with :meth:`~sunkit_pyvista.plotter.SunpyPlotter.plot_coordinates`.

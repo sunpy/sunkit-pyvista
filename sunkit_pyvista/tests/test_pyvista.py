@@ -46,6 +46,9 @@ def test_camera_position(aia171_test_map, plotter):
 def test_set_view_angle(plotter):
     plotter.set_view_angle(45*u.deg)
     assert plotter.camera.view_angle == 45
+    with pytest.raises(ValueError, match=r"specified view angle must be "
+                       r"0 deg < angle <= 180 deg"):
+        plotter.set_view_angle(190*u.deg)
 
 
 def test_plot_map(aia171_test_map, plotter):

@@ -127,4 +127,4 @@ def test_field_lines(aia171_test_map, plotter):
     plotter.plot_field_lines(field_lines)
     assert len(plotter.all_meshes['field_lines'][0]) == 64
     assert isinstance(plotter.all_meshes['field_lines'][0],
-                      pyvista.core.composite.MultiBlock)
+                      pv.core.composite.MultiBlock)

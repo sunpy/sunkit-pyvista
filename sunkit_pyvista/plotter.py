@@ -60,16 +60,24 @@ class SunpyPlotter:
         """
         self.plotter.show(*args, **kwargs)
 
-    def _add_mesh_to_block(self, block_name, mesh):
+    def _add_mesh_to_dict(self, block_name, mesh):
         """
-        Adds all of the to a :class:`~pyvista.core.MultiBlock`
-        as well as a dictionary that stores a reference to the meshes
+        Adds all of the meshes to a `dict`
+        that stores a reference to the meshes.
         """
         if block_name in self.all_meshes:
             self.all_meshes[block_name].append(mesh)
         else:
             self.all_meshes[block_name] = [mesh]
-        self.mesh_block.append(mesh)
+
+    def _add_meshes_to_block(self):
+        """
+        Adds all of the meshes in the current dictionary
+        to a :class:`~pyvista.core.MultiBlock`.
+        """
+        for objects in self.all_meshes:
+            for meshes in self.all_meshes[objects]:
+                self.mesh_block.append(meshes)
 
     def _coords_to_xyz(self, coords):
         coords = coords.transform_to(self.coordinate_frame)
@@ -168,7 +176,7 @@ class SunpyPlotter:
         else:
             clim = [0, 1]
         self.plotter.add_mesh(map_mesh, cmap=cmap, clim=clim, **kwargs)
-        self._add_mesh_to_block(block_name='map', mesh=map_mesh)
+        self._add_mesh_to_dict(block_name='map', mesh=map_mesh)
 
     def plot_coordinates(self, coords, radius=0.05, **kwargs):
         """
@@ -198,7 +206,7 @@ class SunpyPlotter:
         else:
             point_mesh = pv.Sphere(radius=radius, center=points[0])
         self.plotter.add_mesh(point_mesh, smooth_shading=True, **kwargs)
-        self._add_mesh_to_block(block_name='coordinates', mesh=point_mesh)
+        self._add_mesh_to_dict(block_name='coordinates', mesh=point_mesh)
 
     def plot_solar_axis(self, length=2.5, arrow_kwargs={}, **kwargs):
         """
@@ -224,7 +232,7 @@ class SunpyPlotter:
                               scale='auto',
                               **defaults)
         self.plotter.add_mesh(arrow_mesh, **kwargs)
-        self._add_mesh_to_block(block_name='solar_axis', mesh=arrow_mesh)
+        self._add_mesh_to_dict(block_name='solar_axis', mesh=arrow_mesh)
 
     def plot_quadrangle(self, bottom_left, top_right=None, width: u.deg = None, height: u.deg = None, **kwargs):
         """
@@ -258,7 +266,7 @@ class SunpyPlotter:
         c.transform_to(self.coordinate_frame)
         quad_mesh = self._coords_to_xyz(c)
         self.plotter.add_mesh(quad_mesh, **kwargs)
-        self._add_mesh_to_block(block_name='quadrangle', mesh=quad_mesh)
+        self._add_mesh_to_dict(block_name='quadrangle', mesh=quad_mesh)
 
     def plot_field_lines(self, field_lines, **kwargs):
         """
@@ -279,4 +287,4 @@ class SunpyPlotter:
             self.plotter.add_mesh(field_line_mesh, color=color, **kwargs)
             field_line_meshes.append(field_line_mesh)
 
-        self._add_mesh_to_block(block_name='field_lines', mesh=field_line_meshes)
+        self._add_mesh_to_dict(block_name='field_lines', mesh=field_line_meshes)

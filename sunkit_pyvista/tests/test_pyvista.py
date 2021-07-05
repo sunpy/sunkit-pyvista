@@ -104,6 +104,7 @@ def test_clip_interval(aia171_test_map, plotter):
 
 def test_multi_block(plotter):
     plotter.plot_solar_axis()
+    plotter._add_meshes_to_block()
     assert plotter.all_meshes['solar_axis'][0] == plotter.mesh_block[0]
 
 
@@ -124,6 +125,6 @@ def test_field_lines(aia171_test_map, plotter):
                      frame=gong_map.coordinate_frame)
     field_lines = tracer.trace(seeds, output_)
     plotter.plot_field_lines(field_lines)
-
+    plotter._add_meshes_to_block()
     assert plotter.all_meshes['field_lines'][0] == plotter.mesh_block[0]
     assert plotter.mesh_block[0].n_blocks == 64

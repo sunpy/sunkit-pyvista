@@ -89,7 +89,7 @@ class SunpyPlotter:
     @u.quantity_input
     def set_view_angle(self, angle: u.deg):
         """
-        Sets the view angle of the camera to the specified value
+        Sets the camera position.
 
         Parameters
         ----------
@@ -100,7 +100,6 @@ class SunpyPlotter:
         if not (view_angle > 0 and view_angle <= 180):
             raise ValueError("specified view angle must be "
                              "0 deg < angle <= 180 deg")
-        # Zoom/view_angle = current view angle (default is set to 30 degrees) / 1
         zoom_value = self.camera.view_angle / view_angle
         self.plotter.camera.zoom(zoom_value)
 
@@ -159,8 +158,8 @@ class SunpyPlotter:
 
     def plot_coordinates(self, coords, radius=0.05, **kwargs):
         """
-        Plot a sphere if a single coordinate is passed and
-        plots a line if multiple coordinates are passed.
+        Plot a sphere if a single coordinate is passed and plots a line if
+        multiple coordinates are passed.
 
         Parameters
         ----------
@@ -214,10 +213,11 @@ class SunpyPlotter:
     def plot_quadrangle(self, bottom_left, top_right=None, width: u.deg = None, height: u.deg = None, **kwargs):
         """
         Plots a quadrangle on the given map.
+
         This draws a quadrangle that has corners at ``(bottom_left, top_right)``,
-        if ``width`` and ``height`` are specified, they are respectively added to the
-        longitude and latitude of the ``bottom_left`` coordinate to calculate a
-        ``top_right`` coordinate.
+        if ``width`` and ``height`` are specified, they are respectively added to
+        the longitude and latitude of the ``bottom_left`` coordinate to calculate
+        a ``top_right`` coordinate.
 
         Parameters
         ----------

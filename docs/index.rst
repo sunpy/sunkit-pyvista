@@ -2,7 +2,7 @@
 sunkit-pyvista Documentation
 ****************************
 
-This is the documentation for sunkit-pyvista.
+`sunkit-pyvista` is a python package for visualizing solar physics data in 3D.
 
 .. toctree::
    :maxdepth: 2

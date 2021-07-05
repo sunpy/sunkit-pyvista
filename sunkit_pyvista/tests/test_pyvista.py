@@ -7,7 +7,7 @@ import astropy.units as u
 import sunpy.data.test as test
 import sunpy.map as smap
 from astropy.coordinates import SkyCoord
-from sunpy.coordinates import HeliocentricInertial
+from sunpy.coordinates import HeliocentricInertial, HeliographicStonyhurst
 
 from sunkit_pyvista import SunpyPlotter
 
@@ -24,6 +24,7 @@ def plotter():
 
 def test_basic(plotter):
     assert isinstance(plotter.plotter, pv.Plotter)
+    plotter.show()
 
 
 def test_coordinate_frame(plotter):
@@ -61,6 +62,16 @@ def test_plot_solar_axis(plotter):
     plotter.plot_solar_axis()
     assert plotter.plotter.mesh.n_cells == 43
     assert plotter.plotter.mesh.n_points == 101
+
+
+def test_plot_quadrangle(aia171_test_map, plotter):
+    bottom_left = SkyCoord(30*u.deg, -10*u.deg,
+                           frame=HeliographicStonyhurst,
+                           obstime=aia171_test_map.date)
+    plotter.plot_quadrangle(bottom_left=bottom_left, width=20*u.deg,
+                            height=60*u.deg, color='blue')
+    assert plotter.plotter.mesh.n_cells == 4001
+    assert plotter.plotter.mesh.n_points == 4001
 
 
 def test_plot_coordinates(plotter):

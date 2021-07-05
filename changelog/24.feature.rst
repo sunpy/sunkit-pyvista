@@ -1,2 +1,1 @@
-Adds :meth:`~sunkit_pyvista.plotter.SunpyPlotter._add_mesh_to_block` which uses :class:`~pyvista.core.MultiBlock`
-as well as storing each mesh in a dictionary for later access.
+Adds :meth:`~sunkit_pyvista.plotter.SunpyPlotter._add_mesh_to_dict` stores each mesh in a dictionary for later access.

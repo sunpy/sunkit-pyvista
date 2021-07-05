@@ -203,7 +203,6 @@ class SunpyPlotter:
         self.bg_plotter.add_text("Play", position=(70, 10))
         self.bg_plotter.enable_anti_aliasing()
         self.bg_plotter.hide_axes()
-        self.bg_plotter.app.exec_()
 
     def plot_coordinates(self, coords, radius=0.05, **kwargs):
         """

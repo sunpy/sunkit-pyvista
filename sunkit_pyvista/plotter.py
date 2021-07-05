@@ -29,6 +29,11 @@ class SunpyPlotter:
     coordinate_frame : `astropy.coordinates.BaseFrame`
         Coordinate frame of the plot. The x, y, z axes of the pyvista plotter
         will be the x, y, z axes in this coordinate system.
+
+    Attributes
+    ----------
+    all_meshes : `dict`
+        Stores a reference to all the plotted meshes in a dictionary.
     """
     def __init__(self, coordinate_frame=None):
         if coordinate_frame is None:
@@ -166,7 +171,7 @@ class SunpyPlotter:
         else:
             clim = [0, 1]
         self.plotter.add_mesh(map_mesh, cmap=cmap, clim=clim, **kwargs)
-        self._add_mesh_to_dict(block_name='map', mesh=map_mesh)
+        self._add_mesh_to_dict(block_name='maps', mesh=map_mesh)
 
     def plot_coordinates(self, coords, radius=0.05, **kwargs):
         """
@@ -256,7 +261,7 @@ class SunpyPlotter:
         c.transform_to(self.coordinate_frame)
         quad_mesh = self._coords_to_xyz(c)
         self.plotter.add_mesh(quad_mesh, **kwargs)
-        self._add_mesh_to_dict(block_name='quadrangle', mesh=quad_mesh)
+        self._add_mesh_to_dict(block_name='quadrangles', mesh=quad_mesh)
 
     def plot_field_lines(self, field_lines, **kwargs):
         """

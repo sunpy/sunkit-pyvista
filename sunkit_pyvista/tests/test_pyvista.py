@@ -22,6 +22,7 @@ def plotter():
     return SunpyPlotter()
 
 
+@pytest.mark.display_server
 def test_basic(plotter):
     assert isinstance(plotter.plotter, pv.Plotter)
     plotter.show()

@@ -3,9 +3,14 @@ import functools
 import numpy as np
 import pyvista as pv
 
+import astropy.units as u
 from astropy.constants import R_sun
+from astropy.coordinates import Longitude, SkyCoord
+from astropy.visualization import AsymmetricPercentileInterval
 from sunpy.coordinates import HeliocentricInertial
+from sunpy.coordinates.utils import get_rectangle_coordinates
 from sunpy.map.maputils import all_corner_coords_from_map
+from sunpy.visualization._quadrangle import Quadrangle
 
 __all__ = ['SunpyPlotter']
 
@@ -30,7 +35,8 @@ class SunpyPlotter:
             coordinate_frame = HeliocentricInertial()
         self._coordinate_frame = coordinate_frame
         self._plotter = pv.Plotter()
-        self.meshes = []
+        self.camera = self._plotter.camera
+        self.all_meshes = pv.MultiBlock()
 
     @property
     def coordinate_frame(self):
@@ -60,6 +66,23 @@ class SunpyPlotter:
                                 coords.y.to_value(R_sun),
                                 coords.z.to_value(R_sun)))
 
+    def _get_clim(self, data, clip_interval):
+        """
+        Get vmin, vmax of a data slice when clip_interval is specified.
+        """
+        percent_limits = clip_interval.to('%').value
+        vmin, vmax = AsymmetricPercentileInterval(*percent_limits).get_limits(data)
+        return [vmin, vmax]
+
+    def _add_meshes_to_block(self):
+        """
+        Adds all of the meshes in the current dictionary
+        to a :class:`~pyvista.core.MultiBlock`.
+        """
+        for objects in self.all_meshes:
+            for meshes in self.all_meshes[objects]:
+                self.mesh_block.append(meshes)
+
     def set_camera_coordinate(self, coord):
         """
         Sets the inital camera position of the rendered plot.
@@ -72,6 +95,24 @@ class SunpyPlotter:
         camera_position = self._coords_to_xyz(coord)
         pos = tuple(camera_position[0])
         self.plotter.camera.position = pos
+
+    @u.quantity_input
+    def set_view_angle(self, angle: u.deg):
+        """
+        Sets the view angle of the camera to the specified value
+
+        Parameters
+        ----------
+        angle : `astropy.units.Quantity`
+            The viewing angle.
+        """
+        view_angle = angle.to_value(u.deg)
+        if not (view_angle > 0 and view_angle <= 180):
+            raise ValueError("specified view angle must be "
+                             "0 deg < angle <= 180 deg")
+        # Zoom/view_angle = current view angle (default is set to 30 degrees) / 1
+        zoom_value = self.camera.view_angle / view_angle
+        self.plotter.camera.zoom(zoom_value)
 
     def _pyvista_mesh(self, m):
         """
@@ -97,7 +138,8 @@ class SunpyPlotter:
         grid['data'] = m.plot_settings['norm'](data)
         return grid
 
-    def plot_map(self, m, **kwargs):
+    @u.quantity_input
+    def plot_map(self, m, clip_interval: u.percent = None, **kwargs):
         """
         Plot a map.
 
@@ -105,32 +147,65 @@ class SunpyPlotter:
         ----------
         m : `sunpy.map.Map`
             Map to be plotted.
+        clip_interval : two-element `~astropy.units.Quantity`, optional
+            If provided, the data will be clipped to the percentile
+            interval bounded by the two numbers.
         **kwargs :
             Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
         cmap = kwargs.pop('cmap', m.cmap)
         mesh = self._pyvista_mesh(m)
+<<<<<<< HEAD
         self.plotter.add_mesh(mesh, cmap=cmap, **kwargs)
         self.meshes.append(mesh)
+=======
+>>>>>>> d50dc810733b34810087cde1ae0af8d2b1e7a200
 
-    def plot_line(self, coords, **kwargs):
+        if clip_interval is not None:
+            if len(clip_interval) == 2:
+                clim = self._get_clim(data=mesh['data'],
+                                      clip_interval=clip_interval)
+            else:
+                raise ValueError("Clip percentile interval must be "
+                                 "specified as two numbers.")
+        else:
+            clim = [0, 1]
+        self.plotter.add_mesh(mesh, cmap=cmap, clim=clim, **kwargs)
+
+    def plot_coordinates(self, coords, radius=0.05, **kwargs):
         """
-        Plot a line from a set of coordinates.
+        Plot a sphere if a single coordinate is passed and
+        plots a line if multiple coordinates are passed.
 
         Parameters
         ----------
         coords : `astropy.coordinates.SkyCoord`
-            Coordinates to plot as a line.
+            Coordinate(s) to plot as a center of sphere or line.
+        radius : `int`, optional
+            Radius of the sphere times the radius of the sun
+            to be plotted when a single coordinate is passed.
+            Defaults to ``0.05`` times the radius of the sun.
         **kwargs :
             Keyword arguments are passed to `pyvista.Plotter.add_mesh`.
+
         Notes
         -----
-        This plots a `pyvista.Spline` object.
+        This plots a `pyvista.Sphere` object if a single coordinate is passed
+        and plots a `pyvista.Spline` object if multiple coordinates are passed.
+        ``radius`` is only considered when a sphere is plotted.
         """
         points = self._coords_to_xyz(coords)
+<<<<<<< HEAD
         spline = pv.Spline(points)
         self.plotter.add_mesh(spline, **kwargs)
         self.meshes.append(spline)
+=======
+        if points.shape[0] > 1:
+            point_mesh = pv.Spline(points)
+        else:
+            point_mesh = pv.Sphere(radius=radius, center=points[0])
+        self.plotter.add_mesh(point_mesh, smooth_shading=True, **kwargs)
+>>>>>>> d50dc810733b34810087cde1ae0af8d2b1e7a200
 
     def plot_solar_axis(self, length=2.5, arrow_kwargs={}, **kwargs):
         """
@@ -157,6 +232,39 @@ class SunpyPlotter:
                          **defaults)
         self.plotter.add_mesh(arrow, **kwargs)
         self.meshes.append(arrow)
+
+    def plot_quadrangle(self, bottom_left, top_right=None, width: u.deg = None, height: u.deg = None, **kwargs):
+        """
+        Plots a quadrangle on the given map.
+        This draws a quadrangle that has corners at ``(bottom_left, top_right)``,
+        if ``width`` and ``height`` are specified, they are respectively added to the
+        longitude and latitude of the ``bottom_left`` coordinate to calculate a
+        ``top_right`` coordinate.
+
+        Parameters
+        ----------
+        bottom_left :`~astropy.coordinates.SkyCoord`
+            The bottom-left coordinate of the quadrangle. It can
+            have shape ``(2,)`` to simultaneously define ``top_right``.
+        top_right : `~astropy.coordinates.SkyCoord`
+            The top-right coordinate of the quadrangle.
+        width : `astropy.units.Quantity`, optional
+            The width of the quadrangle. Required if ``top_right`` is omitted.
+        height : `astropy.units.Quantity`
+            The height of the quadrangle. Required if ``top_right`` is omitted.
+        **kwargs : Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
+        """
+        bottom_left, top_right = get_rectangle_coordinates(
+            bottom_left, top_right=top_right, width=width, height=height)
+        width = Longitude(top_right.spherical.lon - bottom_left.spherical.lon)
+        height = top_right.spherical.lat - bottom_left.spherical.lat
+
+        quadrangle_patch = Quadrangle((bottom_left.lon, bottom_left.lat), width, height, resolution=1000)
+        quadrangle_coordinates = quadrangle_patch.get_xy()
+        c = SkyCoord(quadrangle_coordinates[:, 0]*u.deg, quadrangle_coordinates[:, 1]*u.deg, frame=bottom_left.frame)
+        c.transform_to(self.coordinate_frame)
+        mesh = self._coords_to_xyz(c)
+        self.plotter.add_mesh(mesh, **kwargs)
 
     def plot_field_lines(self, field_lines, **kwargs):
         """

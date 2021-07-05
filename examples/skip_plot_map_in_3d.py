@@ -10,7 +10,6 @@ produce interactive 3D plots for sunpy Maps.
 import astropy.constants as const
 import astropy.units as u
 from astropy.coordinates import SkyCoord
-from sunpy.coordinates import frames
 from sunpy.data.sample import AIA_193_IMAGE
 from sunpy.map import Map
 
@@ -27,19 +26,19 @@ m = Map(AIA_193_IMAGE)
 
 # Start by creating a plotter
 plotter = SunpyPlotter()
-# Plot a map
-plotter.plot_map(m)
+
+# Plot a map by specifying a clip interval to clip data
+# according to the percentile interval specified.
+plotter.plot_map(m, clip_interval=(0, 99)*u.percent)
+
 # Add an arrow to show the solar rotation axis
 plotter.plot_solar_axis()
+
 # Plot an arbitrary line
 line = SkyCoord(lon=[180, 190, 200] * u.deg,
                 lat=[0, 10, 20] * u.deg,
                 distance=[1, 2, 3] * const.R_sun,
                 frame='heliocentricinertial')
-plotter.plot_line(line)
 
-# Define a SkyCoord for to set the positon of the camera
-camera_position = SkyCoord(0*u.deg, 0*u.deg, 8*const.R_sun, obstime=m.observer_coordinate.obstime, frame=frames.HeliographicStonyhurst)
-plotter.set_camera_coordinates(camera_position)
-
+plotter.plot_coordinates(line)
 plotter.show()

@@ -3,14 +3,6 @@ variables:
   CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
   CIBW_MANYLINUX_I686_IMAGE: manylinux2014
 
-schedules:
-  - cron: "0 0 * * *"
-    displayName: Daily midnight build
-    branches:
-      include:
-      - main
-    always: true
-
 resources:
   repositories:
   - repository: OpenAstronomy

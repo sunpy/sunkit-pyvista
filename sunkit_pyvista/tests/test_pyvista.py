@@ -24,6 +24,7 @@ def plotter():
 
 def test_basic(plotter):
     assert isinstance(plotter.plotter, pv.Plotter)
+    plotter.show()
 
 
 def test_coordinate_frame(plotter):

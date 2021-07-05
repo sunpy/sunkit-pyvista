@@ -37,7 +37,6 @@ class SunpyPlotter:
         self._plotter = pv.Plotter()
         self.camera = self._plotter.camera
         self.all_meshes = {}
-        self.mesh_block = pv.MultiBlock()
 
     @property
     def coordinate_frame(self):
@@ -69,15 +68,6 @@ class SunpyPlotter:
             self.all_meshes[block_name].append(mesh)
         else:
             self.all_meshes[block_name] = [mesh]
-
-    def _add_meshes_to_block(self):
-        """
-        Adds all of the meshes in the current dictionary
-        to a :class:`~pyvista.core.MultiBlock`.
-        """
-        for objects in self.all_meshes:
-            for meshes in self.all_meshes[objects]:
-                self.mesh_block.append(meshes)
 
     def _coords_to_xyz(self, coords):
         coords = coords.transform_to(self.coordinate_frame)

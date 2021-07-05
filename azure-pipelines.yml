@@ -52,6 +52,7 @@ stages:
     jobs:
     - template: run-tox-env.yml@OpenAstronomy
       parameters:
+        xvfb: true
         mesaopengl: true
         default_python: '3.8'
         submodules: false
@@ -78,7 +79,7 @@ stages:
           ${{ if startsWith(variables['Build.SourceBranch'], 'refs/tags/') }}:
             pypi_connection_name : 'PyPI'
           test_extras: 'dev'
-          test_command: 'pytest -p no:warnings --doctest-rst -m "not mpl_image_compare" --pyargs sunkit_pyvista'
+          test_command: 'pytest -p no:warnings --doctest-rst -m "not display_server" --pyargs sunkit_pyvista'
           submodules: false
           targets:
             - wheels_universal

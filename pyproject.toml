@@ -31,8 +31,12 @@ build-backend = 'setuptools.build_meta'
 
     [[tool.towncrier.type]]
       directory = "removal"
-      name = "Deprecations and Removals"
+      name = "Removals"
       showcontent = true
+
+    [[tool.towncrier.type]]
+      directory = "deprecations"
+      name = "Deprecations"
 
     [[tool.towncrier.type]]
       directory = "feature"

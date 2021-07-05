@@ -44,8 +44,7 @@ stages:
             name: style_check
             pytest: false
             libraries: {}
-          # TODO: Change to 39 when vtk fix their wheels
-          - linux: py38
+          - linux: py39
 
   - stage: SecondPhaseTests
     displayName: Stage 2 Tests

@@ -1,31 +1,31 @@
-# -*- coding: utf-8 -*-
-#
 # Configuration file for the Sphinx documentation builder.
 #
 # This file does only contain a selection of the most common options. For a
 # full list see the documentation:
 # http://www.sphinx-doc.org/en/master/config
 
-
+import os
+from datetime import datetime
 # -- Project information -----------------------------------------------------
+on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
+os.environ['HIDE_PARFIVE_PROGESS'] = 'True'
 
 project = 'sunkit-pyvista'
-copyright = '2021, '
-author = ''
+author = 'SunPy Community'
+copyright = '{}, {}'.format(datetime.now().year, author)
 
 # The full version, including alpha/beta/rc tags
 from sunkit_pyvista import __version__
+from packaging.version import Version
 release = __version__
+sunkit_pyvista_version = Version(__version__)
+is_release = not(sunkit_pyvista_version.is_prerelease or sunkit_pyvista_version.is_devrelease)
 
 # Use the sunpy theme
 from sunpy_sphinx_theme.conf import *
 from sphinx_gallery.sorting import ExampleTitleSortKey
 
 # -- General configuration ---------------------------------------------------
-
-# Add any Sphinx extension module names here, as strings. They can be
-# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
-# ones.
 extensions = [
     'sphinx_automodapi.automodapi',
     'sphinx_automodapi.smart_resolver',
@@ -42,9 +42,6 @@ extensions = [
     'sphinx_gallery.gen_gallery'
 ]
 
-# Add any paths that contain templates here, relative to this directory.
-# templates_path = ['_templates']
-
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
@@ -60,7 +57,7 @@ master_doc = 'index'
 # Enable nitpicky mode, which forces links to be non-broken
 nitpicky = True
 nitpick_ignore = [
-    # Prevents shpinx nitpicky mode picking up on optional
+    # Prevents sphinx nitpicky mode picking up on optional
     # (see https://github.com/sphinx-doc/sphinx/issues/6861)
     ('py:class', 'optional'),
     # See https://github.com/numpy/numpy/issues/10039
@@ -85,9 +82,6 @@ nitpick_ignore = [
 ]
 
 # -- Options for intersphinx extension ---------------------------------------
-
-# Example configuration for intersphinx: refer to the Python standard library.
-
 intersphinx_mapping = {
     "python": (
         "https://docs.python.org/3/",
@@ -106,13 +100,7 @@ intersphinx_mapping = {
     "pyvista": ("https://docs.pyvista.org/", None),
 }
 
-# -- Options for HTML output -------------------------------------------------
-
-# Add any paths that contain custom static files (such as style sheets) here,
-# relative to this directory. They are copied after the builtin static files,
-# so a file named "default.css" will overwrite the builtin "default.css".
-# html_static_path = ['_static']
-
+# -- Options for Gallery output ----------------------------------------------
 sphinx_gallery_conf = {
     'filename_pattern': '^((?!skip_).)*$',
     'examples_dirs': os.path.join('..', 'examples'),
@@ -122,7 +110,7 @@ sphinx_gallery_conf = {
     'default_thumb_file': os.path.join(html_static_path[0], 'img', 'sunpy_icon_128x128.png'),
     'abort_on_example_error': False,
     'only_warn_on_example_error': True,
-    'plot_gallery': True,
+    'plot_gallery': False if on_rtd else True,
     'remove_config_comments': True,
     'doc_module': ('sunkit_pyvista'),
 }

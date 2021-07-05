@@ -42,7 +42,7 @@ class SunpyPlotter:
         self._coordinate_frame = coordinate_frame
         self._plotter = pv.Plotter()
         self.camera = self._plotter.camera
-        self.bg_plotter = pvq.BackgroundPlotter(show=False)
+        self.bg_plotter = pvq.BackgroundPlotter(show=True)
 
     @property
     def coordinate_frame(self):

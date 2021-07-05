@@ -155,11 +155,6 @@ class SunpyPlotter:
         """
         cmap = kwargs.pop('cmap', m.cmap)
         mesh = self._pyvista_mesh(m)
-<<<<<<< HEAD
-        self.plotter.add_mesh(mesh, cmap=cmap, **kwargs)
-        self.meshes.append(mesh)
-=======
->>>>>>> d50dc810733b34810087cde1ae0af8d2b1e7a200
 
         if clip_interval is not None:
             if len(clip_interval) == 2:

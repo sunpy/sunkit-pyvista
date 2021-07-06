@@ -170,7 +170,7 @@ class SunpyPlotter:
                                  "specified as two numbers.")
         else:
             clim = [0, 1]
-        point_mesh.add_field_array([cmap], 'color')
+        map_mesh.add_field_array([cmap], 'color')
         self.plotter.add_mesh(map_mesh, cmap=cmap, clim=clim, **kwargs)
         self._add_mesh_to_dict(block_name='maps', mesh=map_mesh)
 
@@ -305,6 +305,6 @@ class SunpyPlotter:
         """
         for objects in self.all_meshes:
             for meshes in self.all_meshes[objects]:
-                self.mesh_block.append(meshes)
+                mesh_block.append(meshes)
 
-        self.mesh_block.save(filepath)
+        mesh_block.save(filepath)

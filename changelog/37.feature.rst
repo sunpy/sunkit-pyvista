@@ -1,0 +1,1 @@
+Added :meth:`~sunkit_pyvista.plotter.SunpyPlotter.save` method which allows for saving of plots to a vtm file.

@@ -42,7 +42,6 @@ class SunpyPlotter:
         self._plotter = pv.Plotter()
         self.camera = self._plotter.camera
         self.all_meshes = {}
-        self.mesh_block = pv.MultiBlock()
 
     @property
     def coordinate_frame(self):
@@ -265,7 +264,8 @@ class SunpyPlotter:
         quadrangle_coordinates = quadrangle_patch.get_xy()
         c = SkyCoord(quadrangle_coordinates[:, 0]*u.deg, quadrangle_coordinates[:, 1]*u.deg, frame=bottom_left.frame)
         c.transform_to(self.coordinate_frame)
-        quad_mesh = self._coords_to_xyz(c)
+        quad_grid = self._coords_to_xyz(c)
+        quad_mesh = pv.StructuredGrid(quad_grid[:, 0], quad_grid[:, 1], quad_grid[:, 2])
         color = kwargs.pop('color', None)
         quad_mesh.add_field_array([color], 'color')
         self.plotter.add_mesh(quad_mesh, **kwargs)
@@ -303,6 +303,7 @@ class SunpyPlotter:
         filepath : `str`
             Name of the file to save as, should have vtm as an extension.
         """
+        mesh_block = pv.MultiBlock()
         for objects in self.all_meshes:
             for meshes in self.all_meshes[objects]:
                 mesh_block.append(meshes)

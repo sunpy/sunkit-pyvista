@@ -201,7 +201,7 @@ class SunpyPlotter:
             point_mesh = pv.Spline(points)
         else:
             point_mesh = pv.Sphere(radius=radius, center=points[0])
-        color = kwargs.get('color', None)
+        color = kwargs.get('color', np.nan)
         point_mesh.add_field_array([color], 'color')
         self.plotter.add_mesh(point_mesh, smooth_shading=True, **kwargs)
         self._add_mesh_to_dict(block_name='coordinates', mesh=point_mesh)
@@ -229,7 +229,7 @@ class SunpyPlotter:
                               direction=(0, 0, length),
                               scale='auto',
                               **defaults)
-        color = kwargs.get('color', None)
+        color = kwargs.get('color', np.nan)
         arrow_mesh.add_field_array([color], 'color')
         self.plotter.add_mesh(arrow_mesh, **kwargs)
         self._add_mesh_to_dict(block_name='solar_axis', mesh=arrow_mesh)
@@ -267,7 +267,7 @@ class SunpyPlotter:
         c.transform_to(self.coordinate_frame)
         quad_grid = self._coords_to_xyz(c)
         quad_mesh = pv.StructuredGrid(quad_grid[:, 0], quad_grid[:, 1], quad_grid[:, 2])
-        color = kwargs.get('color', None)
+        color = kwargs.get('color', np.nan)
         quad_mesh.add_field_array([color], 'color')
         self.plotter.add_mesh(quad_mesh, **kwargs)
         self._add_mesh_to_dict(block_name='quadrangles', mesh=quad_mesh)
@@ -330,6 +330,8 @@ class SunpyPlotter:
                 self._loop_through_meshes(block)
             else:
                 color = block['color'][0]
+                if np.isnan(color):
+                    color = None
                 self.plotter.add_mesh(block, color)
 
     def load(self, filepath):

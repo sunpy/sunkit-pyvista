@@ -143,3 +143,20 @@ def test_field_lines(aia171_test_map, plotter):
     assert len(plotter.all_meshes['field_lines'][0]) == 64
     assert isinstance(plotter.all_meshes['field_lines'][0],
                       pv.core.composite.MultiBlock)
+
+
+def test_save_and_load(aia171_test_map, plotter, tmp_path):
+    plotter.plot_solar_axis()
+
+    filepath = (tmp_path / "save_data.vtm")
+    plotter.save(filepath=filepath)
+
+    plotter.plotter.clear()
+    plotter.load(filepath)
+
+    assert plotter.plotter.mesh.n_cells == 43
+    assert plotter.plotter.mesh.n_points == 101
+
+    directory_path = filepath.with_suffix('')
+    with pytest.raises(ValueError, match=f"Directory '{directory_path.absolute()}' already exists"):
+        plotter.save(filepath=filepath)

@@ -160,3 +160,14 @@ def test_save_and_load(aia171_test_map, plotter, tmp_path):
     directory_path = filepath.with_suffix('')
     with pytest.raises(ValueError, match=f"Directory '{directory_path.absolute()}' already exists"):
         plotter.save(filepath=filepath)
+
+
+def test_loop_through_meshes(plotter):
+    sphere = pv.Cube()
+    sphere2 = pv.Cube(center=(0,1,1))
+    inner_block = pv.MultiBlock([sphere])
+    outer_block = pv.MultiBlock([inner_block, sphere2])
+
+    plotter._loop_through_meshes(outer_block)
+
+    assert plotter.plotter.mesh.center == [0, 1, 1]

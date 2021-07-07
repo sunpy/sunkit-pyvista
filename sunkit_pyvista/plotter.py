@@ -329,8 +329,8 @@ class SunpyPlotter:
             if isinstance(block, pv.MultiBlock):
                 self._loop_through_meshes(block)
             else:
-                color = block['color'][0]
-                if np.isnan(color):
+                color = dict(block.field_arrays).pop('color', [None])[0]
+                if not isinstance(color, str):
                     color = None
                 self.plotter.add_mesh(block, color)
 

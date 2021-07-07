@@ -320,6 +320,18 @@ class SunpyPlotter:
                 mesh_block.append(meshes)
         mesh_block.save(file_path)
 
+    def _loop_through_meshes(self, mesh_block):
+        """
+        Recursively loop to add nested `~pyvista.core.MultiBlock` to the `pyvsita.Plotter`
+        along with the color of the mesh.
+        """
+        for block in mesh_block:
+            if isinstance(block, pv.MultiBlock):
+                self._loop_through_meshes(block)
+            else:
+                color = block['color'][0]
+                self.plotter.add_mesh(block, color)
+
     def load(self, filepath):
         """
         Loads the saved meshes into a the `pyvsita.Plotter`.
@@ -331,4 +343,4 @@ class SunpyPlotter:
         """
         file_path = Path(filepath)
         mesh_block = pv.read(file_path)
-        self.plotter.add_mesh(mesh_block)
+        self._loop_through_meshes(mesh_block)

@@ -1,4 +1,5 @@
 import functools
+from pathlib import Path
 
 import numpy as np
 import pyvista as pv
@@ -200,7 +201,7 @@ class SunpyPlotter:
             point_mesh = pv.Spline(points)
         else:
             point_mesh = pv.Sphere(radius=radius, center=points[0])
-        color = kwargs.pop('color', None)
+        color = kwargs.get('color', None)
         point_mesh.add_field_array([color], 'color')
         self.plotter.add_mesh(point_mesh, smooth_shading=True, **kwargs)
         self._add_mesh_to_dict(block_name='coordinates', mesh=point_mesh)
@@ -228,7 +229,7 @@ class SunpyPlotter:
                               direction=(0, 0, length),
                               scale='auto',
                               **defaults)
-        color = kwargs.pop('color', None)
+        color = kwargs.get('color', None)
         arrow_mesh.add_field_array([color], 'color')
         self.plotter.add_mesh(arrow_mesh, **kwargs)
         self._add_mesh_to_dict(block_name='solar_axis', mesh=arrow_mesh)
@@ -266,7 +267,7 @@ class SunpyPlotter:
         c.transform_to(self.coordinate_frame)
         quad_grid = self._coords_to_xyz(c)
         quad_mesh = pv.StructuredGrid(quad_grid[:, 0], quad_grid[:, 1], quad_grid[:, 2])
-        color = kwargs.pop('color', None)
+        color = kwargs.get('color', None)
         quad_mesh.add_field_array([color], 'color')
         self.plotter.add_mesh(quad_mesh, **kwargs)
         self._add_mesh_to_dict(block_name='quadrangles', mesh=quad_mesh)
@@ -300,12 +301,34 @@ class SunpyPlotter:
 
         Parameters
         ----------
-        filepath : `str`
-            Name of the file to save as, should have vtm as an extension.
+        filepath : `str` or `pathlib.Path`
+            Name of the file to save as, should have vtm or vtmb as an extension.
+
+        Notes
+        -----
+        This saves the rendered plot as a vtm extended file as well as a directory
+        of the individual meshes with the specified name.
         """
+        file_path = Path(filepath)
+        directory_path = file_path.with_suffix('')
+        if directory_path.exists():
+            raise ValueError(f"Directory '{directory_path.absolute()}' already exists")
+
         mesh_block = pv.MultiBlock()
         for objects in self.all_meshes:
             for meshes in self.all_meshes[objects]:
                 mesh_block.append(meshes)
+        mesh_block.save(file_path)
 
-        mesh_block.save(filepath)
+    def load(self, filepath):
+        """
+        Loads the saved meshes into a the `pyvsita.Plotter`.
+
+        Parameters
+        ----------
+        filepath : `str` or `pathlib.Path`
+            Name of the file to load as, should have vtm or vtmb as an extension.
+        """
+        file_path = Path(filepath)
+        mesh_block = pv.read(file_path)
+        self.plotter.add_mesh(mesh_block)

@@ -164,7 +164,7 @@ def test_save_and_load(aia171_test_map, plotter, tmp_path):
 
 def test_loop_through_meshes(plotter):
     sphere = pv.Cube()
-    sphere2 = pv.Cube(center=(0,1,1))
+    sphere2 = pv.Cube(center=(0, 1, 1))
     inner_block = pv.MultiBlock([sphere])
     outer_block = pv.MultiBlock([inner_block, sphere2])
 

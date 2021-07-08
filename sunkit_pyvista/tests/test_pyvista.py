@@ -158,7 +158,7 @@ def test_save_and_load(aia171_test_map, plotter, tmp_path):
     assert plotter.plotter.mesh.n_points == 101
 
     directory_path = filepath.with_suffix('')
-    with pytest.raises(ValueError, match=f"Directory '{directory_path.absolute()}' already exists"):
+    with pytest.raises(ValueError, match=f"Directory '{directory_path}' already exists"):
         plotter.save(filepath=filepath)
 
 

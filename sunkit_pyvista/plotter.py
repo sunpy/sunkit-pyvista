@@ -312,7 +312,7 @@ class SunpyPlotter:
         file_path = Path(filepath)
         directory_path = file_path.with_suffix('')
         if directory_path.exists():
-            raise ValueError(f"Directory '{directory_path.absolute()}' already exists")
+            raise ValueError(f"Directory '{directory_path}' already exists")
 
         mesh_block = pv.MultiBlock()
         for objects in self.all_meshes:

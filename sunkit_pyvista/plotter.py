@@ -336,7 +336,7 @@ class SunpyPlotter:
 
     def load(self, filepath):
         """
-        Loads the saved meshes into a the `pyvsita.Plotter`.
+        Loads the saved meshes into a `pyvsita.Plotter`.
 
         Parameters
         ----------

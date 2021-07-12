@@ -157,7 +157,7 @@ def test_save_and_load(aia171_test_map, plotter, tmp_path):
     assert plotter.plotter.mesh.n_cells == 43
     assert plotter.plotter.mesh.n_points == 101
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='already exists'):
         plotter.save(filepath=filepath)
 
 

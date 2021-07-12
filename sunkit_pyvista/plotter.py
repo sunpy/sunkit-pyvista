@@ -310,7 +310,7 @@ class SunpyPlotter:
         of the individual meshes with the specified name.
         """
         file_path = Path(filepath)
-        directory_path = file_path.with_suffix('')
+        directory_path = file_path.parent
         if directory_path.exists():
             raise ValueError(f"Directory '{directory_path.absolute()}' already exists")
 
@@ -336,7 +336,7 @@ class SunpyPlotter:
 
     def load(self, filepath):
         """
-        Loads the saved meshes into a `pyvsita.Plotter`.
+        Loads the saved meshes into this plotter.
 
         Parameters
         ----------

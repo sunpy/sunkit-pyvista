@@ -161,8 +161,6 @@ def test_save_and_load(aia171_test_map, plotter, tmp_path):
 
     with pytest.raises(ValueError, match='VTM file'):
         plotter.save(filepath=filepath)
-    with pytest.warns(UserWarning, match='Saving in meshes'):
-        plotter.save(filepath=filepath, overwrite=True)
     with pytest.raises(ValueError, match='already exists'):
         pathlib.Path(tmp_path / "save_data_dir").mkdir(parents=True, exist_ok=True)
         filepath = (tmp_path / "save_data_dir.vtm")

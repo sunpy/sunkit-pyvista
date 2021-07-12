@@ -313,10 +313,7 @@ class SunpyPlotter:
         file_path = Path(filepath)
         directory_path = file_path.with_suffix('')
 
-        if overwrite:
-            if directory_path.exists():
-                warnings.warn(f"Saving in meshes in pre-existing directory '{directory_path.absolute()}'")
-        else:
+        if not overwrite:
             if file_path.is_file():
                 raise ValueError(f"VTM file '{directory_path.absolute()}' already exists")
             if directory_path.exists():

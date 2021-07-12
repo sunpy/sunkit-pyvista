@@ -1,4 +1,3 @@
-import warnings
 import functools
 from pathlib import Path
 

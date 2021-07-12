@@ -1,3 +1,5 @@
+import pathlib
+
 import numpy as np
 import pfsspy
 import pytest
@@ -157,7 +159,13 @@ def test_save_and_load(aia171_test_map, plotter, tmp_path):
     assert plotter.plotter.mesh.n_cells == 43
     assert plotter.plotter.mesh.n_points == 101
 
+    with pytest.raises(ValueError, match='VTM file'):
+        plotter.save(filepath=filepath)
+    with pytest.warns(UserWarning, match='Saving in meshes'):
+        plotter.save(filepath=filepath, overwrite=True)
     with pytest.raises(ValueError, match='already exists'):
+        pathlib.Path(tmp_path / "save_data_dir").mkdir(parents=True, exist_ok=True)
+        filepath = (tmp_path / "save_data_dir.vtm")
         plotter.save(filepath=filepath)
 
 

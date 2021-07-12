@@ -1,3 +1,4 @@
+import warnings
 import functools
 from pathlib import Path
 
@@ -294,7 +295,7 @@ class SunpyPlotter:
 
         self._add_mesh_to_dict(block_name='field_lines', mesh=field_line_meshes)
 
-    def save(self, filepath):
+    def save(self, filepath, overwrite=False):
         """
         Adds all of the meshes in the current dictionary
         to a :class:`~pyvista.core.MultiBlock`.
@@ -310,9 +311,16 @@ class SunpyPlotter:
         of the individual meshes with the specified name.
         """
         file_path = Path(filepath)
-        directory_path = file_path.parent
-        if directory_path.exists():
-            raise ValueError(f"Directory '{directory_path.absolute()}' already exists")
+        directory_path = file_path.with_suffix('')
+
+        if overwrite:
+            if directory_path.exists():
+                warnings.warn(f"Saving in meshes in pre-existing directory '{directory_path.absolute()}'")
+        else:
+            if file_path.is_file():
+                raise ValueError(f"VTM file '{directory_path.absolute()}' already exists")
+            if directory_path.exists():
+                raise ValueError(f"Directory '{directory_path.absolute()}' already exists")
 
         mesh_block = pv.MultiBlock()
         for objects in self.all_meshes:

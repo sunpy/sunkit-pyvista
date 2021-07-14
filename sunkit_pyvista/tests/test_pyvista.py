@@ -1,3 +1,5 @@
+import pathlib
+
 import numpy as np
 import pfsspy
 import pytest
@@ -74,7 +76,7 @@ def test_plot_quadrangle(aia171_test_map, plotter):
                            obstime=aia171_test_map.date)
     plotter.plot_quadrangle(bottom_left=bottom_left, width=20*u.deg,
                             height=60*u.deg, color='blue')
-    assert plotter.plotter.mesh.n_cells == 4001
+    assert plotter.plotter.mesh.n_cells == 4000
     assert plotter.plotter.mesh.n_points == 4001
 
 
@@ -143,3 +145,34 @@ def test_field_lines(aia171_test_map, plotter):
     assert len(plotter.all_meshes['field_lines'][0]) == 64
     assert isinstance(plotter.all_meshes['field_lines'][0],
                       pv.core.composite.MultiBlock)
+
+
+def test_save_and_load(aia171_test_map, plotter, tmp_path):
+    plotter.plot_solar_axis()
+
+    filepath = (tmp_path / "save_data.vtm")
+    plotter.save(filepath=filepath)
+
+    plotter.plotter.clear()
+    plotter.load(filepath)
+
+    assert plotter.plotter.mesh.n_cells == 43
+    assert plotter.plotter.mesh.n_points == 101
+
+    with pytest.raises(ValueError, match='VTM file'):
+        plotter.save(filepath=filepath)
+    with pytest.raises(ValueError, match='already exists'):
+        pathlib.Path(tmp_path / "save_data_dir").mkdir(parents=True, exist_ok=True)
+        filepath = (tmp_path / "save_data_dir.vtm")
+        plotter.save(filepath=filepath)
+
+
+def test_loop_through_meshes(plotter):
+    sphere = pv.Cube()
+    sphere2 = pv.Cube(center=(0, 1, 1))
+    inner_block = pv.MultiBlock([sphere])
+    outer_block = pv.MultiBlock([inner_block, sphere2])
+
+    plotter._loop_through_meshes(outer_block)
+
+    assert plotter.plotter.mesh.center == [0, 1, 1]

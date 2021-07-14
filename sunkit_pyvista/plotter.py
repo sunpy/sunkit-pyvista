@@ -1,4 +1,5 @@
 import functools
+from pathlib import Path
 
 import numpy as np
 import pyvista as pv
@@ -169,6 +170,7 @@ class SunpyPlotter:
                                  "specified as two numbers.")
         else:
             clim = [0, 1]
+        map_mesh.add_field_array([cmap], 'color')
         self.plotter.add_mesh(map_mesh, cmap=cmap, clim=clim, **kwargs)
         self._add_mesh_to_dict(block_name='maps', mesh=map_mesh)
 
@@ -199,6 +201,8 @@ class SunpyPlotter:
             point_mesh = pv.Spline(points)
         else:
             point_mesh = pv.Sphere(radius=radius, center=points[0])
+        color = kwargs.get('color', np.nan)
+        point_mesh.add_field_array([color], 'color')
         self.plotter.add_mesh(point_mesh, smooth_shading=True, **kwargs)
         self._add_mesh_to_dict(block_name='coordinates', mesh=point_mesh)
 
@@ -225,6 +229,8 @@ class SunpyPlotter:
                               direction=(0, 0, length),
                               scale='auto',
                               **defaults)
+        color = kwargs.get('color', np.nan)
+        arrow_mesh.add_field_array([color], 'color')
         self.plotter.add_mesh(arrow_mesh, **kwargs)
         self._add_mesh_to_dict(block_name='solar_axis', mesh=arrow_mesh)
 
@@ -259,7 +265,10 @@ class SunpyPlotter:
         quadrangle_coordinates = quadrangle_patch.get_xy()
         c = SkyCoord(quadrangle_coordinates[:, 0]*u.deg, quadrangle_coordinates[:, 1]*u.deg, frame=bottom_left.frame)
         c.transform_to(self.coordinate_frame)
-        quad_mesh = self._coords_to_xyz(c)
+        quad_grid = self._coords_to_xyz(c)
+        quad_mesh = pv.StructuredGrid(quad_grid[:, 0], quad_grid[:, 1], quad_grid[:, 2])
+        color = kwargs.get('color', np.nan)
+        quad_mesh.add_field_array([color], 'color')
         self.plotter.add_mesh(quad_mesh, **kwargs)
         self._add_mesh_to_dict(block_name='quadrangles', mesh=quad_mesh)
 
@@ -279,7 +288,65 @@ class SunpyPlotter:
             grid = self._coords_to_xyz(field_line.coords.ravel())
             field_line_mesh = pv.StructuredGrid(grid[:, 0], grid[:, 1], grid[:, 2])
             color = {0: 'black', -1: 'tab:blue', 1: 'tab:red'}.get(field_line.polarity)
+            field_line_mesh.add_field_array([color], 'color')
             self.plotter.add_mesh(field_line_mesh, color=color, **kwargs)
             field_line_meshes.append(field_line_mesh)
 
         self._add_mesh_to_dict(block_name='field_lines', mesh=field_line_meshes)
+
+    def save(self, filepath, overwrite=False):
+        """
+        Adds all of the meshes in the current dictionary
+        to a :class:`~pyvista.core.MultiBlock`.
+
+        Parameters
+        ----------
+        filepath : `str` or `pathlib.Path`
+            Name of the file to save as, should have vtm or vtmb as an extension.
+
+        Notes
+        -----
+        This saves the rendered plot as a vtm extended file as well as a directory
+        of the individual meshes with the specified name.
+        """
+        file_path = Path(filepath)
+        directory_path = file_path.with_suffix('')
+
+        if not overwrite:
+            if file_path.is_file():
+                raise ValueError(f"VTM file '{directory_path.absolute()}' already exists")
+            if directory_path.exists():
+                raise ValueError(f"Directory '{directory_path.absolute()}' already exists")
+
+        mesh_block = pv.MultiBlock()
+        for objects in self.all_meshes:
+            for meshes in self.all_meshes[objects]:
+                mesh_block.append(meshes)
+        mesh_block.save(file_path)
+
+    def _loop_through_meshes(self, mesh_block):
+        """
+        Recursively loop to add nested `~pyvista.core.MultiBlock` to the `pyvsita.Plotter`
+        along with the color of the mesh.
+        """
+        for block in mesh_block:
+            if isinstance(block, pv.MultiBlock):
+                self._loop_through_meshes(block)
+            else:
+                color = dict(block.field_arrays).pop('color', [None])[0]
+                if not isinstance(color, str):
+                    color = None
+                self.plotter.add_mesh(block, color)
+
+    def load(self, filepath):
+        """
+        Loads the saved meshes into this plotter.
+
+        Parameters
+        ----------
+        filepath : `str` or `pathlib.Path`
+            Name of the file to load as, should have vtm or vtmb as an extension.
+        """
+        file_path = Path(filepath)
+        mesh_block = pv.read(file_path)
+        self._loop_through_meshes(mesh_block)

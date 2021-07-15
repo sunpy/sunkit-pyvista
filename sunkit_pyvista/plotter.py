@@ -315,8 +315,8 @@ class SunpyPlotter:
         if not overwrite:
             if file_path.is_file():
                 raise ValueError(f"VTM file '{directory_path.absolute()}' already exists")
-            if directory_path.exists():
-                raise ValueError(f"Directory '{directory_path.absolute()}' already exists")
+        if directory_path.exists():
+            raise ValueError(f"Directory '{directory_path.absolute()}' already exists")
 
         mesh_block = pv.MultiBlock()
         for objects in self.all_meshes:

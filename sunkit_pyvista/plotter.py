@@ -140,7 +140,7 @@ class SunpyPlotter:
         grid.dimensions = [m.data.shape[0] + 1,
                            m.data.shape[1] + 1,
                            1]
-        data = m.data.T.reshape(-1)
+        data = m.data.reshape(-1)
         grid['data'] = m.plot_settings['norm'](data)
         return grid
 

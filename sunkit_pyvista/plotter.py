@@ -76,11 +76,26 @@ class SunpyPlotter:
             self.all_meshes[block_name] = [mesh]
 
     def _coords_to_xyz(self, coords):
+        """
+        Transform coordinates to x, y, z values used internally by pyvista.
+
+        Parameters
+        ----------
+        coords : astropy.coordinates.SkyCoord
+
+        Returns
+        -------
+        numpy.array
+            This is the same shape as the input *coords* array, with an extra
+            len(3) axis at the end which corresponds to the (x, y, z) components
+            of the coordinates.
+        """
         coords = coords.transform_to(self.coordinate_frame)
         coords.representation_type = 'cartesian'
-        return np.column_stack((coords.x.to_value(R_sun),
-                                coords.y.to_value(R_sun),
-                                coords.z.to_value(R_sun)))
+        return np.stack((coords.x.to_value(R_sun),
+                         coords.y.to_value(R_sun),
+                         coords.z.to_value(R_sun)),
+                        axis=-1)
 
     def _get_clim(self, data, clip_interval):
         """
@@ -134,14 +149,9 @@ class SunpyPlotter:
         `pyvista.StructuredGrid`
         """
         corner_coords = all_corner_coords_from_map(m)
-        nodes = self._coords_to_xyz(corner_coords.ravel())
-        grid = pv.StructuredGrid()
-        grid.points = nodes
-        grid.dimensions = [m.data.shape[0] + 1,
-                           m.data.shape[1] + 1,
-                           1]
-        data = m.data.reshape(-1)
-        grid['data'] = m.plot_settings['norm'](data)
+        nodes = self._coords_to_xyz(corner_coords)
+        grid = pv.StructuredGrid(nodes[:, :, 0], nodes[:, :, 1], nodes[:, :, 2])
+        grid['data'] = m.plot_settings['norm'](m.data.T.ravel())
         return grid
 
     @u.quantity_input

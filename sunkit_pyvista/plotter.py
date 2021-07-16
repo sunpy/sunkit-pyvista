@@ -92,12 +92,12 @@ class SunpyPlotter:
 
     def set_camera_coordinate(self, coord):
         """
-        Sets the inital camera position of the rendered plot.
+        Set the camera position.
 
         Parameters
         ----------
         coords : `astropy.coordinates.SkyCoord`
-            Coordinates of the camera.
+            Camera coordinate.
         """
         camera_position = self._coords_to_xyz(coord)
         pos = tuple(camera_position[0])
@@ -106,7 +106,7 @@ class SunpyPlotter:
     @u.quantity_input
     def set_view_angle(self, angle: u.deg):
         """
-        Sets the camera position.
+        Set the camera view angle.
 
         Parameters
         ----------
@@ -147,7 +147,7 @@ class SunpyPlotter:
     @u.quantity_input
     def plot_map(self, m, clip_interval: u.percent = None, **kwargs):
         """
-        Plot a map.
+        Plot a sunpy map.
 
         Parameters
         ----------
@@ -236,7 +236,7 @@ class SunpyPlotter:
 
     def plot_quadrangle(self, bottom_left, top_right=None, width: u.deg = None, height: u.deg = None, **kwargs):
         """
-        Plots a quadrangle on the given map.
+        Plot a quadrangle.
 
         This draws a quadrangle that has corners at ``(bottom_left, top_right)``,
         if ``width`` and ``height`` are specified, they are respectively added to
@@ -274,7 +274,7 @@ class SunpyPlotter:
 
     def plot_field_lines(self, field_lines, **kwargs):
         """
-        Plots the field lines from `pfsspy`.
+        Plot magnetic field lines from `pfsspy`.
 
         Parameters
         ----------
@@ -296,18 +296,15 @@ class SunpyPlotter:
 
     def save(self, filepath, overwrite=False):
         """
-        Adds all of the meshes in the current dictionary
-        to a :class:`~pyvista.core.MultiBlock`.
+        Save all the meshes.
+
+        This saves the rendered plot as a vtm extended file as well as a directory
+        of the individual meshes with the specified name.
 
         Parameters
         ----------
         filepath : `str` or `pathlib.Path`
             Name of the file to save as, should have vtm or vtmb as an extension.
-
-        Notes
-        -----
-        This saves the rendered plot as a vtm extended file as well as a directory
-        of the individual meshes with the specified name.
         """
         file_path = Path(filepath)
         directory_path = file_path.with_suffix('')
@@ -340,12 +337,12 @@ class SunpyPlotter:
 
     def load(self, filepath):
         """
-        Loads the saved meshes into this plotter.
+        Load saved meshes into this plotter.
 
         Parameters
         ----------
         filepath : `str` or `pathlib.Path`
-            Name of the file to load as, should have vtm or vtmb as an extension.
+            Name of the file to load, should have vtm or vtmb as an extension.
         """
         file_path = Path(filepath)
         mesh_block = pv.read(file_path)

@@ -115,7 +115,7 @@ class SunpyPlotter:
             Coordinates of the camera.
         """
         camera_position = self._coords_to_xyz(coord)
-        pos = tuple(camera_position[0])
+        pos = tuple(camera_position)
         self.plotter.camera.position = pos
 
     @u.quantity_input
@@ -207,10 +207,12 @@ class SunpyPlotter:
         ``radius`` is only considered when a sphere is plotted.
         """
         points = self._coords_to_xyz(coords)
-        if points.shape[0] > 1:
-            point_mesh = pv.Spline(points)
+        if points.ndim == 1:
+            # Single coordinate
+            point_mesh = pv.Sphere(radius=radius, center=points)
         else:
-            point_mesh = pv.Sphere(radius=radius, center=points[0])
+            point_mesh = pv.Spline(points)
+
         color = kwargs.get('color', np.nan)
         point_mesh.add_field_array([color], 'color')
         self.plotter.add_mesh(point_mesh, smooth_shading=True, **kwargs)

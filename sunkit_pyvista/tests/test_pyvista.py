@@ -80,7 +80,7 @@ def test_plot_quadrangle(aia171_test_map, plotter):
     assert plotter.plotter.mesh.n_points == 4001
 
 
-def test_plot_coordinates(plotter):
+def test_plot_coordinates(aia171_test_map, plotter):
     # Tests the plot for a line
     line = SkyCoord(lon=[180, 190, 200] * u.deg,
                     lat=[0, 10, 20] * u.deg,
@@ -100,6 +100,10 @@ def test_plot_coordinates(plotter):
     assert plotter.plotter.mesh.n_points == 842
     expected_center = [-0.5000000149011612, -0.5, 0.7071067690849304]
     assert np.allclose(plotter.plotter.mesh.center, expected_center)
+
+    pixel_pos = np.argwhere(aia171_test_map.data == aia171_test_map.data.max()) * u.pixel
+    hpc_max = aia171_test_map.pixel_to_world(pixel_pos[:, 1], pixel_pos[:, 0])
+    plotter.plot_coordinates(hpc_max, color='blue')
 
 
 def test_clip_interval(aia171_test_map, plotter):

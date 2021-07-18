@@ -104,6 +104,8 @@ def test_plot_coordinates(aia171_test_map, plotter):
     pixel_pos = np.argwhere(aia171_test_map.data == aia171_test_map.data.max()) * u.pixel
     hpc_max = aia171_test_map.pixel_to_world(pixel_pos[:, 1], pixel_pos[:, 0])
     plotter.plot_coordinates(hpc_max, color='blue')
+    assert plotter.plotter.mesh.n_cells == 1680
+    assert plotter.plotter.mesh.n_points == 842
 
 
 def test_clip_interval(aia171_test_map, plotter):

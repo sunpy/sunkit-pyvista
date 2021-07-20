@@ -27,7 +27,7 @@ def plotter():
     return SunpyPlotter()
 
 
-def test_plot_map_with_functionlity(aia171_test_map, plotter, verify_cache_image):
+def test_plot_map_with_functionality(aia171_test_map, plotter, verify_cache_image):
     plotter.plot_map(aia171_test_map, clip_interval=(0, 99)*u.percent)
     plotter.plot_solar_axis()
 
@@ -68,6 +68,6 @@ def test_field_lines_figure(aia171_test_map, plotter, verify_cache_image):
                      frame=gong_map.coordinate_frame)
     field_lines = tracer.trace(seeds, output_)
 
-    # plotter.plot_map(aia171_test_map)
+    plotter.plot_map(aia171_test_map)
     plotter.plot_field_lines(field_lines)
     plotter.show(cpos=(0, 1, 0), before_close_callback=verify_cache_image)

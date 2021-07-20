@@ -13,7 +13,7 @@ if not os.path.isdir(IMAGE_CACHE_DIR):
     os.mkdir(IMAGE_CACHE_DIR)
 # Normal image warning/error thresholds (assumes using use_vtk)
 IMAGE_REGRESSION_ERROR = 500  # major differences
-IMAGE_REGRESSION_WARNING = 200  # minor differences
+IMAGE_REGRESSION_WARNING = 400  # minor differences
 
 # Image regression warning/error thresholds for releases after 9.0.1
 HIGH_VARIANCE_TESTS = {}

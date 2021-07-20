@@ -296,7 +296,7 @@ class SunpyPlotter:
             Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
         field_line_meshes = pv.MultiBlock([])
-        for field_line in field_lines[0:int(len(field_lines)/2)]:
+        for field_line in field_lines[0:55]:
             grid = self._coords_to_xyz(field_line.coords.ravel())
             field_line_mesh = pv.StructuredGrid(grid[:, 0], grid[:, 1], grid[:, 2])
             color = {0: 'black', -1: 'tab:blue', 1: 'tab:red'}.get(field_line.polarity)

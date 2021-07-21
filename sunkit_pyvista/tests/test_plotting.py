@@ -37,8 +37,8 @@ def test_plot_map_with_functionality(aia171_test_map, plotter, verify_cache_imag
     plotter.plot_quadrangle(bottom_left=bottom_left, width=20*u.deg,
                             height=60*u.deg, color='blue')
 
-    line = SkyCoord(lon=[180, 190, 200] * u.deg,
-                    lat=[0, 10, 20] * u.deg,
+    line = SkyCoord(lon=[90, 2200, 2200] * u.deg,
+                    lat=[10, 10, 20] * u.deg,
                     distance=[1, 2, 3] * const.R_sun,
                     frame='heliocentricinertial')
     plotter.plot_coordinates(line)

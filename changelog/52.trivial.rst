@@ -1,1 +1,1 @@
-:meth:`~sunkit_pyvista.plotter.SunpyPlotter.plot_quadrangle` uses a :class`~pyvista.core.MultiBlock` for combining the individual points.
+:meth:`~sunkit_pyvista.plotter.SunpyPlotter.plot_quadrangle` uses a :meth`~pyvista.utilities.Spline` for combining the individual points.

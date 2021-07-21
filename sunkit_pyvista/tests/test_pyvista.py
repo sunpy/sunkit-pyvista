@@ -76,8 +76,8 @@ def test_plot_quadrangle(aia171_test_map, plotter):
                            obstime=aia171_test_map.date)
     plotter.plot_quadrangle(bottom_left=bottom_left, width=20*u.deg,
                             height=60*u.deg, color='blue')
-    assert plotter.plotter.mesh.n_cells == 4000
-    assert plotter.plotter.mesh.n_points == 4001
+    assert plotter.plotter.mesh.n_cells == 22
+    assert plotter.plotter.mesh.n_points == 80060
 
 
 def test_plot_coordinates(aia171_test_map, plotter):

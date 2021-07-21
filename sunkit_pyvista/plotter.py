@@ -278,11 +278,13 @@ class SunpyPlotter:
         c = SkyCoord(quadrangle_coordinates[:, 0]*u.deg, quadrangle_coordinates[:, 1]*u.deg, frame=bottom_left.frame)
         c.transform_to(self.coordinate_frame)
         quad_grid = self._coords_to_xyz(c)
-        quad_mesh = pv.StructuredGrid(quad_grid[:, 0], quad_grid[:, 1], quad_grid[:, 2])
+        quad_block = pv.Spline(quad_grid)
         color = kwargs.get('color', np.nan)
-        quad_mesh.add_field_array([color], 'color')
-        self.plotter.add_mesh(quad_mesh, **kwargs)
-        self._add_mesh_to_dict(block_name='quadrangles', mesh=quad_mesh)
+        radius = kwargs.get('radius', 0.01)
+        quad_block = quad_block.tube(radius=radius)
+        quad_block.add_field_array([color], 'color')
+        self.plotter.add_mesh(quad_block, **kwargs)
+        self._add_mesh_to_dict(block_name='quadrangles', mesh=quad_block)
 
     def plot_field_lines(self, field_lines, **kwargs):
         """

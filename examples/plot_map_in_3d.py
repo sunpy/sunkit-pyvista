@@ -41,4 +41,4 @@ line = SkyCoord(lon=[180, 190, 200] * u.deg,
                 frame='heliocentricinertial')
 
 plotter.plot_coordinates(line)
-plotter.show()
+plotter.show(cpos=(0, 1, 1))

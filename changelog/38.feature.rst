@@ -1,0 +1,1 @@
+Allows for figure tests to be performed with `pytest`.

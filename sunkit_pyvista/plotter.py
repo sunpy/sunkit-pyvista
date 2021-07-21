@@ -207,7 +207,7 @@ class SunpyPlotter:
         ``radius`` is only considered when a sphere is plotted.
         """
         points = self._coords_to_xyz(coords)
-        if points.ndim == 1:
+        if points.ndim == 1 or (points.ndim == 2 and points.shape[0] == 1):
             # Single coordinate
             point_mesh = pv.Sphere(radius=radius, center=points)
         else:

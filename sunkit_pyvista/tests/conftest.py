@@ -15,11 +15,6 @@ if not os.path.isdir(IMAGE_CACHE_DIR):
 IMAGE_REGRESSION_ERROR = 500  # major differences
 IMAGE_REGRESSION_WARNING = 400  # minor differences
 
-# Image regression warning/error thresholds for releases after 9.0.1
-HIGH_VARIANCE_TESTS = {}
-VER_IMAGE_REGRESSION_ERROR = 1000
-VER_IMAGE_REGRESSION_WARNING = 1000
-
 
 @pytest.fixture(scope="session", autouse=True)
 def get_cmd_opt(pytestconfig):
@@ -52,12 +47,9 @@ def verify_cache_images(plotter):
         if item.function[:5] == 'test_':
             test_name = item.function
             break
-    if item.function in HIGH_VARIANCE_TESTS:
-        allowed_error = VER_IMAGE_REGRESSION_ERROR
-        allowed_warning = VER_IMAGE_REGRESSION_WARNING
-    else:
-        allowed_error = IMAGE_REGRESSION_ERROR
-        allowed_warning = IMAGE_REGRESSION_WARNING
+
+    allowed_error = IMAGE_REGRESSION_ERROR
+    allowed_warning = IMAGE_REGRESSION_WARNING
 
     if test_name is None:
         raise RuntimeError('Unable to identify calling test function. This function '

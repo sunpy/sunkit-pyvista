@@ -319,6 +319,14 @@ class SunpyPlotter:
         ----------
         filepath : `str` or `pathlib.Path`
             Name of the file to save as, should have vtm or vtmb as an extension.
+
+        Examples
+        --------
+        >>> from sunkit_pyvista import SunpyPlotter
+        >>> plotter = SunpyPlotter()
+        >>> plotter.plot_solar_axis()
+        >>> plotter.save('./filepath')
+
         """
         file_path = Path(filepath)
         directory_path = file_path.with_suffix('')

@@ -325,7 +325,7 @@ class SunpyPlotter:
         >>> from sunkit_pyvista import SunpyPlotter
         >>> plotter = SunpyPlotter()
         >>> plotter.plot_solar_axis()
-        >>> plotter.save('./filepath')
+        >>> plotter.save('./filename.vtm') # doctest: +SKIP
 
         """
         file_path = Path(filepath)
@@ -352,10 +352,10 @@ class SunpyPlotter:
             if isinstance(block, pv.MultiBlock):
                 self._loop_through_meshes(block)
             else:
-                color = dict(block.field_arrays).pop('color', [None])[0]
-                if not isinstance(color, str):
-                    color = None
-                self.plotter.add_mesh(block, color)
+                # color = dict(block.field_arrays).pop('color', [None])[0]
+                # if not isinstance(color, str):
+                #     color = None
+                self.plotter.add_mesh(block)
 
     def load(self, filepath):
         """

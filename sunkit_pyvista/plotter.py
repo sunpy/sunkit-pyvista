@@ -357,7 +357,7 @@ class SunpyPlotter:
                 self._loop_through_meshes(block)
             else:
                 color = dict(block.field_arrays).pop('color', [None])[0]
-                print(color)
+
                 if not isinstance(color, str):
                     color = None
                 if color in cm.cmlist:

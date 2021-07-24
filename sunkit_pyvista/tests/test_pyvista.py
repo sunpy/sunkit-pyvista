@@ -154,7 +154,7 @@ def test_field_lines(aia171_test_map, plotter):
 
 
 def test_save_and_load(aia171_test_map, plotter, tmp_path):
-    plotter.plot_solar_axis()
+    plotter.plot_map(aia171_test_map)
 
     filepath = (tmp_path / "save_data.vtm")
     plotter.save(filepath=filepath)
@@ -162,8 +162,8 @@ def test_save_and_load(aia171_test_map, plotter, tmp_path):
     plotter.plotter.clear()
     plotter.load(filepath)
 
-    assert plotter.plotter.mesh.n_cells == 43
-    assert plotter.plotter.mesh.n_points == 101
+    assert plotter.plotter.mesh.n_cells == 128**2
+    assert plotter.plotter.mesh.n_points == 129**2
 
     with pytest.raises(ValueError, match='VTM file'):
         plotter.save(filepath=filepath)

@@ -1,0 +1,1 @@
+Fixes erroring of color map in :meth:`~sunkit_pyvista.plotter.SunpyPlotter.load`.

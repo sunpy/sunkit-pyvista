@@ -50,7 +50,8 @@ def test_plot_map_with_functionality(aia171_test_map, plotter, verify_cache_imag
 
     filepath = (tmp_path / "save_data.vtm")
     plotter.save(filepath=filepath)
-    plotter.plotter.clear()
+
+    plotter = SunpyPlotter()
     plotter.load(filepath)
 
     plotter.show(cpos=(0, 1, 0), before_close_callback=verify_cache_image)

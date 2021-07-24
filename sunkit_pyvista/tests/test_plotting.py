@@ -27,7 +27,7 @@ def plotter():
     return SunpyPlotter()
 
 
-def test_plot_map_with_functionality(aia171_test_map, plotter, verify_cache_image):
+def test_plot_map_with_functionality(aia171_test_map, plotter, verify_cache_image, tmp_path):
     plotter.plot_map(aia171_test_map, clip_interval=(0, 99)*u.percent)
     plotter.plot_solar_axis()
 
@@ -47,6 +47,12 @@ def test_plot_map_with_functionality(aia171_test_map, plotter, verify_cache_imag
                           frame=frames.HeliographicStonyhurst,
                           obstime=aia171_test_map.date)
     plotter.plot_coordinates(coordinate, color='blue')
+
+    filepath = (tmp_path / "save_data.vtm")
+    plotter.save(filepath=filepath)
+
+    plotter = SunpyPlotter()
+    plotter.load(filepath)
 
     plotter.show(cpos=(0, 1, 0), before_close_callback=verify_cache_image)
 

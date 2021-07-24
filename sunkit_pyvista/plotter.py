@@ -5,6 +5,7 @@ import numpy as np
 import pyvista as pv
 
 import astropy.units as u
+import sunpy.visualization.colormaps as cm
 from astropy.constants import R_sun
 from astropy.coordinates import Longitude, SkyCoord
 from astropy.visualization import AsymmetricPercentileInterval
@@ -43,6 +44,7 @@ class SunpyPlotter:
         self._plotter = pv.Plotter()
         self.camera = self._plotter.camera
         self.all_meshes = {}
+        self.color_maps = {v: k for k, v in cm.cmlist.items()}
 
     @property
     def coordinate_frame(self):
@@ -180,7 +182,9 @@ class SunpyPlotter:
                                  "specified as two numbers.")
         else:
             clim = [0, 1]
-        map_mesh.add_field_array([cmap], 'color')
+
+        cmap_name = self.color_maps[cmap]
+        map_mesh.add_field_array([cmap_name], 'color')
         self.plotter.add_mesh(map_mesh, cmap=cmap, clim=clim, **kwargs)
         self._add_mesh_to_dict(block_name='maps', mesh=map_mesh)
 
@@ -352,10 +356,14 @@ class SunpyPlotter:
             if isinstance(block, pv.MultiBlock):
                 self._loop_through_meshes(block)
             else:
-                # color = dict(block.field_arrays).pop('color', [None])[0]
-                # if not isinstance(color, str):
-                #     color = None
-                self.plotter.add_mesh(block)
+                color = dict(block.field_arrays).pop('color', [None])[0]
+                print(color)
+                if not isinstance(color, str):
+                    color = None
+                if color in cm.cmlist:
+                    self.plotter.add_mesh(block, cmap=color)
+                else:
+                    self.plotter.add_mesh(block, color=color)
 
     def load(self, filepath):
         """

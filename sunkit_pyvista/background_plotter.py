@@ -1,28 +1,13 @@
-from sunkit_pyvista.mapsequence_animator import SequenceAnimator
-from sunkit_pyvista import SunpyPlotter
 from functools import partial
-from sunpy.util import expand_list
+
 import pyvistaqt as pvq
-import functools
-from functools import partial
-from pathlib import Path
 
-import numpy as np
-import pyvista as pv
-
-
-import astropy.units as u
-from astropy.constants import R_sun
-from astropy.coordinates import Longitude, SkyCoord
-from astropy.visualization import AsymmetricPercentileInterval
-from sunpy.coordinates import HeliocentricInertial
-from sunpy.coordinates.utils import get_rectangle_coordinates
 from sunpy.map import GenericMap
-from sunpy.map.maputils import all_corner_coords_from_map
 from sunpy.util import expand_list
-from sunpy.visualization._quadrangle import Quadrangle
 
+from sunkit_pyvista import SunpyPlotter
 from sunkit_pyvista.mapsequence_animator import SequenceAnimator
+
 
 class SunpyBackgroundPlotter(SunpyPlotter):
     def __init__(self, coordinate_frame=None):
@@ -77,8 +62,8 @@ class SunpyBackgroundPlotter(SunpyPlotter):
             partial(self._toggle_animation, animate=animate),
             value=False, color_on='green')
         self.plotter.add_callback(partial(animate,
-                                     bg_plotter=self.plotter,
-                                     **kwargs), interval=16)
+                                  bg_plotter=self.plotter,
+                                  **kwargs), interval=16)
         self.plotter.add_text("Play", position=(70, 10))
         self.plotter.enable_anti_aliasing()
         self.plotter.hide_axes()

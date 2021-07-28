@@ -7,7 +7,8 @@ from sunpy.map import GenericMap
 from sunpy.util import expand_list
 
 from sunkit_pyvista import SunpyPlotter
-from sunkit_pyvista.mapsequence_animator import SequenceAnimator
+
+__all__ = ['SunpyBackgroundPlotter']
 
 
 class SunpyBackgroundPlotter(SunpyPlotter):
@@ -56,7 +57,7 @@ class SunpyBackgroundPlotter(SunpyPlotter):
             map_meshes.append(mesh)
             color_maps.append(m.cmap)
         animate = SequenceAnimator(time=interval, map_meshes=map_meshes,
-                                   color_maps=color_maps, **kwargs)
+                                   color_maps=color_maps)
 
         self.plotter.add_mesh(map_meshes[0], cmap=color_maps[0], **kwargs)
         self.plotter.add_checkbox_button_widget(

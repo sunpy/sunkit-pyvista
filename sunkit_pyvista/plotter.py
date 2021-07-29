@@ -14,6 +14,8 @@ from sunpy.coordinates.utils import get_rectangle_coordinates
 from sunpy.map.maputils import all_corner_coords_from_map
 from sunpy.visualization._quadrangle import Quadrangle
 
+from sunkit_pyvista.utils import get_limb_coordinates
+
 __all__ = ['SunpyPlotter']
 
 
@@ -377,3 +379,17 @@ class SunpyPlotter:
         file_path = Path(filepath)
         mesh_block = pv.read(file_path)
         self._loop_through_meshes(mesh_block)
+
+    def plot_limb(self, m):
+        limb_coordinates = get_limb_coordinates(m.observer_coordinate, m.rsun_meters,
+                                                resolution=1000)
+        limb_coordinates.transform_to(self.coordinate_frame)
+        limb_grid = self._coords_to_xyz(limb_coordinates)
+        # quad_block = pv.Spline(quad_grid)
+        # color = kwargs.get('color', np.nan)
+        # radius = kwargs.get('radius', 0.01)
+        # quad_block = quad_block.tube(radius=radius)
+        # quad_block.add_field_array([color], 'color')
+        # self.plotter.add_mesh(quad_block, **kwargs)
+        # self._add_mesh_to_dict(block_name='quadrangles', mesh=quad_block)
+        self.plotter.add_mesh(limb_grid)

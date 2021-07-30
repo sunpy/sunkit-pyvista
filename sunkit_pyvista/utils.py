@@ -10,9 +10,9 @@ __all__ = ['get_limb_coordinates']
 
 @u.quantity_input
 def get_limb_coordinates(observer, rsun=constants.radius, resolution=1000):
-
     """
     Get coordinates for the solar limb as viewed by a specified observer.
+
     Parameters
     ----------
     observer : `~astropy.coordinates.SkyCoord`

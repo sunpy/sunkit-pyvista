@@ -184,6 +184,6 @@ def test_loop_through_meshes(plotter):
 
 
 def test_plot_limb(aia171_test_map, plotter):
-    plotter.plot_map(aia171_test_map)
-    assert plotter.plotter.mesh.n_cells == 16384
-    assert plotter.plotter.mesh.n_points == 16641
+    plotter.plot_limb(aia171_test_map)
+    assert plotter.plotter.mesh.n_cells == 22
+    assert plotter.plotter.mesh.n_points == 20040

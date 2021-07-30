@@ -285,11 +285,11 @@ class SunpyPlotter:
         c.transform_to(self.coordinate_frame)
         quad_grid = self._coords_to_xyz(c)
         quad_block = pv.Spline(quad_grid)
-        color = kwargs.get('color', np.nan)
+        color = kwargs.get('color', 'white')
         radius = kwargs.get('radius', 0.01)
         quad_block = quad_block.tube(radius=radius)
         quad_block.add_field_array([color], 'color')
-        self.plotter.add_mesh(quad_block, **kwargs)
+        self.plotter.add_mesh(quad_block, color=color, **kwargs)
         self._add_mesh_to_dict(block_name='quadrangles', mesh=quad_block)
 
     def plot_field_lines(self, field_lines, **kwargs):
@@ -380,16 +380,24 @@ class SunpyPlotter:
         mesh_block = pv.read(file_path)
         self._loop_through_meshes(mesh_block)
 
-    def plot_limb(self, m):
+    def plot_limb(self, m, **kwargs):
+        """
+        Draws the solar limb as seen by the map's observer.
+
+        Parameters
+        ----------
+        m : `sunpy.map.Map`
+            Map's limb to be plotted.
+        """
         limb_coordinates = get_limb_coordinates(m.observer_coordinate, m.rsun_meters,
                                                 resolution=1000)
         limb_coordinates.transform_to(self.coordinate_frame)
         limb_grid = self._coords_to_xyz(limb_coordinates)
-        # quad_block = pv.Spline(quad_grid)
-        # color = kwargs.get('color', np.nan)
-        # radius = kwargs.get('radius', 0.01)
-        # quad_block = quad_block.tube(radius=radius)
-        # quad_block.add_field_array([color], 'color')
-        # self.plotter.add_mesh(quad_block, **kwargs)
-        # self._add_mesh_to_dict(block_name='quadrangles', mesh=quad_block)
-        self.plotter.add_mesh(limb_grid)
+        limb_block = pv.Spline(limb_grid)
+        limb_block = limb_block.tube(radius=0.01)
+        color = kwargs.get('color', 'white')
+        radius = kwargs.get('radius', 0.01)
+        limb_block.add_field_array([color], 'color', **kwargs)
+        self.plotter.add_mesh(limb_block)
+        self._add_mesh_to_dict(block_name='limbs', color=color, mesh=limb_block)
+

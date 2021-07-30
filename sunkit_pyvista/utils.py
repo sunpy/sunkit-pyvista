@@ -1,16 +1,15 @@
 import numpy as np
 
 import astropy.units as u
-from sunpy.sun import constants
-from astropy.coordinates import BaseCoordinateFrame, SkyCoord
+from astropy.coordinates import SkyCoord
 from sunpy.coordinates import HeliographicStonyhurst
-from sunpy.coordinates import Heliocentric, get_body_heliographic_stonyhurst
+from sunpy.sun import constants
 
 __all__ = ['get_limb_coordinates']
 
 @u.quantity_input
 def get_limb_coordinates(observer, rsun=constants.radius, resolution=1000):
-    
+
     """
     Get coordinates for the solar limb as viewed by a specified observer.
     Parameters

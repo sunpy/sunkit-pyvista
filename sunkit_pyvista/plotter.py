@@ -14,6 +14,8 @@ from sunpy.coordinates.utils import get_rectangle_coordinates
 from sunpy.map.maputils import all_corner_coords_from_map
 from sunpy.visualization._quadrangle import Quadrangle
 
+from sunkit_pyvista.utils import get_limb_coordinates
+
 __all__ = ['SunpyPlotter']
 
 
@@ -284,7 +286,8 @@ class SunpyPlotter:
         self.plotter.add_mesh(arrow_mesh, **kwargs)
         self._add_mesh_to_dict(block_name='solar_axis', mesh=arrow_mesh)
 
-    def plot_quadrangle(self, bottom_left, top_right=None, width: u.deg = None, height: u.deg = None, **kwargs):
+    def plot_quadrangle(self, bottom_left, top_right=None, width: u.deg = None,
+                        height: u.deg = None, radius=0.01, **kwargs):
         """
         Plot a quadrangle.
 
@@ -304,6 +307,9 @@ class SunpyPlotter:
             The width of the quadrangle. Required if ``top_right`` is omitted.
         height : `astropy.units.Quantity`
             The height of the quadrangle. Required if ``top_right`` is omitted.
+        radius : `float`
+            Radius of the `pyvista.Spline` used to create the quadrangle.
+            Defaults to ``0.01`` times the radius of the sun.
         **kwargs : Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
         bottom_left, top_right = get_rectangle_coordinates(
@@ -317,11 +323,11 @@ class SunpyPlotter:
         c.transform_to(self.coordinate_frame)
         quad_grid = self._coords_to_xyz(c)
         quad_block = pv.Spline(quad_grid)
-        color = kwargs.get('color', np.nan)
+        color = kwargs.pop('color', 'white')
         radius = kwargs.get('radius', 0.01)
         quad_block = quad_block.tube(radius=radius)
         quad_block.add_field_array([color], 'color')
-        self.plotter.add_mesh(quad_block, **kwargs)
+        self.plotter.add_mesh(quad_block, color=color, **kwargs)
         self._add_mesh_to_dict(block_name='quadrangles', mesh=quad_block)
 
     def plot_field_lines(self, field_lines, **kwargs):
@@ -411,3 +417,27 @@ class SunpyPlotter:
         file_path = Path(filepath)
         mesh_block = pv.read(file_path)
         self._loop_through_meshes(mesh_block)
+
+    def plot_limb(self, m, radius=0.02, **kwargs):
+        """
+        Draws the solar limb as seen by the map's observer.
+
+        Parameters
+        ----------
+        m : `sunpy.map.Map`
+            Map's limb to be plotted.
+        radius : `float`
+            Radius of the `pyvista.Spline` used to create the limb.
+            Defaults to ``0.02`` times the radius of the sun.
+        **kwargs : Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
+        """
+        limb_coordinates = get_limb_coordinates(m.observer_coordinate, m.rsun_meters,
+                                                resolution=1000)
+        limb_coordinates.transform_to(self.coordinate_frame)
+        limb_grid = self._coords_to_xyz(limb_coordinates)
+        limb_block = pv.Spline(limb_grid)
+        color = kwargs.pop('color', 'white')
+        limb_block = limb_block.tube(radius=radius)
+        limb_block.add_field_array([color], 'color')
+        self.plotter.add_mesh(limb_block, color=color, **kwargs)
+        self._add_mesh_to_dict(block_name='limbs', mesh=limb_block)

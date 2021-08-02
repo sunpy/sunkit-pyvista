@@ -178,7 +178,12 @@ def test_loop_through_meshes(plotter):
     sphere2 = pv.Cube(center=(0, 1, 1))
     inner_block = pv.MultiBlock([sphere])
     outer_block = pv.MultiBlock([inner_block, sphere2])
-
     plotter._loop_through_meshes(outer_block)
 
     assert plotter.plotter.mesh.center == [0, 1, 1]
+
+
+def test_plot_limb(aia171_test_map, plotter):
+    plotter.plot_limb(aia171_test_map)
+    assert plotter.plotter.mesh.n_cells == 22
+    assert plotter.plotter.mesh.n_points == 20040

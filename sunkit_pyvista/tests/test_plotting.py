@@ -39,6 +39,7 @@ def test_plot_map_with_functionality(aia171_test_map, plotter, verify_cache_imag
                            obstime=aia171_test_map.date)
     plotter.plot_quadrangle(bottom_left=bottom_left, width=20*u.deg,
                             height=60*u.deg, color='blue')
+    plotter.plot_limb(aia171_test_map)
 
     line = SkyCoord(lon=[90, 2200, 2200] * u.deg,
                     lat=[10, 10, 20] * u.deg,

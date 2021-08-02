@@ -204,7 +204,7 @@ class SunpyPlotter:
         **kwargs :
             Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
-        cmap = kwargs.pop('cmap', m.cmap)
+        kwargs.pop('cmap', m.cmap)
         map_mesh = self._pyvista_mesh(m)
         if clip_interval is not None:
             if len(clip_interval) == 2:
@@ -215,8 +215,7 @@ class SunpyPlotter:
                                  "specified as two numbers.")
         else:
             clim = [0, 1]
-        map_mesh.add_field_array([cmap], 'color')
-        self.plotter.add_mesh(map_mesh, cmap=cmap, clim=clim, **kwargs)
+        self.plotter.add_mesh(map_mesh, cmap="RdYlBu", clim=clim, **kwargs)
         self._add_mesh_to_dict(block_name='maps', mesh=map_mesh)
 
     def plot_coordinates(self, coords, radius=0.05, **kwargs):

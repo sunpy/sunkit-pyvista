@@ -1,11 +1,16 @@
-# Configuration file for the Sphinx documentation builder.
-#
-# This file does only contain a selection of the most common options. For a
-# full list see the documentation:
-# http://www.sphinx-doc.org/en/master/config
-
+"""
+Configuration file for the Sphinx documentation builder.
+"""
+import warnings
+import numpy as np
+import pyvista
+# Use the sunpy theme
+# from sunpy_sphinx_theme.conf import *
+from packaging.version import Version
+from sunkit_pyvista import __version__
 import os
 from datetime import datetime
+
 # -- Project information -----------------------------------------------------
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 os.environ['HIDE_PARFIVE_PROGESS'] = 'True'
@@ -14,22 +19,15 @@ author = 'SunPy Community'
 copyright = '{}, {}'.format(datetime.now().year, author)
 
 # The full version, including alpha/beta/rc tags
-from sunkit_pyvista import __version__
-from packaging.version import Version
 release = __version__
 sunkit_pyvista_version = Version(__version__)
 is_release = not(sunkit_pyvista_version.is_prerelease or sunkit_pyvista_version.is_devrelease)
-
-# Use the sunpy theme
-from sunpy_sphinx_theme.conf import *
-from sphinx_gallery.sorting import ExampleTitleSortKey
 
 # -- General configuration ---------------------------------------------------
 extensions = [
     'sphinx_automodapi.automodapi',
     'sphinx_automodapi.smart_resolver',
     'sphinx_changelog',
-    'sphinx_gallery.gen_gallery',
     'sphinx.ext.autodoc',
     'sphinx.ext.coverage',
     'sphinx.ext.doctest',
@@ -80,6 +78,7 @@ nitpick_ignore = [
     ('py:class', 'string'),
     ('py:class', 'floats'),
 ]
+
 # -- Options for intersphinx extension ---------------------------------------
 intersphinx_mapping = {
     "python": (
@@ -99,37 +98,10 @@ intersphinx_mapping = {
     "pyvista": ("https://docs.pyvista.org/", None),
 }
 
-# -- Options for Gallery output ----------------------------------------------
-sphinx_gallery_conf = {
-    'filename_pattern': '^((?!skip_).)*$',
-    'examples_dirs': os.path.join('..', 'examples'),
-    'within_subsection_order': ExampleTitleSortKey,
-    'gallery_dirs': os.path.join('generated', 'gallery'),
-    'default_thumb_file': os.path.join(html_static_path[0], 'img', 'sunpy_icon_128x128.png'),
-    'abort_on_example_error': False,
-    'only_warn_on_example_error': True,
-    'plot_gallery': False if on_rtd else True,
-    'remove_config_comments': True,
-    'doc_module': ('sunkit_pyvista'),
-}
-
 # -- pyvista configuration ---------------------------------------------------
-import pyvista
-import numpy as np
-
 # Manage errors
 pyvista.set_error_output_file("errors.txt")
-# necessary when building the sphinx gallery
-pyvista.BUILDING_GALLERY = True
 pyvista.OFF_SCREEN = True  # Not necessary - simply an insurance policy
 # Preferred plotting style for documentation
 pyvista.set_plot_theme("document")
 pyvista.global_theme.window_size = np.array([512, 512]) * 2
-
-# SG warnings
-import warnings
-warnings.filterwarnings(
-    "ignore",
-    category=UserWarning,
-    message="Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.",
-)

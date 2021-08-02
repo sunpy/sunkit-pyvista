@@ -35,7 +35,7 @@ def verify_cache_images(plotter):
     """
     # Image cache is only valid for VTK9 on Linux
     if not VTK9 or platform.system() != 'Linux':
-        return
+        pytest.skip("VTK9 on linux required for this test")
 
     # since each test must contain a unique name, we can simply
     # use the function test to name the image

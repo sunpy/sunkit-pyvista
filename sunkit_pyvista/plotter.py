@@ -150,9 +150,43 @@ class SunpyPlotter:
         `pyvista.StructuredGrid`
         """
         corner_coords = all_corner_coords_from_map(m)
-        nodes = self._coords_to_xyz(corner_coords)
-        grid = pv.StructuredGrid(nodes[:, :, 0], nodes[:, :, 1], nodes[:, :, 2])
-        grid['data'] = m.plot_settings['norm'](m.data.T.ravel())
+        verts = self._coords_to_xyz(corner_coords)
+        nx, ny = verts.shape[:2]
+        nverts = nx * ny
+        verts = verts.reshape(nverts, 3)
+
+        # Get vertex incices for each face
+        vert_indices = np.arange(nverts).reshape(nx, ny)
+        lower_left = vert_indices[:-1, :-1]
+        lower_right = vert_indices[1:, :-1]
+        upper_right = vert_indices[1:, 1:]
+        upper_left = vert_indices[:-1, 1:]
+
+        nfaces = (nx - 1) * (ny - 1)
+        faces = np.column_stack([np.ones(nfaces).astype(int) * 4,
+                                 lower_left.ravel(),
+                                 lower_right.ravel(),
+                                 upper_right.ravel(),
+                                 upper_left.ravel()])
+        # Remove faces that don't have a finite vertex
+        # this can often happen with off-limb vertices)
+        finite = np.sum(np.isfinite(verts[faces[:, 1], :]), axis=1) == 3
+        finite = finite & (np.sum(np.isfinite(verts[faces[:, 2], :]), axis=1) == 3)
+        finite = finite & (np.sum(np.isfinite(verts[faces[:, 3], :]), axis=1) == 3)
+        finite = finite & (np.sum(np.isfinite(verts[faces[:, 4], :]), axis=1) == 3)
+        faces = faces[finite, :]
+
+        # Remove any non-finite vertices. This reduces the size of the mesh,
+        # and is also needed for the ipygany backend to work which is used for
+        # showing examples in the documentation
+        vert_mask = np.isfinite(verts[:, 0])
+        finite_indices = np.cumsum(vert_mask) - 1
+        # Re-map face indices
+        faces[:, 1:] = finite_indices[faces[:, 1:]]
+        # Remove non-finite vertices
+        verts = verts[vert_mask, :]
+        grid = pv.PolyData(verts, faces.ravel())
+        grid['data'] = m.plot_settings['norm'](m.data.ravel()[finite])
         return grid
 
     @u.quantity_input

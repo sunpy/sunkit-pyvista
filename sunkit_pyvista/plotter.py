@@ -236,7 +236,7 @@ class SunpyPlotter:
         if pv.global_theme._jupyter_backend == 'ipygany':
             from ipygany.colormaps import colormaps
             if cmap not in colormaps:
-                return 'viridis'
+                return 'Viridis'
 
     def plot_coordinates(self, coords, radius=0.05, **kwargs):
         """

@@ -60,8 +60,8 @@ def test_set_view_angle(plotter):
 
 def test_plot_map(aia171_test_map, plotter):
     plotter.plot_map(aia171_test_map)
-    assert plotter.plotter.mesh.n_cells == 128**2
-    assert plotter.plotter.mesh.n_points == 129**2
+    assert plotter.plotter.mesh.n_cells == 7859
+    assert plotter.plotter.mesh.n_points == 8060
 
 
 def test_plot_solar_axis(plotter):
@@ -112,7 +112,7 @@ def test_clip_interval(aia171_test_map, plotter):
     plotter.plot_map(aia171_test_map, clip_interval=(1, 99)*u.percent)
     clim = plotter._get_clim(data=plotter.plotter.mesh['data'],
                              clip_interval=(1, 99)*u.percent)
-    expected_clim = [0.006716044038535769, 0.8024368512284383]
+    expected_clim = [0.15782961272423796, 0.8477792344775393]
     assert np.allclose(clim, expected_clim)
 
     expected_clim = [0, 1]
@@ -162,8 +162,8 @@ def test_save_and_load(aia171_test_map, plotter, tmp_path):
     plotter.plotter.clear()
     plotter.load(filepath)
 
-    assert plotter.plotter.mesh.n_cells == 128**2
-    assert plotter.plotter.mesh.n_points == 129**2
+    assert plotter.plotter.mesh.n_cells == 7859
+    assert plotter.plotter.mesh.n_points == 8060
 
     with pytest.raises(ValueError, match='VTM file'):
         plotter.save(filepath=filepath)

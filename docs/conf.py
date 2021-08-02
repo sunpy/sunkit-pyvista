@@ -1,29 +1,27 @@
-# Configuration file for the Sphinx documentation builder.
-#
-# This file does only contain a selection of the most common options. For a
-# full list see the documentation:
-# http://www.sphinx-doc.org/en/master/config
-
+"""
+Configuration file for the Sphinx documentation builder.
+"""
+import warnings
+import numpy as np
+import pyvista
+# Use the sunpy theme
+# from sunpy_sphinx_theme.conf import *
+from packaging.version import Version
+from sunkit_pyvista import __version__
 import os
 from datetime import datetime
+
 # -- Project information -----------------------------------------------------
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 os.environ['HIDE_PARFIVE_PROGESS'] = 'True'
-
 project = 'sunkit-pyvista'
 author = 'SunPy Community'
 copyright = '{}, {}'.format(datetime.now().year, author)
 
 # The full version, including alpha/beta/rc tags
-from sunkit_pyvista import __version__
-from packaging.version import Version
 release = __version__
 sunkit_pyvista_version = Version(__version__)
 is_release = not(sunkit_pyvista_version.is_prerelease or sunkit_pyvista_version.is_devrelease)
-
-# Use the sunpy theme
-from sunpy_sphinx_theme.conf import *
-from sphinx_gallery.sorting import ExampleTitleSortKey
 
 # -- General configuration ---------------------------------------------------
 extensions = [
@@ -39,7 +37,7 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.todo',
     'sphinx.ext.viewcode',
-    'sphinx_gallery.gen_gallery'
+    "jupyter_sphinx",
 ]
 
 # List of patterns, relative to source directory, that match files and
@@ -100,17 +98,10 @@ intersphinx_mapping = {
     "pyvista": ("https://docs.pyvista.org/", None),
 }
 
-# -- Options for Gallery output ----------------------------------------------
-sphinx_gallery_conf = {
-    'filename_pattern': '^((?!skip_).)*$',
-    'examples_dirs': os.path.join('..', 'examples'),
-    'within_subsection_order': ExampleTitleSortKey,
-    'gallery_dirs': os.path.join('generated', 'gallery'),
-    # Comes from the theme.
-    'default_thumb_file': os.path.join(html_static_path[0], 'img', 'sunpy_icon_128x128.png'),
-    'abort_on_example_error': False,
-    'only_warn_on_example_error': True,
-    'plot_gallery': False if on_rtd else True,
-    'remove_config_comments': True,
-    'doc_module': ('sunkit_pyvista'),
-}
+# -- pyvista configuration ---------------------------------------------------
+# Manage errors
+pyvista.set_error_output_file("errors.txt")
+pyvista.OFF_SCREEN = True  # Not necessary - simply an insurance policy
+# Preferred plotting style for documentation
+pyvista.set_plot_theme("document")
+pyvista.global_theme.window_size = np.array([512, 512]) * 2

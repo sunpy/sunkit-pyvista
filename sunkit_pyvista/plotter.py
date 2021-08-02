@@ -206,7 +206,6 @@ class SunpyPlotter:
         **kwargs :
             Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
-        kwargs.pop('cmap', m.cmap)
         map_mesh = self._pyvista_mesh(m)
         if clip_interval is not None:
             if len(clip_interval) == 2:
@@ -217,11 +216,27 @@ class SunpyPlotter:
                                  "specified as two numbers.")
         else:
             clim = [0, 1]
+        cmap = self._get_cmap(kwargs, m)
 
         cmap_name = self.color_maps[cmap]
         map_mesh.add_field_array([cmap_name], 'color')
         self.plotter.add_mesh(map_mesh, cmap=cmap, clim=clim, **kwargs)
         self._add_mesh_to_dict(block_name='maps', mesh=map_mesh)
+
+    @staticmethod
+    def _get_cmap(kwargs, m):
+        """
+        When plotting in the docs we use the ipygany backend, which only
+        supports a small subset of colormaps.
+
+        This method detects the backend, and if required replaces the requested
+        colormap with a ipygany-compatible one.
+        """
+        cmap = kwargs.pop('cmap', m.cmap)
+        if pv.global_theme._jupyter_backend == 'ipygany':
+            from ipygany.colormaps import colormaps
+            if cmap not in colormaps:
+                return 'viridis'
 
     def plot_coordinates(self, coords, radius=0.05, **kwargs):
         """

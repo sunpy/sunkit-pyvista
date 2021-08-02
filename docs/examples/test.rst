@@ -13,9 +13,7 @@ produce interactive 3D plots for sunpy Maps.
 
 .. jupyter-execute::
 
-    import astropy.constants as const
     import astropy.units as u
-    from astropy.coordinates import SkyCoord
     from sunpy.data.sample import AIA_193_IMAGE
     from sunpy.map import Map
 
@@ -25,4 +23,4 @@ produce interactive 3D plots for sunpy Maps.
 
     p = SunpyPlotter()
     p.plot_map(m)
-    p.show(jupyter_backend='ipygany')
+    p.show()

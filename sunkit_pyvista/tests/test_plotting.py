@@ -1,3 +1,6 @@
+"""
+This file contains figure comparison tests.
+"""
 import numpy as np
 import pfsspy
 import pytest

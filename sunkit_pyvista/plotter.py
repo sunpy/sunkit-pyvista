@@ -45,7 +45,6 @@ class SunpyPlotter:
         self._plotter = pv.Plotter()
         self.camera = self._plotter.camera
         self.all_meshes = {}
-        self.color_maps = {v: k for k, v in cm.cmlist.items()}
 
     @property
     def coordinate_frame(self):
@@ -217,10 +216,9 @@ class SunpyPlotter:
         else:
             clim = [0, 1]
         cmap = self._get_cmap(kwargs, m)
-
-        cmap_name = self.color_maps[cmap]
-        map_mesh.add_field_array([cmap_name], 'color')
         self.plotter.add_mesh(map_mesh, cmap=cmap, clim=clim, **kwargs)
+
+        map_mesh.add_field_array([cmap.name], 'color')
         self._add_mesh_to_dict(block_name='maps', mesh=map_mesh)
 
     @staticmethod
@@ -231,12 +229,20 @@ class SunpyPlotter:
 
         This method detects the backend, and if required replaces the requested
         colormap with a ipygany-compatible one.
+
+        Returns
+        -------
+        matplotlib.colors.LinearSegmentedColormap
         """
         cmap = kwargs.pop('cmap', m.cmap)
+        if isinstance(cmap, str):
+            cmap = plt.get_cmap(cmap)
         if pv.global_theme._jupyter_backend == 'ipygany':
             from ipygany.colormaps import colormaps
-            if cmap not in colormaps:
-                return 'Viridis'
+            if cmap.name not in colormaps:
+                # TODO: return a different colormap depending on the input colormap
+                cmap = plt.get_cmap('YlOrRd')
+        return cmap
 
     def plot_coordinates(self, coords, radius=0.05, **kwargs):
         """

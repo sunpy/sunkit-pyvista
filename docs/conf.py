@@ -5,7 +5,7 @@ import warnings
 import numpy as np
 import pyvista
 # Use the sunpy theme
-# from sunpy_sphinx_theme.conf import *
+from sunpy_sphinx_theme.conf import *
 from packaging.version import Version
 from sunkit_pyvista import __version__
 import os

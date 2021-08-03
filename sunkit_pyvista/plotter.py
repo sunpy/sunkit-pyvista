@@ -3,9 +3,9 @@ from pathlib import Path
 
 import numpy as np
 import pyvista as pv
+from matplotlib.cm import _cmap_registry
 
 import astropy.units as u
-import sunpy.visualization.colormaps as cm
 from astropy.constants import R_sun
 from astropy.coordinates import Longitude, SkyCoord
 from astropy.visualization import AsymmetricPercentileInterval
@@ -218,7 +218,7 @@ class SunpyPlotter:
         cmap = self._get_cmap(kwargs, m)
         self.plotter.add_mesh(map_mesh, cmap=cmap, clim=clim, **kwargs)
 
-        map_mesh.add_field_array([cmap.name], 'color')
+        map_mesh.add_field_array([cmap], 'color')
         self._add_mesh_to_dict(block_name='maps', mesh=map_mesh)
 
     @staticmethod
@@ -235,13 +235,14 @@ class SunpyPlotter:
         matplotlib.colors.LinearSegmentedColormap
         """
         cmap = kwargs.pop('cmap', m.cmap)
-        if isinstance(cmap, str):
-            cmap = plt.get_cmap(cmap)
+        if not isinstance(cmap, str):
+            _cmap_reg_rev = {v: k for k, v in _cmap_registry.items()}
+            cmap = _cmap_reg_rev[cmap]
         if pv.global_theme._jupyter_backend == 'ipygany':
             from ipygany.colormaps import colormaps
-            if cmap.name not in colormaps:
+            if cmap not in colormaps:
                 # TODO: return a different colormap depending on the input colormap
-                cmap = plt.get_cmap('YlOrRd')
+                cmap = 'YlOrRd'
         return cmap
 
     def plot_coordinates(self, coords, radius=0.05, **kwargs):
@@ -417,7 +418,7 @@ class SunpyPlotter:
 
                 if not isinstance(color, str):
                     color = None
-                if color in cm.cmlist:
+                if color in _cmap_registry:
                     self.plotter.add_mesh(block, cmap=color)
                 else:
                     self.plotter.add_mesh(block, color=color)

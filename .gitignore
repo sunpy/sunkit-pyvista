@@ -230,3 +230,6 @@ sunkit_pyvista/version.py
 
 ### Vagrant Patch ###
 *.box
+
+errors.txt
+docs/errors.txt

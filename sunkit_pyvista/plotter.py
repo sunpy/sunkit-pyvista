@@ -3,9 +3,9 @@ from pathlib import Path
 
 import numpy as np
 import pyvista as pv
+from matplotlib.cm import _cmap_registry
 
 import astropy.units as u
-import sunpy.visualization.colormaps as cm
 from astropy.constants import R_sun
 from astropy.coordinates import Longitude, SkyCoord
 from astropy.visualization import AsymmetricPercentileInterval
@@ -39,6 +39,7 @@ class SunpyPlotter:
     all_meshes : `dict`
         Stores a reference to all the plotted meshes in a dictionary.
     """
+
     def __init__(self, coordinate_frame=None):
         if coordinate_frame is None:
             coordinate_frame = HeliocentricInertial()
@@ -46,7 +47,6 @@ class SunpyPlotter:
         self._plotter = pv.Plotter()
         self.camera = self._plotter.camera
         self.all_meshes = {}
-        self.color_maps = {v: k for k, v in cm.cmlist.items()}
 
     @property
     def coordinate_frame(self):
@@ -207,7 +207,6 @@ class SunpyPlotter:
         **kwargs :
             Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
-        cmap = kwargs.pop('cmap', m.cmap)
         map_mesh = self._pyvista_mesh(m)
         if clip_interval is not None:
             if len(clip_interval) == 2:
@@ -218,11 +217,35 @@ class SunpyPlotter:
                                  "specified as two numbers.")
         else:
             clim = [0, 1]
-
-        cmap_name = self.color_maps[cmap]
-        map_mesh.add_field_array([cmap_name], 'color')
+        cmap = self._get_cmap(kwargs, m)
         self.plotter.add_mesh(map_mesh, cmap=cmap, clim=clim, **kwargs)
+
+        map_mesh.add_field_array([cmap], 'color')
         self._add_mesh_to_dict(block_name='maps', mesh=map_mesh)
+
+    @staticmethod
+    def _get_cmap(kwargs, m):
+        """
+        When plotting in the docs we use the ipygany backend, which only
+        supports a small subset of colormaps.
+
+        This method detects the backend, and if required replaces the requested
+        colormap with a ipygany-compatible one.
+
+        Returns
+        -------
+        matplotlib.colors.LinearSegmentedColormap
+        """
+        cmap = kwargs.pop('cmap', m.cmap)
+        if not isinstance(cmap, str):
+            _cmap_reg_rev = {v: k for k, v in _cmap_registry.items()}
+            cmap = _cmap_reg_rev[cmap]
+        if pv.global_theme._jupyter_backend == 'ipygany':
+            from ipygany.colormaps import colormaps
+            if cmap not in colormaps:
+                # TODO: return a different colormap depending on the input colormap
+                cmap = 'YlOrRd'
+        return cmap
 
     def plot_coordinates(self, coords, radius=0.05, **kwargs):
         """
@@ -319,7 +342,8 @@ class SunpyPlotter:
 
         quadrangle_patch = Quadrangle((bottom_left.lon, bottom_left.lat), width, height, resolution=1000)
         quadrangle_coordinates = quadrangle_patch.get_xy()
-        c = SkyCoord(quadrangle_coordinates[:, 0]*u.deg, quadrangle_coordinates[:, 1]*u.deg, frame=bottom_left.frame)
+        c = SkyCoord(quadrangle_coordinates[:, 0]*u.deg,
+                     quadrangle_coordinates[:, 1]*u.deg, frame=bottom_left.frame)
         c.transform_to(self.coordinate_frame)
         quad_grid = self._coords_to_xyz(c)
         quad_block = pv.Spline(quad_grid)
@@ -400,7 +424,7 @@ class SunpyPlotter:
 
                 if not isinstance(color, str):
                     color = None
-                if color in cm.cmlist:
+                if color in _cmap_registry:
                     self.plotter.add_mesh(block, cmap=color)
                 else:
                     self.plotter.add_mesh(block, color=color)

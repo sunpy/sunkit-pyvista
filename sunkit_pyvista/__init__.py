@@ -5,3 +5,4 @@ except ImportError:
 
 from .plotter import *
 from .background_plotter import *
+from .utils import *

@@ -1,0 +1,1 @@
+Adds an example using :meth:`~sunpy.coordinates.frames.Helioprojective.assume_spherical_screen`.

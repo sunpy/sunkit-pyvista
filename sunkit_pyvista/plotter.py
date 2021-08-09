@@ -354,7 +354,7 @@ class SunpyPlotter:
         self.plotter.add_mesh(quad_block, color=color, **kwargs)
         self._add_mesh_to_dict(block_name='quadrangles', mesh=quad_block)
 
-    def plot_field_lines(self, field_lines, **kwargs):
+    def plot_field_lines(self, field_lines, color_func=None, **kwargs):
         """
         Plot magnetic field lines from `pfsspy`.
 
@@ -362,16 +362,33 @@ class SunpyPlotter:
         ----------
         field_lines : `pfsspy.fieldline.FieldLines`
             Field lines to be plotted.
+        color_func : function
+            Function to get the color for each field line.
         **kwargs :
             Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
+        if not color_func:
+            def color_func(field_line):
+                color = {0: 'black', -1: 'tab:blue', 1: 'tab:red'}.get(field_line.polarity)
+                return color
+
         field_line_meshes = pv.MultiBlock([])
         for field_line in field_lines:
             grid = self._coords_to_xyz(field_line.coords.ravel())
             field_line_mesh = pv.StructuredGrid(grid[:, 0], grid[:, 1], grid[:, 2])
-            color = {0: 'black', -1: 'tab:blue', 1: 'tab:red'}.get(field_line.polarity)
+
+            color = color_func(field_line)
+            opacity = 1
+
+            if isinstance(color, tuple):
+                color = list(color)
+                if len(color) == 4:
+                    opacity = color.pop()
+                color = np.asarray(color)*255
+                print(color)
+
             field_line_mesh.add_field_array([color], 'color')
-            self.plotter.add_mesh(field_line_mesh, color=color, **kwargs)
+            self.plotter.add_mesh(field_line_mesh, color=color, opacity=opacity, **kwargs)
             field_line_meshes.append(field_line_mesh)
 
         self._add_mesh_to_dict(block_name='field_lines', mesh=field_line_meshes)
@@ -422,7 +439,8 @@ class SunpyPlotter:
             else:
                 color = dict(block.field_arrays).pop('color', [None])[0]
 
-                if not isinstance(color, str):
+                # Check for either a string or an (r,g,b) value
+                if not (isinstance(color, str) or isinstance(color, pyvista.core.pyvista_ndarray.pyvista_ndarray)):
                     color = None
                 if color in _cmap_registry:
                     self.plotter.add_mesh(block, cmap=color)

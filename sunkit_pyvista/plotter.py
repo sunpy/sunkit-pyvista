@@ -364,6 +364,8 @@ class SunpyPlotter:
             Field lines to be plotted.
         color_func : function
             Function to get the color for each field line.
+            If not given, defaults to showing closed field lines in black,
+            and open field lines in blue (positive polarity) or red (negative polarity).
         **kwargs :
             Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """

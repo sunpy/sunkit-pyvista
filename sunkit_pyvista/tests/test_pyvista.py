@@ -4,6 +4,7 @@ import numpy as np
 import pfsspy
 import pytest
 import pyvista as pv
+import pyvistaqt as pvq
 from pfsspy import tracing
 from pfsspy.sample_data import get_gong_map
 
@@ -14,7 +15,7 @@ import sunpy.map as smap
 from astropy.coordinates import SkyCoord
 from sunpy.coordinates import HeliocentricInertial, HeliographicStonyhurst
 
-from sunkit_pyvista import SunpyPlotter
+from sunkit_pyvista import SunpyBackgroundPlotter, SunpyPlotter
 
 
 @pytest.fixture
@@ -27,10 +28,19 @@ def plotter():
     return SunpyPlotter()
 
 
+@pytest.fixture
+def bg_plotter():
+    return SunpyBackgroundPlotter()
+
+
 @pytest.mark.display_server
 def test_basic(plotter):
     assert isinstance(plotter.plotter, pv.Plotter)
     plotter.show()
+
+
+def test_basic_animator(bg_plotter):
+    isinstance(bg_plotter.plotter, pvq.plotting.BackgroundPlotter)
 
 
 def test_coordinate_frame(plotter):
@@ -183,7 +193,14 @@ def test_loop_through_meshes(plotter):
     assert plotter.plotter.mesh.center == [0, 1, 1]
 
 
+<<<<<<< HEAD
+@pytest.mark.display_server
+def test_animator(aia171_test_map, bg_plotter):
+    bg_plotter.plot_map_sequence(aia171_test_map, aia171_test_map)
+    bg_plotter.plotter.close()
+=======
 def test_plot_limb(aia171_test_map, plotter):
     plotter.plot_limb(aia171_test_map)
     assert plotter.plotter.mesh.n_cells == 22
     assert plotter.plotter.mesh.n_points == 20040
+>>>>>>> 4338edbfa3642adc060f89acc3f4bfb9baa37e0b

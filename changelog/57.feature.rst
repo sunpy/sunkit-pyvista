@@ -1,0 +1,2 @@
+Adds :class:`~sunkit_pyvista.background_plotter.SunpyBackgroundPlotter` which allows for animations to be performed by defining a separate animator class for the required
+animations.

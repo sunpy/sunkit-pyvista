@@ -378,17 +378,13 @@ class SunpyPlotter:
             field_line_mesh = pv.StructuredGrid(grid[:, 0], grid[:, 1], grid[:, 2])
 
             color = color_func(field_line)
-            opacity = 1
-
             if isinstance(color, tuple):
                 color = list(color)
                 if len(color) == 4:
-                    opacity = color.pop()
-                color = np.asarray(color)*255
-                print(color)
+                    color.pop()
 
             field_line_mesh.add_field_array([color], 'color')
-            self.plotter.add_mesh(field_line_mesh, color=color, opacity=opacity, **kwargs)
+            self.plotter.add_mesh(field_line_mesh, color=color, **kwargs)
             field_line_meshes.append(field_line_mesh)
 
         self._add_mesh_to_dict(block_name='field_lines', mesh=field_line_meshes)

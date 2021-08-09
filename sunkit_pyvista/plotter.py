@@ -383,7 +383,8 @@ class SunpyPlotter:
             if isinstance(color, tuple):
                 color = list(color)
                 if len(color) == 4:
-                    color.pop()
+                    opacity = color[3]
+                    color = color[:3]
 
             field_line_mesh.add_field_array([color], 'color')
             self.plotter.add_mesh(field_line_mesh, color=color, **kwargs)

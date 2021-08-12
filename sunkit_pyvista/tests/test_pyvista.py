@@ -4,6 +4,7 @@ import numpy as np
 import pfsspy
 import pytest
 import pyvista as pv
+from matplotlib import colors
 from pfsspy import tracing
 from pfsspy.sample_data import get_gong_map
 
@@ -154,7 +155,7 @@ def test_field_lines(aia171_test_map, plotter):
 
 
 def test_save_and_load(aia171_test_map, plotter, tmp_path):
-    plotter.plot_map(aia171_test_map)
+    plotter.plot_map(aia171_test_map, color='green')
 
     filepath = (tmp_path / "save_data.vtm")
     plotter.save(filepath=filepath)
@@ -164,6 +165,8 @@ def test_save_and_load(aia171_test_map, plotter, tmp_path):
 
     assert plotter.plotter.mesh.n_cells == 7859
     assert plotter.plotter.mesh.n_points == 8060
+    assert dict(plotter.plotter.mesh.field_arrays)['cmap'][0] == 'sdoaia171'
+    assert tuple(dict(plotter.plotter.mesh.field_arrays)['color']) == colors.to_rgb('green')
 
     with pytest.raises(ValueError, match='VTM file'):
         plotter.save(filepath=filepath)

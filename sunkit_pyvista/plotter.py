@@ -219,8 +219,13 @@ class SunpyPlotter:
         else:
             clim = [0, 1]
         cmap = self._get_cmap(kwargs, m)
-        self.plotter.add_mesh(map_mesh, cmap=cmap, clim=clim, **kwargs)
-        map_mesh.add_field_array([cmap], 'color')
+        color = kwargs.pop('color', None)
+        if color:
+            color = colors.to_rgb(color)
+            map_mesh.add_field_array(color, 'color')
+
+        self.plotter.add_mesh(map_mesh, cmap=cmap, color=color, clim=clim, **kwargs)
+        map_mesh.add_field_array([cmap], 'cmap')
         self._add_mesh_to_dict(block_name='maps', mesh=map_mesh)
 
     @staticmethod
@@ -423,11 +428,10 @@ class SunpyPlotter:
             if isinstance(block, pv.MultiBlock):
                 self._loop_through_meshes(block)
             else:
-                color = tuple(dict(block.field_arrays).pop('color', (1, 1, 1)))
-                if color[0] in _cmap_registry:
-                    self.plotter.add_mesh(block, cmap=color[0])
-                else:
-                    self.plotter.add_mesh(block, color=color)
+                print(dict(block.field_arrays))
+                color = dict(block.field_arrays).get('color', None)
+                cmap = dict(block.field_arrays).get('cmap', [None])[0]
+                self.plotter.add_mesh(block, color=color, cmap=cmap)
 
     def load(self, filepath):
         """

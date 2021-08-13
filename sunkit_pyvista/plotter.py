@@ -428,7 +428,6 @@ class SunpyPlotter:
             if isinstance(block, pv.MultiBlock):
                 self._loop_through_meshes(block)
             else:
-                print(dict(block.field_arrays))
                 color = dict(block.field_arrays).get('color', None)
                 cmap = dict(block.field_arrays).get('cmap', [None])[0]
                 self.plotter.add_mesh(block, color=color, cmap=cmap)

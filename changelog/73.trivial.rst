@@ -1,0 +1,2 @@
+Changed the manner that colors or colormaps are saved.
+Changed default of meshes to be white.

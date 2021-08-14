@@ -164,6 +164,7 @@ def test_save_and_load(aia171_test_map, plotter, tmp_path):
 
     assert plotter.plotter.mesh.n_cells == 7859
     assert plotter.plotter.mesh.n_points == 8060
+    assert dict(plotter.plotter.mesh.field_arrays)['cmap'][0] == 'sdoaia171'
 
     with pytest.raises(ValueError, match='VTM file'):
         plotter.save(filepath=filepath)

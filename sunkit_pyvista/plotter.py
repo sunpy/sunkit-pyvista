@@ -3,6 +3,7 @@ from pathlib import Path
 
 import numpy as np
 import pyvista as pv
+from matplotlib import colors
 from matplotlib.cm import _cmap_registry
 
 import astropy.units as u
@@ -68,6 +69,24 @@ class SunpyPlotter:
         Show the plot.
         """
         self.plotter.show(*args, **kwargs)
+
+    def _extract_color(self, mesh_kwargs):
+        """
+        Converts a given color string to it's equivalent rgb tuple.
+
+        Parameters
+        ----------
+        mesh_kwargs : dict
+
+        Returns
+        -------
+        tuple
+            A tuple containing the (r, g, b) values from the strings passed
+            to it. Deafults to (255, 255, 255) - white.
+        """
+        color_string = mesh_kwargs.pop('color', 'white')
+        color = colors.to_rgb(color_string)
+        return color
 
     def _add_mesh_to_dict(self, block_name, mesh):
         """
@@ -219,8 +238,7 @@ class SunpyPlotter:
             clim = [0, 1]
         cmap = self._get_cmap(kwargs, m)
         self.plotter.add_mesh(map_mesh, cmap=cmap, clim=clim, **kwargs)
-
-        map_mesh.add_field_array([cmap], 'color')
+        map_mesh.add_field_array([cmap], 'cmap')
         self._add_mesh_to_dict(block_name='maps', mesh=map_mesh)
 
     @staticmethod
@@ -276,9 +294,9 @@ class SunpyPlotter:
         else:
             point_mesh = pv.Spline(points)
 
-        color = kwargs.get('color', np.nan)
-        point_mesh.add_field_array([color], 'color')
-        self.plotter.add_mesh(point_mesh, smooth_shading=True, **kwargs)
+        color = self._extract_color(kwargs)
+        point_mesh.add_field_array(color, 'color')
+        self.plotter.add_mesh(point_mesh, color=color, smooth_shading=True, **kwargs)
         self._add_mesh_to_dict(block_name='coordinates', mesh=point_mesh)
 
     def plot_solar_axis(self, length=2.5, arrow_kwargs={}, **kwargs):
@@ -304,9 +322,9 @@ class SunpyPlotter:
                               direction=(0, 0, length),
                               scale='auto',
                               **defaults)
-        color = kwargs.get('color', np.nan)
-        arrow_mesh.add_field_array([color], 'color')
-        self.plotter.add_mesh(arrow_mesh, **kwargs)
+        color = self._extract_color(kwargs)
+        arrow_mesh.add_field_array(color, 'color')
+        self.plotter.add_mesh(arrow_mesh, color=color, **kwargs)
         self._add_mesh_to_dict(block_name='solar_axis', mesh=arrow_mesh)
 
     def plot_quadrangle(self, bottom_left, top_right=None, width: u.deg = None,
@@ -347,10 +365,10 @@ class SunpyPlotter:
         c.transform_to(self.coordinate_frame)
         quad_grid = self._coords_to_xyz(c)
         quad_block = pv.Spline(quad_grid)
-        color = kwargs.pop('color', 'white')
         radius = kwargs.get('radius', 0.01)
         quad_block = quad_block.tube(radius=radius)
-        quad_block.add_field_array([color], 'color')
+        color = self._extract_color(kwargs)
+        quad_block.add_field_array(color, 'color')
         self.plotter.add_mesh(quad_block, color=color, **kwargs)
         self._add_mesh_to_dict(block_name='quadrangles', mesh=quad_block)
 
@@ -420,14 +438,9 @@ class SunpyPlotter:
             if isinstance(block, pv.MultiBlock):
                 self._loop_through_meshes(block)
             else:
-                color = dict(block.field_arrays).pop('color', [None])[0]
-
-                if not isinstance(color, str):
-                    color = None
-                if color in _cmap_registry:
-                    self.plotter.add_mesh(block, cmap=color)
-                else:
-                    self.plotter.add_mesh(block, color=color)
+                color = dict(block.field_arrays).get('color', None)
+                cmap = dict(block.field_arrays).get('cmap', [None])[0]
+                self.plotter.add_mesh(block, color=color, cmap=cmap)
 
     def load(self, filepath):
         """
@@ -449,7 +462,7 @@ class SunpyPlotter:
         Parameters
         ----------
         m : `sunpy.map.Map`
-            Map's limb to be plotted.
+                Map's limb to be plotted.
         radius : `float`
             Radius of the `pyvista.Spline` used to create the limb.
             Defaults to ``0.02`` times the radius of the sun.
@@ -460,8 +473,8 @@ class SunpyPlotter:
         limb_coordinates.transform_to(self.coordinate_frame)
         limb_grid = self._coords_to_xyz(limb_coordinates)
         limb_block = pv.Spline(limb_grid)
-        color = kwargs.pop('color', 'white')
+        color = self._extract_color(mesh_kwargs=kwargs)
         limb_block = limb_block.tube(radius=radius)
-        limb_block.add_field_array([color], 'color')
+        limb_block.add_field_array(color, 'color')
         self.plotter.add_mesh(limb_block, color=color, **kwargs)
         self._add_mesh_to_dict(block_name='limbs', mesh=limb_block)

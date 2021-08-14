@@ -237,7 +237,7 @@ class SunpyPlotter:
         else:
             clim = [0, 1]
         cmap = self._get_cmap(kwargs, m)
-        self.plotter.add_mesh(map_mesh, cmap=cmap, clim=clim, **kwargs)
+        self.plotter.add_mesh(map_mesh, cmap=cmap, clim=clim, show_scalar_bar=False, **kwargs)
         map_mesh.add_field_array([cmap], 'cmap')
         self._add_mesh_to_dict(block_name='maps', mesh=map_mesh)
 

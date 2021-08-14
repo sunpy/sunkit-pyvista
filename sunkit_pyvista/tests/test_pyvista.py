@@ -1,15 +1,15 @@
 
-from matplotlib import colors
 import pathlib
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pfsspy
 import pytest
 import pyvista as pv
+from matplotlib import colors
 from pfsspy import tracing
 from pfsspy.sample_data import get_gong_map
 
-import matplotlib.pyplot as plt
 import astropy.constants as const
 import astropy.units as u
 import sunpy.data.test as test
@@ -154,10 +154,12 @@ def test_field_lines_and_color_func(aia171_test_map, plotter):
     assert len(plotter.all_meshes['field_lines'][0]) == 64
     assert isinstance(plotter.all_meshes['field_lines'][0],
                       pv.core.composite.MultiBlock)
+
     def color_func(field_line):
         norm = colors.LogNorm(vmin=1, vmax=1000)
         cmap = plt.get_cmap('viridis')
         return cmap(norm(np.abs(field_line.expansion_factor)))
+
     plotter = SunpyPlotter()
     plotter.plot_field_lines(field_lines, color_func=color_func)
 

@@ -1,3 +1,5 @@
+
+from matplotlib import colors
 import pathlib
 
 import numpy as np
@@ -7,6 +9,7 @@ import pyvista as pv
 from pfsspy import tracing
 from pfsspy.sample_data import get_gong_map
 
+import matplotlib.pyplot as plt
 import astropy.constants as const
 import astropy.units as u
 import sunpy.data.test as test
@@ -131,7 +134,7 @@ def test_multi_block(plotter):
     assert plotter.all_meshes['solar_axis'][0].n_points == 101
 
 
-def test_field_lines(aia171_test_map, plotter):
+def test_field_lines_and_color_func(aia171_test_map, plotter):
     gong_fname = get_gong_map()
     gong_map = smap.Map(gong_fname)
     nrho = 35
@@ -151,6 +154,12 @@ def test_field_lines(aia171_test_map, plotter):
     assert len(plotter.all_meshes['field_lines'][0]) == 64
     assert isinstance(plotter.all_meshes['field_lines'][0],
                       pv.core.composite.MultiBlock)
+    def color_func(field_line):
+        norm = colors.LogNorm(vmin=1, vmax=1000)
+        cmap = plt.get_cmap('viridis')
+        return cmap(norm(np.abs(field_line.expansion_factor)))
+    plotter = SunpyPlotter()
+    plotter.plot_field_lines(field_lines, color_func=color_func)
 
 
 def test_save_and_load(aia171_test_map, plotter, tmp_path):
@@ -164,6 +173,7 @@ def test_save_and_load(aia171_test_map, plotter, tmp_path):
 
     assert plotter.plotter.mesh.n_cells == 7859
     assert plotter.plotter.mesh.n_points == 8060
+    assert dict(plotter.plotter.mesh.field_arrays)['cmap'][0] == 'sdoaia171'
 
     with pytest.raises(ValueError, match='VTM file'):
         plotter.save(filepath=filepath)

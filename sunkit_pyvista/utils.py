@@ -5,8 +5,6 @@ from astropy.coordinates import SkyCoord
 from sunpy.coordinates import HeliographicStonyhurst
 from sunpy.sun import constants
 
-__all__ = ['get_limb_coordinates']
-
 
 @u.quantity_input
 def get_limb_coordinates(observer, rsun=constants.radius, resolution=1000):

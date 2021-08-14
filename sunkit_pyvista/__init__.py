@@ -4,4 +4,3 @@ except ImportError:
     __version__ = "0.0.0.0"
 
 from .plotter import *
-from .utils import *

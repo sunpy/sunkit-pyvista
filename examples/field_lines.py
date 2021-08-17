@@ -58,7 +58,10 @@ seeds = SkyCoord(lon, lat, radius*R_sun,
 field_lines = tracer.trace(seeds, output_)
 
 
-# We cal also specify a color function while plotting the field lines.
+# We can also specify a color function while plotting the field lines.
+# This function takes a single field line, and returns a color either
+# in the form of a string, (r,g,b) or (r,g,b,a) tuple.
+# In this case we use a Matplotlib norm and colormap to return a tuple of RGBA values.
 def my_fline_color_func(field_line):
     norm = colors.LogNorm(vmin=1, vmax=1000)
     cmap = plt.get_cmap('viridis')

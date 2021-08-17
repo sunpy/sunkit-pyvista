@@ -384,6 +384,12 @@ class SunpyPlotter:
             Function to get the color for each field line.
             If not given, defaults to showing closed field lines in black,
             and open field lines in blue (positive polarity) or red (negative polarity).
+            The function must have the signature::
+            
+                def color_func(field_line: pfsspy.fieldline.FieldLine) -> color:
+             
+             Where ``color`` is any color that `pyvista` recognises
+             (e.g. a RGBA tuple, a RGB tuple, a color string)
         **kwargs :
             Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """

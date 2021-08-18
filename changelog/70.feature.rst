@@ -1,0 +1,1 @@
+Allows user to specify color via a color function to :meth:`~sunkit_pyvista.plotter.SunpyPlotter.plot_field_lines`.

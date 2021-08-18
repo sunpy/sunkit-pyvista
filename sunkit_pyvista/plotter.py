@@ -373,7 +373,7 @@ class SunpyPlotter:
         self.plotter.add_mesh(quad_block, color=color, **kwargs)
         self._add_mesh_to_dict(block_name='quadrangles', mesh=quad_block)
 
-    def plot_field_lines(self, field_lines, **kwargs):
+    def plot_field_lines(self, field_lines, color_func=None, **kwargs):
         """
         Plot magnetic field lines from `pfsspy`.
 
@@ -381,16 +381,38 @@ class SunpyPlotter:
         ----------
         field_lines : `pfsspy.fieldline.FieldLines`
             Field lines to be plotted.
+        color_func : function
+            Function to get the color for each field line.
+            If not given, defaults to showing closed field lines in black,
+            and open field lines in blue (positive polarity) or red (negative polarity).
+            The function must have the signature::
+
+                def color_func(field_line: pfsspy.fieldline.FieldLine) -> color:
+
+             Where ``color`` is any color that `pyvista` recognises
+             (e.g. a RGBA tuple, a RGB tuple, a color string)
         **kwargs :
             Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
+        if not color_func:
+            def color_func(field_line):
+                color = {0: 'black', -1: 'tab:blue', 1: 'tab:red'}.get(field_line.polarity)
+                return colors.to_rgb(color)
+
         field_line_meshes = pv.MultiBlock([])
         for field_line in field_lines:
             grid = self._coords_to_xyz(field_line.coords.ravel())
             field_line_mesh = pv.StructuredGrid(grid[:, 0], grid[:, 1], grid[:, 2])
-            color = {0: 'black', -1: 'tab:blue', 1: 'tab:red'}.get(field_line.polarity)
+            color = color_func(field_line)
+            opacity = 1
+            if isinstance(color, tuple):
+                color = list(color)
+                if len(color) == 4:
+                    opacity = color[3]
+                    color = color[:3]
+
             field_line_mesh.add_field_array([color], 'color')
-            self.plotter.add_mesh(field_line_mesh, color=color, **kwargs)
+            self.plotter.add_mesh(field_line_mesh, color=color, opacity=opacity, **kwargs)
             field_line_meshes.append(field_line_mesh)
 
         self._add_mesh_to_dict(block_name='field_lines', mesh=field_line_meshes)

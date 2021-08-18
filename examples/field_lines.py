@@ -5,8 +5,10 @@ Plotting Field Lines from pfsspy
 
 sunkit-pyvista can be used to plot field lines from `pfsspy`.
 """
+import matplotlib.pyplot as plt
 import numpy as np
 import pfsspy
+from matplotlib import colors
 from pfsspy import tracing
 from pfsspy.sample_data import get_gong_map
 
@@ -55,7 +57,18 @@ seeds = SkyCoord(lon, lat, radius*R_sun,
                  frame=gong_map.coordinate_frame)
 field_lines = tracer.trace(seeds, output_)
 
-# We plot the field lines
-plotter.plot_field_lines(field_lines)
+
+# We can also specify a color function while plotting the field lines.
+# This function takes a single field line, and returns a color either
+# in the form of a string, (r,g,b) or (r,g,b,a) tuple.
+# In this case we use a Matplotlib norm and colormap to return a tuple of RGBA values.
+def my_fline_color_func(field_line):
+    norm = colors.LogNorm(vmin=1, vmax=1000)
+    cmap = plt.get_cmap('viridis')
+    return cmap(norm(np.abs(field_line.expansion_factor)))
+
+
+# Plotting the field lines
+plotter.plot_field_lines(field_lines, color_func=my_fline_color_func)
 
 plotter.show()

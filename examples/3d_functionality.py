@@ -12,14 +12,13 @@ import astropy.units as u
 from astropy.constants import R_sun
 from astropy.coordinates import SkyCoord
 from sunpy.coordinates import frames
-from sunpy.data.sample import AIA_171_IMAGE
-from sunpy.map import Map
 
 from sunkit_pyvista import SunpyPlotter
+from sunkit_pyvista.sample import low_res_aia_171
 
 ###############################################################################
 # We will firstly use an AIA 171 image from the sunpy sample data as the base image.
-m = Map(AIA_171_IMAGE)
+m = low_res_aia_171()
 
 ###############################################################################
 # Start by creating a plotter

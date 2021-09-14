@@ -6,14 +6,12 @@ Three dimensional plots with sunpy Maps
 Using sunkit-pyvista, one can interface with the `pyvista` package to
 produce interactive 3D plots for sunpy Maps.
 """
-from sunpy.data.sample import AIA_193_IMAGE
-from sunpy.map import Map
-
 from sunkit_pyvista import SunpyPlotter
+from sunkit_pyvista.sample import low_res_aia_171
 
 ###############################################################################
 # We will firstly use an AIA 193 image from the sunpy sample data as the base image.
-m = Map(AIA_193_IMAGE)
+m = low_res_aia_171()
 
 ###############################################################################
 # 3D plots are done on "plotter" objects, which are similar to matplotlib axes.

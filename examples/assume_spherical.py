@@ -6,15 +6,12 @@ Assuming a Spherical Screen
 We can plot the Using the assumption that the image lies on the surface of a spherical screen centered at
 AIA with a radius equal to the Sun-AIA distance.
 """
-
-
 from sunpy.coordinates import Helioprojective
-from sunpy.data.sample import AIA_171_IMAGE
-from sunpy.map import Map
 
 from sunkit_pyvista import SunpyPlotter
+from sunkit_pyvista.sample import low_res_aia_171
 
-m = Map(AIA_171_IMAGE)
+m = low_res_aia_171()
 
 plotter = SunpyPlotter()
 

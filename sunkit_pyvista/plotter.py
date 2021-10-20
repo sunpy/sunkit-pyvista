@@ -4,16 +4,15 @@ from pathlib import Path
 import numpy as np
 import pyvista as pv
 from matplotlib import colors
-from matplotlib.cm import _cmap_registry
 
 import astropy.units as u
 from astropy.constants import R_sun
 from astropy.coordinates import Longitude, SkyCoord
 from astropy.visualization import AsymmetricPercentileInterval
+from astropy.visualization.wcsaxes import Quadrangle
 from sunpy.coordinates import HeliocentricInertial
 from sunpy.coordinates.utils import get_rectangle_coordinates
 from sunpy.map.maputils import all_corner_coords_from_map
-from sunpy.visualization._quadrangle import Quadrangle
 
 from sunkit_pyvista.utils import get_limb_coordinates
 
@@ -239,31 +238,19 @@ class SunpyPlotter:
         cmap = self._get_cmap(kwargs, m)
         kwargs.setdefault('show_scalar_bar', False)
         self.plotter.add_mesh(map_mesh, cmap=cmap, clim=clim, **kwargs)
-        map_mesh.add_field_array([cmap], 'cmap')
+        map_mesh.add_field_data([cmap], 'cmap')
         self._add_mesh_to_dict(block_name='maps', mesh=map_mesh)
 
     @staticmethod
     def _get_cmap(kwargs, m):
         """
-        When plotting in the docs we use the ipygany backend, which only
-        supports a small subset of colormaps.
-
-        This method detects the backend, and if required replaces the requested
-        colormap with a ipygany-compatible one.
+        Get the colormap as a string.
 
         Returns
         -------
-        matplotlib.colors.LinearSegmentedColormap
+        str
         """
-        cmap = kwargs.pop('cmap', m.cmap)
-        if not isinstance(cmap, str):
-            _cmap_reg_rev = {v: k for k, v in _cmap_registry.items()}
-            cmap = _cmap_reg_rev[cmap]
-        if pv.global_theme._jupyter_backend == 'ipygany':
-            from ipygany.colormaps import colormaps
-            if cmap not in colormaps:
-                # TODO: return a different colormap depending on the input colormap
-                cmap = 'YlOrRd'
+        cmap = kwargs.pop('cmap', m.plot_settings['cmap'])
         return cmap
 
     def plot_coordinates(self, coords, radius=0.05, **kwargs):
@@ -296,7 +283,7 @@ class SunpyPlotter:
             point_mesh = pv.Spline(points)
 
         color = self._extract_color(kwargs)
-        point_mesh.add_field_array(color, 'color')
+        point_mesh.add_field_data(color, 'color')
         self.plotter.add_mesh(point_mesh, color=color, smooth_shading=True, **kwargs)
         self._add_mesh_to_dict(block_name='coordinates', mesh=point_mesh)
 
@@ -324,7 +311,7 @@ class SunpyPlotter:
                               scale='auto',
                               **defaults)
         color = self._extract_color(kwargs)
-        arrow_mesh.add_field_array(color, 'color')
+        arrow_mesh.add_field_data(color, 'color')
         self.plotter.add_mesh(arrow_mesh, color=color, **kwargs)
         self._add_mesh_to_dict(block_name='solar_axis', mesh=arrow_mesh)
 
@@ -369,7 +356,7 @@ class SunpyPlotter:
         radius = kwargs.get('radius', 0.01)
         quad_block = quad_block.tube(radius=radius)
         color = self._extract_color(kwargs)
-        quad_block.add_field_array(color, 'color')
+        quad_block.add_field_data(color, 'color')
         self.plotter.add_mesh(quad_block, color=color, **kwargs)
         self._add_mesh_to_dict(block_name='quadrangles', mesh=quad_block)
 
@@ -411,7 +398,7 @@ class SunpyPlotter:
                     opacity = color[3]
                     color = color[:3]
 
-            field_line_mesh.add_field_array([color], 'color')
+            field_line_mesh.add_field_data([color], 'color')
             self.plotter.add_mesh(field_line_mesh, color=color, opacity=opacity, **kwargs)
             field_line_meshes.append(field_line_mesh)
 
@@ -461,8 +448,8 @@ class SunpyPlotter:
             if isinstance(block, pv.MultiBlock):
                 self._loop_through_meshes(block)
             else:
-                color = dict(block.field_arrays).get('color', None)
-                cmap = dict(block.field_arrays).get('cmap', [None])[0]
+                color = dict(block.field_data).get('color', None)
+                cmap = dict(block.field_data).get('cmap', [None])[0]
                 self.plotter.add_mesh(block, color=color, cmap=cmap)
 
     def load(self, filepath):
@@ -498,6 +485,6 @@ class SunpyPlotter:
         limb_block = pv.Spline(limb_grid)
         color = self._extract_color(mesh_kwargs=kwargs)
         limb_block = limb_block.tube(radius=radius)
-        limb_block.add_field_array(color, 'color')
+        limb_block.add_field_data(color, 'color')
         self.plotter.add_mesh(limb_block, color=color, **kwargs)
         self._add_mesh_to_dict(block_name='limbs', mesh=limb_block)

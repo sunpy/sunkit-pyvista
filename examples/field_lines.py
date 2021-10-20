@@ -13,16 +13,16 @@ from pfsspy import tracing
 from pfsspy.sample_data import get_gong_map
 
 import astropy.units as u
+import sunpy.map
 from astropy.constants import R_sun
 from astropy.coordinates import SkyCoord
-from sunpy.data.sample import AIA_193_IMAGE
-from sunpy.map import Map
 
 from sunkit_pyvista import SunpyPlotter
+from sunkit_pyvista.sample import low_res_aia_171
 
 ###############################################################################
 # We will firstly use an AIA 193 image from the sunpy sample data as the base image.
-m = Map(AIA_193_IMAGE)
+m = low_res_aia_171()
 
 # Start by creating a plotter
 plotter = SunpyPlotter()
@@ -34,7 +34,7 @@ plotter.plot_solar_axis()
 
 # We load a gong_map from pfsspy
 gong_fname = get_gong_map()
-gong_map = Map(gong_fname)
+gong_map = sunpy.map.Map(gong_fname)
 
 # Define the number of grid points in rho and solar surface rarius
 nrho = 35

@@ -251,7 +251,7 @@ class SunpyPlotter:
         -------
         str
         """
-        cmap = kwargs.pop('cmap', m.cmap)
+        cmap = kwargs.pop('cmap', m.plot_settings['cmap'])
         return cmap
 
     def plot_coordinates(self, coords, radius=0.05, **kwargs):

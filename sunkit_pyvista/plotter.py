@@ -13,7 +13,7 @@ from astropy.visualization import AsymmetricPercentileInterval
 from sunpy.coordinates import HeliocentricInertial
 from sunpy.coordinates.utils import get_rectangle_coordinates
 from sunpy.map.maputils import all_corner_coords_from_map
-from sunpy.visualization._quadrangle import Quadrangle
+from astropy.visualization.wcsaxes import Quadrangle
 
 from sunkit_pyvista.utils import get_limb_coordinates
 
@@ -252,9 +252,6 @@ class SunpyPlotter:
         str
         """
         cmap = kwargs.pop('cmap', m.cmap)
-        if not isinstance(cmap, str):
-            _cmap_reg_rev = {v: k for k, v in _cmap_registry.items()}
-            cmap = _cmap_reg_rev[cmap]
         return cmap
 
     def plot_coordinates(self, coords, radius=0.05, **kwargs):
@@ -452,8 +449,8 @@ class SunpyPlotter:
             if isinstance(block, pv.MultiBlock):
                 self._loop_through_meshes(block)
             else:
-                color = dict(block.field_arrays).get('color', None)
-                cmap = dict(block.field_arrays).get('cmap', [None])[0]
+                color = dict(block.field_data).get('color', None)
+                cmap = dict(block.field_data).get('cmap', [None])[0]
                 self.plotter.add_mesh(block, color=color, cmap=cmap)
 
     def load(self, filepath):

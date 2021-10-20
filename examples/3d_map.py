@@ -6,6 +6,7 @@ Three dimensional plots with sunpy Maps
 Using sunkit-pyvista, one can interface with the `pyvista` package to
 produce interactive 3D plots for sunpy Maps.
 """
+import astropy.units as u
 from sunkit_pyvista import SunpyPlotter
 from sunkit_pyvista.sample import low_res_aia_171
 
@@ -22,7 +23,7 @@ m = low_res_aia_171()
 plotter = SunpyPlotter()
 
 # Plot the map
-plotter.plot_map(m)
+plotter.plot_map(m, clip_interval=[0.1, 99] * u.percent)
 # Add an arrow to show the solar rotation axis
 plotter.plot_solar_axis()
 plotter.show()

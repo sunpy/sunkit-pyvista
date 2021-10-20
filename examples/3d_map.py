@@ -7,6 +7,7 @@ Using sunkit-pyvista, one can interface with the `pyvista` package to
 produce interactive 3D plots for sunpy Maps.
 """
 import astropy.units as u
+
 from sunkit_pyvista import SunpyPlotter
 from sunkit_pyvista.sample import low_res_aia_171
 

@@ -13,9 +13,9 @@ from pfsspy import tracing
 from pfsspy.sample_data import get_gong_map
 
 import astropy.units as u
+import sunpy.map
 from astropy.constants import R_sun
 from astropy.coordinates import SkyCoord
-import sunpy.map
 
 from sunkit_pyvista import SunpyPlotter
 from sunkit_pyvista.sample import low_res_aia_171

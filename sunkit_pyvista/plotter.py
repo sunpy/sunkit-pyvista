@@ -245,25 +245,16 @@ class SunpyPlotter:
     @staticmethod
     def _get_cmap(kwargs, m):
         """
-        When plotting in the docs we use the ipygany backend, which only
-        supports a small subset of colormaps.
-
-        This method detects the backend, and if required replaces the requested
-        colormap with a ipygany-compatible one.
+        Get the colormap as a string.
 
         Returns
         -------
-        matplotlib.colors.LinearSegmentedColormap
+        str
         """
         cmap = kwargs.pop('cmap', m.cmap)
         if not isinstance(cmap, str):
             _cmap_reg_rev = {v: k for k, v in _cmap_registry.items()}
             cmap = _cmap_reg_rev[cmap]
-        if pv.global_theme._jupyter_backend == 'ipygany':
-            from ipygany.colormaps import colormaps
-            if cmap not in colormaps:
-                # TODO: return a different colormap depending on the input colormap
-                cmap = 'YlOrRd'
         return cmap
 
     def plot_coordinates(self, coords, radius=0.05, **kwargs):

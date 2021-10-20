@@ -239,7 +239,7 @@ class SunpyPlotter:
         cmap = self._get_cmap(kwargs, m)
         kwargs.setdefault('show_scalar_bar', False)
         self.plotter.add_mesh(map_mesh, cmap=cmap, clim=clim, **kwargs)
-        map_mesh.add_field_array([cmap], 'cmap')
+        map_mesh.add_field_data([cmap], 'cmap')
         self._add_mesh_to_dict(block_name='maps', mesh=map_mesh)
 
     @staticmethod
@@ -296,7 +296,7 @@ class SunpyPlotter:
             point_mesh = pv.Spline(points)
 
         color = self._extract_color(kwargs)
-        point_mesh.add_field_array(color, 'color')
+        point_mesh.add_field_data(color, 'color')
         self.plotter.add_mesh(point_mesh, color=color, smooth_shading=True, **kwargs)
         self._add_mesh_to_dict(block_name='coordinates', mesh=point_mesh)
 
@@ -324,7 +324,7 @@ class SunpyPlotter:
                               scale='auto',
                               **defaults)
         color = self._extract_color(kwargs)
-        arrow_mesh.add_field_array(color, 'color')
+        arrow_mesh.add_field_data(color, 'color')
         self.plotter.add_mesh(arrow_mesh, color=color, **kwargs)
         self._add_mesh_to_dict(block_name='solar_axis', mesh=arrow_mesh)
 
@@ -369,7 +369,7 @@ class SunpyPlotter:
         radius = kwargs.get('radius', 0.01)
         quad_block = quad_block.tube(radius=radius)
         color = self._extract_color(kwargs)
-        quad_block.add_field_array(color, 'color')
+        quad_block.add_field_data(color, 'color')
         self.plotter.add_mesh(quad_block, color=color, **kwargs)
         self._add_mesh_to_dict(block_name='quadrangles', mesh=quad_block)
 
@@ -411,7 +411,7 @@ class SunpyPlotter:
                     opacity = color[3]
                     color = color[:3]
 
-            field_line_mesh.add_field_array([color], 'color')
+            field_line_mesh.add_field_data([color], 'color')
             self.plotter.add_mesh(field_line_mesh, color=color, opacity=opacity, **kwargs)
             field_line_meshes.append(field_line_mesh)
 
@@ -498,6 +498,6 @@ class SunpyPlotter:
         limb_block = pv.Spline(limb_grid)
         color = self._extract_color(mesh_kwargs=kwargs)
         limb_block = limb_block.tube(radius=radius)
-        limb_block.add_field_array(color, 'color')
+        limb_block.add_field_data(color, 'color')
         self.plotter.add_mesh(limb_block, color=color, **kwargs)
         self._add_mesh_to_dict(block_name='limbs', mesh=limb_block)

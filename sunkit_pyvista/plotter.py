@@ -284,6 +284,8 @@ class SunpyPlotter:
 
         color = self._extract_color(kwargs)
         point_mesh.add_field_data(color, 'color')
+
+        kwargs['render_lines_as_tubes'] = kwargs.pop('render_lines_as_tubes', True)
         self.plotter.add_mesh(point_mesh, color=color, smooth_shading=True, **kwargs)
         self._add_mesh_to_dict(block_name='coordinates', mesh=point_mesh)
 
@@ -399,6 +401,8 @@ class SunpyPlotter:
                     color = color[:3]
 
             field_line_mesh.add_field_data([color], 'color')
+
+            kwargs['render_lines_as_tubes'] = kwargs.pop('render_lines_as_tubes', True)
             self.plotter.add_mesh(field_line_mesh, color=color, opacity=opacity, **kwargs)
             field_line_meshes.append(field_line_mesh)
 

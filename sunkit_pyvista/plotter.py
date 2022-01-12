@@ -62,10 +62,11 @@ class SunpyPlotter:
         """
         return self._plotter
 
-    @functools.wraps(pv.Plotter.show)
     def show(self, *args, **kwargs):
         """
         Show the plot.
+
+        See `pyvista.Plotter.show` for accepted arguments.
         """
         self.plotter.show(*args, **kwargs)
 

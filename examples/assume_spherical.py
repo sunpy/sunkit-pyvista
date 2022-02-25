@@ -12,12 +12,11 @@ pixels can be ingored altogether.
 """
 
 import astropy.units as u
-from sunpy.data.sample import AIA_171_IMAGE
-from sunpy.map import Map
 
 from sunkit_pyvista import SunpyPlotter
+from sunkit_pyvista.sample import low_res_aia_171
 
-m = Map(AIA_171_IMAGE)
+m = low_res_aia_171()
 
 plotter = SunpyPlotter()
 plotter.plot_map(m, clip_interval=[1, 99] * u.percent,

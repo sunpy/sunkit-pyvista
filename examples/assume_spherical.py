@@ -14,9 +14,9 @@ pixels can be ingored altogether.
 import astropy.units as u
 
 from sunkit_pyvista import SunpyPlotter
-from sunkit_pyvista.sample import low_res_aia_171
+from sunkit_pyvista.sample import low_res_aia_193
 
-m = low_res_aia_171()
+m = low_res_aia_193()
 
 plotter = SunpyPlotter()
 plotter.plot_map(m, clip_interval=[1, 99] * u.percent,

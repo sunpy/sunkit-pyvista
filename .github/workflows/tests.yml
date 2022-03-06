@@ -1,0 +1,33 @@
+name: Automated tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  # Allow manual runs through the web UI
+  workflow_dispatch:
+
+jobs:
+  linux-py39:
+    uses: ./.github/workflows/python-test-workflow.yml
+    with:
+      os: ubuntu-latest
+      python-version: '3.9'
+      tox-env: py39
+
+  mac-py38:
+    uses: ./.github/workflows/python-test-workflow.yml
+    with:
+      os: ubuntu-latest
+      python-version: '3.8'
+      tox-env: py38
+
+  linux-docs-py39:
+    uses: ./.github/workflows/python-test-workflow.yml
+    with:
+      os: ubuntu-latest
+      python-version: '3.9'
+      tox-env: build_docs

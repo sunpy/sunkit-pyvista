@@ -28,7 +28,7 @@ m = low_res_aia_171()
 plotter = SunpyPlotter()
 
 # Plot a map
-plotter.plot_map(m)
+plotter.plot_map(m, clip_interval=[1, 99] * u.percent)
 # Add an arrow to show the solar rotation axis
 plotter.plot_solar_axis()
 

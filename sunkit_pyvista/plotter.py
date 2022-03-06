@@ -1,3 +1,4 @@
+import contextlib
 from pathlib import Path
 
 import numpy as np
@@ -9,7 +10,7 @@ from astropy.constants import R_sun
 from astropy.coordinates import Longitude, SkyCoord
 from astropy.visualization import AsymmetricPercentileInterval
 from astropy.visualization.wcsaxes import Quadrangle
-from sunpy.coordinates import HeliocentricInertial
+from sunpy.coordinates import HeliocentricInertial, Helioprojective
 from sunpy.coordinates.utils import get_rectangle_coordinates
 from sunpy.map.maputils import all_corner_coords_from_map
 
@@ -157,7 +158,7 @@ class SunpyPlotter:
         zoom_value = self.camera.view_angle / view_angle
         self.plotter.camera.zoom(zoom_value)
 
-    def _pyvista_mesh(self, m):
+    def _map_to_mesh(self, m, assume_spherical=True):
         """
         Create a mesh from a map.
 
@@ -165,13 +166,23 @@ class SunpyPlotter:
         ----------
         m : `sunpy.map.Map`
             The map to use.
+        assume_spherical : bool, optional
+            If `False`, only on-limb pixels are returned.
 
         Returns
         -------
         `pyvista.StructuredGrid`
         """
         corner_coords = all_corner_coords_from_map(m)
-        verts = self._coords_to_xyz(corner_coords)
+
+        if assume_spherical:
+            context = Helioprojective.assume_spherical_screen(
+                m.observer_coordinate, only_off_disk=True)
+        else:
+            context = contextlib.nullcontext()
+        with context:
+            # Convert SkyCoord to xyz
+            verts = self._coords_to_xyz(corner_coords)
         nx, ny = verts.shape[:2]
         nverts = nx * ny
         verts = verts.reshape(nverts, 3)
@@ -211,7 +222,10 @@ class SunpyPlotter:
         return grid
 
     @u.quantity_input
-    def plot_map(self, m, clip_interval: u.percent = None, **kwargs):
+    def plot_map(self, m,
+                 clip_interval: u.percent = None,
+                 assume_spherical_screen=True,
+                 **kwargs):
         """
         Plot a sunpy map.
 
@@ -222,10 +236,14 @@ class SunpyPlotter:
         clip_interval : two-element `~astropy.units.Quantity`, optional
             If provided, the data will be clipped to the percentile
             interval bounded by the two numbers.
+        assume_spherical_screen : bool, optional
+            If `True` (default) then off-limb pixels are plotted using
+            :meth:`sunpy.coordinates.Helioprojective.assume_spherical_screen`.
+            If `False`, off-limb pixels are not plotted.
         **kwargs :
             Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
-        map_mesh = self._pyvista_mesh(m)
+        map_mesh = self._map_to_mesh(m, assume_spherical=assume_spherical_screen)
         if clip_interval is not None:
             if len(clip_interval) == 2:
                 clim = self._get_clim(data=map_mesh['data'],

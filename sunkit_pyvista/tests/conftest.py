@@ -8,6 +8,13 @@ import pytest
 import pyvista
 from pyvista._vtk import VTK9
 
+try:
+    pyvista.start_xvfb()
+except Exception as e:
+    print('Could not start xvfb server:')
+    print(e)
+
+
 IMAGE_CACHE_DIR = os.path.join(Path(__file__).parent.absolute(), 'image_cache')
 if not os.path.isdir(IMAGE_CACHE_DIR):
     os.mkdir(IMAGE_CACHE_DIR)

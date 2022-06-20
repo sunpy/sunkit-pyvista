@@ -36,13 +36,12 @@ jobs:
       coverage: codecov
       envs: |
         - macos: py38
-        - windows: py39
 
   docs:
     needs: [core]
     uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@main
     with:
-      default_python: '3.8'
+      default_python: '3.9'
       pytest: false
       libraries: |
         apt:

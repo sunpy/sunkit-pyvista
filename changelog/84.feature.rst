@@ -1,1 +1,1 @@
-Added narrative documentation for pyvista.
+Added narrative documentation for sunkit-pyvista.

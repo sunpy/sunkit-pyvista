@@ -4,6 +4,8 @@ Plotting Field Lines from pfsspy
 ================================
 
 sunkit-pyvista can be used to plot field lines from `pfsspy`.
+
+This example will only work on a UNIX system as it requires pre-compiled FORTRAN code from `streamtracer <https://streamtracer.readthedocs.io/en/stable/>`__.
 """
 import matplotlib.pyplot as plt
 import numpy as np

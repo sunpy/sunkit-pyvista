@@ -151,9 +151,8 @@ def test_field_lines_and_color_func(aia171_test_map, plotter):
                      frame=gong_map.coordinate_frame)
     field_lines = tracer.trace(seeds, output_)
     plotter.plot_field_lines(field_lines)
-    assert len(plotter.all_meshes['field_lines'][0]) == 64
     assert isinstance(plotter.all_meshes['field_lines'][0],
-                      pv.core.composite.MultiBlock)
+                      pv.PolyData)
 
     def color_func(field_line):
         norm = colors.LogNorm(vmin=1, vmax=1000)

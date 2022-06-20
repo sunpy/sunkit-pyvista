@@ -6,7 +6,6 @@ from pathlib import Path
 
 import pytest
 import pyvista
-from pyvista._vtk import VTK9
 
 try:
     pyvista.start_xvfb()
@@ -42,10 +41,11 @@ def verify_cache_images(plotter):
     Assign this only once for each test you'd like to validate the previous
     image of. This will not work with parameterized tests.
     """
-    pytest.skip('Skipping image test')
-    # Image cache is only valid for VTK9 on Linux
-    if not VTK9 or platform.system() != 'Linux':
-        pytest.skip("VTK9 on linux required for this test")
+    import vtk
+
+    # Image cache is only valid for VTK9.2 on Linux
+    if not vtk.__version__ >= '9.2.0' or platform.system() != 'Linux':
+        pytest.skip("VTK9.2 on linux required for this test")
 
     # since each test must contain a unique name, we can simply
     # use the function test to name the image

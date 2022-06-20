@@ -408,8 +408,10 @@ class SunpyPlotter:
 
         field_line_meshes = pv.MultiBlock([])
         for field_line in field_lines:
-            grid = self._coords_to_xyz(field_line.coords.ravel())
-            field_line_mesh = pv.StructuredGrid(grid[:, 0], grid[:, 1], grid[:, 2])
+            xyz = self._coords_to_xyz(field_line.coords.ravel())
+            if not xyz.size:
+                continue
+            spline = pv.Spline(xyz)
             color = color_func(field_line)
             opacity = 1
             if isinstance(color, tuple):
@@ -418,13 +420,14 @@ class SunpyPlotter:
                     opacity = color[3]
                     color = color[:3]
 
-            field_line_mesh.add_field_data([color], 'color')
+            spline.add_field_data([color], 'color')
 
             kwargs['render_lines_as_tubes'] = kwargs.pop('render_lines_as_tubes', True)
-            self.plotter.add_mesh(field_line_mesh, color=color, opacity=opacity, **kwargs)
-            field_line_meshes.append(field_line_mesh)
+            kwargs['line_width'] = kwargs.pop('line_width', 5)
+            self.plotter.add_mesh(spline, color=color, opacity=opacity, **kwargs)
+            field_line_meshes.append(spline)
 
-        self._add_mesh_to_dict(block_name='field_lines', mesh=field_line_meshes)
+        self._add_mesh_to_dict(block_name='field_lines', mesh=spline)
 
     def save(self, filepath, overwrite=False):
         """

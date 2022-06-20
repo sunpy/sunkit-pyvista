@@ -22,14 +22,13 @@ from sunkit_pyvista import SunpyPlotter
 from sunkit_pyvista.sample import low_res_aia_193
 
 ###############################################################################
-# We will firstly use an AIA 193 image from the sunpy sample data as the base image.
-m = low_res_aia_193()
+# We will be using an AIA 193 image from the sunpy sample data as the base image.
 
 # Start by creating a plotter
 plotter = SunpyPlotter()
 
 # Plot a map
-plotter.plot_map(m, clip_interval=[1, 99] * u.percent)
+plotter.plot_map(low_res_aia_193, clip_interval=[1, 99] * u.percent)
 # Add an arrow to show the solar rotation axis
 plotter.plot_solar_axis()
 
@@ -58,11 +57,12 @@ seeds = SkyCoord(lon, lat, radius*R_sun,
                  frame=gong_map.coordinate_frame)
 field_lines = tracer.trace(seeds, output_)
 
-
 # We can also specify a color function while plotting the field lines.
 # This function takes a single field line, and returns a color either
 # in the form of a string, (r,g,b) or (r,g,b,a) tuple.
 # In this case we use a Matplotlib norm and colormap to return a tuple of RGBA values.
+
+
 def my_fline_color_func(field_line):
     norm = colors.LogNorm(vmin=1, vmax=1000)
     cmap = plt.get_cmap('viridis')

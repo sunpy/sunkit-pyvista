@@ -21,7 +21,7 @@ The goal of sunkit-pyvista is to allow 3D visualization of solar physics data wi
 Installation
 ============
 
-TODO: Add when we release a version
+See the `installation instructions <https://docs.sunpy.org/projects/sunkit-pyvista/en/latest/installing.html>`__ for more information.
 
 Developing
 ==========

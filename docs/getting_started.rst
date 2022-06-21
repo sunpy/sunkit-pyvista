@@ -38,6 +38,10 @@ You can plot the solar limb using :meth:`~sunkit_pyvista.SunpyPlotter.plot_limb`
 
     plotter.plot_limb(sunpy_map)
 
+Changing the camera coordinate, you can use :meth:`~sunkit_pyvista.SunpyPlotter.set_camera_coordinate`::
+
+    plotter.set_camera_coordinate(sky_coord)
+
 Finally you will want to show the plot::
 
     plotter.show()

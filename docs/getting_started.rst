@@ -50,4 +50,4 @@ and::
 
     plotter.load(filepath)
 
-Hopefully this gives you a good idea of how to use the plotting class.
+Hopefully, this gives you a good idea of how to use the plotting class.

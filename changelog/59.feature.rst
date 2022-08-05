@@ -1,1 +1,0 @@
-Adds :meth:`~sunkit_pyvista.plotter.SunpyPlotter.plot_limb` which allows for drawing a limb as seen by the map's observer.

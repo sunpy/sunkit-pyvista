@@ -1,1 +1,0 @@
-Adds parenthesis to fix check in :meth:`~sunkit_pyvista.plotter.SunpyPlotter.set_view_angle`.

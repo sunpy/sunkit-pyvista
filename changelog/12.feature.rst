@@ -1,1 +1,0 @@
-Added :meth:`~sunkit_pyvista.plotter.SunpyPlotter.plot_field_lines` method which allows for plotting of magnetic field lines from `pfsspy` through pyvista.

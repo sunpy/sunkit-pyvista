@@ -16,7 +16,7 @@ from sunpy.map.maputils import all_corner_coords_from_map
 
 from sunkit_pyvista.utils import get_limb_coordinates
 
-__all__ = ['SunpyPlotter']
+__all__ = ["SunpyPlotter"]
 
 
 class SunpyPlotter:
@@ -84,14 +84,14 @@ class SunpyPlotter:
             A tuple containing the (r, g, b) values from the strings passed
             to it. Deafults to (255, 255, 255) - white.
         """
-        color_string = mesh_kwargs.pop('color', 'white')
+        color_string = mesh_kwargs.pop("color", "white")
         color = colors.to_rgb(color_string)
         return color
 
     def _add_mesh_to_dict(self, block_name, mesh):
         """
-        Adds all of the meshes to a `dict`
-        that stores a reference to the meshes.
+        Adds all of the meshes to a `dict` that stores a reference to the
+        meshes.
         """
         if block_name in self.all_meshes:
             self.all_meshes[block_name].append(mesh)
@@ -114,17 +114,21 @@ class SunpyPlotter:
             of the coordinates.
         """
         coords = coords.transform_to(self.coordinate_frame)
-        coords.representation_type = 'cartesian'
-        return np.stack((coords.x.to_value(R_sun),
-                         coords.y.to_value(R_sun),
-                         coords.z.to_value(R_sun)),
-                        axis=-1)
+        coords.representation_type = "cartesian"
+        return np.stack(
+            (
+                coords.x.to_value(R_sun),
+                coords.y.to_value(R_sun),
+                coords.z.to_value(R_sun),
+            ),
+            axis=-1,
+        )
 
     def _get_clim(self, data, clip_interval):
         """
         Get vmin, vmax of a data slice when clip_interval is specified.
         """
-        percent_limits = clip_interval.to('%').value
+        percent_limits = clip_interval.to("%").value
         vmin, vmax = AsymmetricPercentileInterval(*percent_limits).get_limits(data)
         return [vmin, vmax]
 
@@ -153,8 +157,7 @@ class SunpyPlotter:
         """
         view_angle = angle.to_value(u.deg)
         if not (view_angle > 0 and view_angle <= 180):
-            raise ValueError("specified view angle must be "
-                             "0 deg < angle <= 180 deg")
+            raise ValueError("specified view angle must be " "0 deg < angle <= 180 deg")
         zoom_value = self.camera.view_angle / view_angle
         self.plotter.camera.zoom(zoom_value)
 
@@ -177,7 +180,8 @@ class SunpyPlotter:
 
         if assume_spherical:
             context = Helioprojective.assume_spherical_screen(
-                m.observer_coordinate, only_off_disk=True)
+                m.observer_coordinate, only_off_disk=True
+            )
         else:
             context = contextlib.nullcontext()
         with context:
@@ -195,11 +199,15 @@ class SunpyPlotter:
         upper_left = vert_indices[:-1, 1:]
 
         nfaces = (nx - 1) * (ny - 1)
-        faces = np.column_stack([np.ones(nfaces).astype(int) * 4,
-                                 lower_left.ravel(),
-                                 lower_right.ravel(),
-                                 upper_right.ravel(),
-                                 upper_left.ravel()])
+        faces = np.column_stack(
+            [
+                np.ones(nfaces).astype(int) * 4,
+                lower_left.ravel(),
+                lower_right.ravel(),
+                upper_right.ravel(),
+                upper_left.ravel(),
+            ]
+        )
         # Remove faces that don't have a finite vertex
         # this can often happen with off-limb vertices)
         finite = np.sum(np.isfinite(verts[faces[:, 1], :]), axis=1) == 3
@@ -218,14 +226,13 @@ class SunpyPlotter:
         # Remove non-finite vertices
         verts = verts[vert_mask, :]
         grid = pv.PolyData(verts, faces.ravel())
-        grid['data'] = m.plot_settings['norm'](m.data.ravel()[finite])
+        grid["data"] = m.plot_settings["norm"](m.data.ravel()[finite])
         return grid
 
     @u.quantity_input
-    def plot_map(self, m,
-                 clip_interval: u.percent = None,
-                 assume_spherical_screen=True,
-                 **kwargs):
+    def plot_map(
+        self, m, clip_interval: u.percent = None, assume_spherical_screen=True, **kwargs
+    ):
         """
         Plot a sunpy map.
 
@@ -246,18 +253,20 @@ class SunpyPlotter:
         map_mesh = self._map_to_mesh(m, assume_spherical=assume_spherical_screen)
         if clip_interval is not None:
             if len(clip_interval) == 2:
-                clim = self._get_clim(data=map_mesh['data'],
-                                      clip_interval=clip_interval)
+                clim = self._get_clim(
+                    data=map_mesh["data"], clip_interval=clip_interval
+                )
             else:
-                raise ValueError("Clip percentile interval must be "
-                                 "specified as two numbers.")
+                raise ValueError(
+                    "Clip percentile interval must be " "specified as two numbers."
+                )
         else:
             clim = [0, 1]
         cmap = self._get_cmap(kwargs, m)
-        kwargs.setdefault('show_scalar_bar', False)
+        kwargs.setdefault("show_scalar_bar", False)
         self.plotter.add_mesh(map_mesh, cmap=cmap, clim=clim, **kwargs)
-        map_mesh.add_field_data([cmap], 'cmap')
-        self._add_mesh_to_dict(block_name='maps', mesh=map_mesh)
+        map_mesh.add_field_data([cmap], "cmap")
+        self._add_mesh_to_dict(block_name="maps", mesh=map_mesh)
 
     @staticmethod
     def _get_cmap(kwargs, m):
@@ -268,7 +277,7 @@ class SunpyPlotter:
         -------
         str
         """
-        cmap = kwargs.pop('cmap', m.plot_settings['cmap'])
+        cmap = kwargs.pop("cmap", m.plot_settings["cmap"])
         return cmap
 
     def plot_coordinates(self, coords, radius=0.05, **kwargs):
@@ -301,11 +310,11 @@ class SunpyPlotter:
             point_mesh = pv.Spline(points)
 
         color = self._extract_color(kwargs)
-        point_mesh.add_field_data(color, 'color')
+        point_mesh.add_field_data(color, "color")
 
-        kwargs['render_lines_as_tubes'] = kwargs.pop('render_lines_as_tubes', True)
+        kwargs["render_lines_as_tubes"] = kwargs.pop("render_lines_as_tubes", True)
         self.plotter.add_mesh(point_mesh, color=color, smooth_shading=True, **kwargs)
-        self._add_mesh_to_dict(block_name='coordinates', mesh=point_mesh)
+        self._add_mesh_to_dict(block_name="coordinates", mesh=point_mesh)
 
     def plot_solar_axis(self, length=2.5, arrow_kwargs={}, **kwargs):
         """
@@ -322,21 +331,28 @@ class SunpyPlotter:
         **kwargs :
             Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
-        defaults = {'shaft_radius': 0.01,
-                    'tip_length': 0.05,
-                    'tip_radius': 0.02}
+        defaults = {"shaft_radius": 0.01, "tip_length": 0.05, "tip_radius": 0.02}
         defaults.update(arrow_kwargs)
-        arrow_mesh = pv.Arrow(start=(0, 0, -length / 2),
-                              direction=(0, 0, length),
-                              scale='auto',
-                              **defaults)
+        arrow_mesh = pv.Arrow(
+            start=(0, 0, -length / 2),
+            direction=(0, 0, length),
+            scale="auto",
+            **defaults,
+        )
         color = self._extract_color(kwargs)
-        arrow_mesh.add_field_data(color, 'color')
+        arrow_mesh.add_field_data(color, "color")
         self.plotter.add_mesh(arrow_mesh, color=color, **kwargs)
-        self._add_mesh_to_dict(block_name='solar_axis', mesh=arrow_mesh)
+        self._add_mesh_to_dict(block_name="solar_axis", mesh=arrow_mesh)
 
-    def plot_quadrangle(self, bottom_left, top_right=None, width: u.deg = None,
-                        height: u.deg = None, radius=0.01, **kwargs):
+    def plot_quadrangle(
+        self,
+        bottom_left,
+        top_right=None,
+        width: u.deg = None,
+        height: u.deg = None,
+        radius=0.01,
+        **kwargs,
+    ):
         """
         Plot a quadrangle.
 
@@ -362,23 +378,29 @@ class SunpyPlotter:
         **kwargs : Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
         bottom_left, top_right = get_rectangle_coordinates(
-            bottom_left, top_right=top_right, width=width, height=height)
+            bottom_left, top_right=top_right, width=width, height=height
+        )
         width = Longitude(top_right.spherical.lon - bottom_left.spherical.lon)
         height = top_right.spherical.lat - bottom_left.spherical.lat
 
-        quadrangle_patch = Quadrangle((bottom_left.lon, bottom_left.lat), width, height, resolution=1000)
+        quadrangle_patch = Quadrangle(
+            (bottom_left.lon, bottom_left.lat), width, height, resolution=1000
+        )
         quadrangle_coordinates = quadrangle_patch.get_xy()
-        c = SkyCoord(quadrangle_coordinates[:, 0]*u.deg,
-                     quadrangle_coordinates[:, 1]*u.deg, frame=bottom_left.frame)
+        c = SkyCoord(
+            quadrangle_coordinates[:, 0] * u.deg,
+            quadrangle_coordinates[:, 1] * u.deg,
+            frame=bottom_left.frame,
+        )
         c.transform_to(self.coordinate_frame)
         quad_grid = self._coords_to_xyz(c)
         quad_block = pv.Spline(quad_grid)
-        radius = kwargs.get('radius', 0.01)
+        radius = kwargs.get("radius", 0.01)
         quad_block = quad_block.tube(radius=radius)
         color = self._extract_color(kwargs)
-        quad_block.add_field_data(color, 'color')
+        quad_block.add_field_data(color, "color")
         self.plotter.add_mesh(quad_block, color=color, **kwargs)
-        self._add_mesh_to_dict(block_name='quadrangles', mesh=quad_block)
+        self._add_mesh_to_dict(block_name="quadrangles", mesh=quad_block)
 
     def plot_field_lines(self, field_lines, color_func=None, **kwargs):
         """
@@ -402,8 +424,11 @@ class SunpyPlotter:
             Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
         if not color_func:
+
             def color_func(field_line):
-                color = {0: 'black', -1: 'tab:blue', 1: 'tab:red'}.get(field_line.polarity)
+                color = {0: "black", -1: "tab:blue", 1: "tab:red"}.get(
+                    field_line.polarity
+                )
                 return colors.to_rgb(color)
 
         field_line_meshes = pv.MultiBlock([])
@@ -420,14 +445,14 @@ class SunpyPlotter:
                     opacity = color[3]
                     color = color[:3]
 
-            spline.add_field_data([color], 'color')
+            spline.add_field_data([color], "color")
 
-            kwargs['render_lines_as_tubes'] = kwargs.pop('render_lines_as_tubes', True)
-            kwargs['line_width'] = kwargs.pop('line_width', 5)
+            kwargs["render_lines_as_tubes"] = kwargs.pop("render_lines_as_tubes", True)
+            kwargs["line_width"] = kwargs.pop("line_width", 5)
             self.plotter.add_mesh(spline, color=color, opacity=opacity, **kwargs)
             field_line_meshes.append(spline)
 
-        self._add_mesh_to_dict(block_name='field_lines', mesh=spline)
+        self._add_mesh_to_dict(block_name="field_lines", mesh=spline)
 
     def save(self, filepath, overwrite=False):
         """
@@ -447,14 +472,15 @@ class SunpyPlotter:
         >>> plotter = SunpyPlotter()
         >>> plotter.plot_solar_axis()
         >>> plotter.save('./filename.vtm') # doctest: +SKIP
-
         """
         file_path = Path(filepath)
-        directory_path = file_path.with_suffix('')
+        directory_path = file_path.with_suffix("")
 
         if not overwrite:
             if file_path.is_file():
-                raise ValueError(f"VTM file '{directory_path.absolute()}' already exists")
+                raise ValueError(
+                    f"VTM file '{directory_path.absolute()}' already exists"
+                )
         if directory_path.exists():
             raise ValueError(f"Directory '{directory_path.absolute()}' already exists")
 
@@ -466,15 +492,15 @@ class SunpyPlotter:
 
     def _loop_through_meshes(self, mesh_block):
         """
-        Recursively loop to add nested `~pyvista.core.MultiBlock` to the `pyvsita.Plotter`
-        along with the color of the mesh.
+        Recursively loop to add nested `~pyvista.core.MultiBlock` to the
+        `pyvsita.Plotter` along with the color of the mesh.
         """
         for block in mesh_block:
             if isinstance(block, pv.MultiBlock):
                 self._loop_through_meshes(block)
             else:
-                color = dict(block.field_data).get('color', None)
-                cmap = dict(block.field_data).get('cmap', [None])[0]
+                color = dict(block.field_data).get("color", None)
+                cmap = dict(block.field_data).get("cmap", [None])[0]
                 self.plotter.add_mesh(block, color=color, cmap=cmap)
 
     def load(self, filepath):
@@ -503,13 +529,14 @@ class SunpyPlotter:
             Defaults to ``0.02`` times the radius of the sun.
         **kwargs : Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
-        limb_coordinates = get_limb_coordinates(m.observer_coordinate, m.rsun_meters,
-                                                resolution=1000)
+        limb_coordinates = get_limb_coordinates(
+            m.observer_coordinate, m.rsun_meters, resolution=1000
+        )
         limb_coordinates.transform_to(self.coordinate_frame)
         limb_grid = self._coords_to_xyz(limb_coordinates)
         limb_block = pv.Spline(limb_grid)
         color = self._extract_color(mesh_kwargs=kwargs)
         limb_block = limb_block.tube(radius=radius)
-        limb_block.add_field_data(color, 'color')
+        limb_block.add_field_data(color, "color")
         self.plotter.add_mesh(limb_block, color=color, **kwargs)
-        self._add_mesh_to_dict(block_name='limbs', mesh=limb_block)
+        self._add_mesh_to_dict(block_name="limbs", mesh=limb_block)

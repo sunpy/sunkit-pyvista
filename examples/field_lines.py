@@ -48,7 +48,7 @@ lat = np.linspace(-np.pi / 2, np.pi / 2, 16, endpoint=False)
 # Create 5 points spaced between long={0, 180} degrees
 lon = np.linspace(0, 2 * np.pi, 16, endpoint=False)
 # Make a 2D grid from these 1D points
-lat, lon = np.meshgrid(lat, lon, indexing='ij')
+lat, lon = np.meshgrid(lat, lon, indexing="ij")
 # Create lon, lat and radial coordinate values by using a pfsspy
 # and trace them using tracer
 lat, lon = lat.ravel() * u.rad, lon.ravel() * u.rad
@@ -56,8 +56,7 @@ radius = rss
 tracer = tracing.FortranTracer()
 input_ = pfsspy.Input(gong_map, nrho, rss)
 output_ = pfsspy.pfss(input_)
-seeds = SkyCoord(lon, lat, radius*R_sun,
-                 frame=gong_map.coordinate_frame)
+seeds = SkyCoord(lon, lat, radius * R_sun, frame=gong_map.coordinate_frame)
 field_lines = tracer.trace(seeds, output_)
 
 # We can also specify a color function while plotting the field lines.
@@ -68,7 +67,7 @@ field_lines = tracer.trace(seeds, output_)
 
 def my_fline_color_func(field_line):
     norm = colors.LogNorm(vmin=1, vmax=1000)
-    cmap = plt.get_cmap('viridis')
+    cmap = plt.get_cmap("viridis")
     return cmap(norm(np.abs(field_line.expansion_factor)))
 
 

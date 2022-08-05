@@ -1,1 +1,0 @@
-Adds :meth:`~sunkit_pyvista.plotter.SunpyPlotter.set_view_angle` which allows for setting of the camera's width/view angle.

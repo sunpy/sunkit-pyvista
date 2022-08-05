@@ -1,1 +1,0 @@
-Increases test converage for :class:`~sunkit_pyvista.plotter.SunpyPlotter`.

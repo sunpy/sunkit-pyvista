@@ -1,2 +1,0 @@
-``plot_line()`` is renamed to :meth:`~sunkit_pyvista.plotter.SunpyPlotter.plot_coordinates`
-which also allows for a sphere with given ``radius`` to be plotted if a single coordinate is passed to it.

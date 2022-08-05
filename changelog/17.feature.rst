@@ -1,2 +1,0 @@
-Adds :meth:`~sunkit_pyvista.plotter.SunpyPlotter.plot_quadrangle` which allows for drawing a quadrangle defined
-by coordinates passed to it.

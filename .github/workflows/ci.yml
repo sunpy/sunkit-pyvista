@@ -63,7 +63,7 @@ jobs:
         github.event_name == 'pull_request' &&
         contains(github.event.pull_request.labels.*.name, 'Run publish')
       )
-    needs: [test]
+    needs: [core]
     uses: OpenAstronomy/github-actions-workflows/.github/workflows/publish_pure_python.yml@v1
     secrets:
       pypi_token: ${{ secrets.pypi_token }}

@@ -1,9 +1,9 @@
 Installing
 ==========
 
-``sunkit-pyvista`` requires Python 3.8 or 3.9.
+``sunkit-pyvista`` requires Python 3.8, 3.9 or 3.10.
 Earlier versions may work, but are not supported.
-Python 3.10 is not yet supported because VTK doesn't (yet) provide a built package for Python 3.10.
+Python 3.10 currently using a release candidate of VTK.
 
 To install via. pip use::
 

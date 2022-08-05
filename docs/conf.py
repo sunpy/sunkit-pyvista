@@ -4,6 +4,7 @@ Configuration file for the Sphinx documentation builder.
 import warnings
 import numpy as np
 import pyvista
+
 # Use the sunpy theme
 from sunpy_sphinx_theme.conf import *
 from packaging.version import Version
@@ -12,71 +13,73 @@ import os
 from datetime import datetime
 
 # -- Project information -----------------------------------------------------
-on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
-os.environ['HIDE_PARFIVE_PROGESS'] = 'True'
-project = 'sunkit-pyvista'
-author = 'SunPy Community'
-copyright = '{}, {}'.format(datetime.now().year, author)
+on_rtd = os.environ.get("READTHEDOCS", None) == "True"
+os.environ["HIDE_PARFIVE_PROGESS"] = "True"
+project = "sunkit-pyvista"
+author = "SunPy Community"
+copyright = "{}, {}".format(datetime.now().year, author)
 
 # The full version, including alpha/beta/rc tags
 release = __version__
 sunkit_pyvista_version = Version(__version__)
-is_release = not(sunkit_pyvista_version.is_prerelease or sunkit_pyvista_version.is_devrelease)
+is_release = not (
+    sunkit_pyvista_version.is_prerelease or sunkit_pyvista_version.is_devrelease
+)
 
 # -- General configuration ---------------------------------------------------
 extensions = [
-    'sphinx_automodapi.automodapi',
-    'sphinx_automodapi.smart_resolver',
-    'sphinx_changelog',
-    'sphinx.ext.autodoc',
-    'sphinx.ext.coverage',
-    'sphinx.ext.doctest',
-    'sphinx.ext.inheritance_diagram',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.mathjax',
-    'sphinx.ext.napoleon',
-    'sphinx.ext.todo',
-    'sphinx.ext.viewcode',
+    "sphinx_automodapi.automodapi",
+    "sphinx_automodapi.smart_resolver",
+    "sphinx_changelog",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.coverage",
+    "sphinx.ext.doctest",
+    "sphinx.ext.inheritance_diagram",
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.mathjax",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.todo",
+    "sphinx.ext.viewcode",
     "jupyter_sphinx",
 ]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
-source_suffix = '.rst'
+source_suffix = ".rst"
 
 # The master toctree document.
-master_doc = 'index'
+master_doc = "index"
 
 # Enable nitpicky mode, which forces links to be non-broken
 nitpicky = True
 nitpick_ignore = [
     # Prevents sphinx nitpicky mode picking up on optional
     # (see https://github.com/sphinx-doc/sphinx/issues/6861)
-    ('py:class', 'optional'),
+    ("py:class", "optional"),
     # See https://github.com/numpy/numpy/issues/10039
-    ('py:obj', 'numpy.datetime64'),
+    ("py:obj", "numpy.datetime64"),
     # There's no specific file or function classes to link to
-    ('py:class', 'file object'),
-    ('py:class', 'function'),
-    ('py:obj', 'function'),
-    ('py:class', 'any type'),
-    ('py:class', "Unit('pix')"),
-    ('py:class', "Unit('deg')"),
-    ('py:class', "Unit('arcsec')"),
-    ('py:class', "Unit('%')"),
-    ('py:class', "Unit('s')"),
-    ('py:class', "Unit('Angstrom')"),
-    ('py:class', "Unit('arcsec / pix')"),
-    ('py:class', "Unit('W / m2')"),
-    ('py:class', 'array-like'),
-    ('py:obj', 'parfive'),
-    ('py:class', 'string'),
-    ('py:class', 'floats'),
+    ("py:class", "file object"),
+    ("py:class", "function"),
+    ("py:obj", "function"),
+    ("py:class", "any type"),
+    ("py:class", "Unit('pix')"),
+    ("py:class", "Unit('deg')"),
+    ("py:class", "Unit('arcsec')"),
+    ("py:class", "Unit('%')"),
+    ("py:class", "Unit('s')"),
+    ("py:class", "Unit('Angstrom')"),
+    ("py:class", "Unit('arcsec / pix')"),
+    ("py:class", "Unit('W / m2')"),
+    ("py:class", "array-like"),
+    ("py:obj", "parfive"),
+    ("py:class", "string"),
+    ("py:class", "floats"),
 ]
 
 # -- Options for intersphinx extension ---------------------------------------

@@ -24,8 +24,7 @@ from sunkit_pyvista.sample import low_res_aia_193
 plotter = SunpyPlotter()
 # Plot a map setting the `assume_spherical_screen` to False
 plotter.plot_map(
-    low_res_aia_193, clip_interval=[1, 99] * u.percent,
-    assume_spherical_screen=False
+    low_res_aia_193, clip_interval=[1, 99] * u.percent, assume_spherical_screen=False
 )
 
 plotter.show()

@@ -36,6 +36,7 @@ jobs:
       coverage: codecov
       envs: |
         - macos: py38
+        - linux: py310
 
   docs:
     needs: [core]

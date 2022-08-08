@@ -15,7 +15,7 @@ repos:
       hooks:
       - id: black
         exclude: ".*(.fits|.fts|.fit|.txt|.csv)$"
-  -   repo: https://github.com/timothycrosley/isort
+  -   repo: https://github.com/PyCQA/isort
       rev: 5.10.1
       hooks:
       - id: isort

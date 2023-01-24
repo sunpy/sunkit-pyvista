@@ -25,9 +25,7 @@ jobs:
       submodules: false
       coverage: codecov
       envs: |
-        - linux: py39
-        - linux: codestyle
-          pytest: false
+        - linux: py311
 
   test:
     needs: [core]
@@ -36,8 +34,9 @@ jobs:
       submodules: false
       coverage: codecov
       envs: |
+        - linux: py39
+        - macos: py310
         - macos: py38
-        - linux: py310
 
   docs:
     needs: [core]

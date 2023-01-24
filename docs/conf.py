@@ -108,3 +108,6 @@ pyvista.OFF_SCREEN = True  # Not necessary - simply an insurance policy
 # Preferred plotting style for documentation
 pyvista.set_plot_theme("document")
 pyvista.global_theme.window_size = np.array([512, 512]) * 2
+# necessary when building the sphinx gallery
+pyvista.BUILDING_GALLERY = True
+os.environ['PYVISTA_BUILDING_GALLERY'] = 'true'

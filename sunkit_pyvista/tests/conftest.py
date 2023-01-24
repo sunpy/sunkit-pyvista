@@ -35,13 +35,11 @@ def verify_cache_images(plotter):
     Either store or validate an image.
 
     This is function should only be called within a pytest environment.
-    Pass it to either the ``Plotter.show()`` or the
-    ``pyvista.plot()`` functions as the before_close_callback keyword
-    arg.
+    Pass it to either the ``Plotter.show()`` or the ``pyvista.plot()``
+    functions as the before_close_callback keyword arg.
 
     Assign this only once for each test you'd like to validate the
-    previous
-    image of. This will not work with parameterized tests.
+    previous image of. This will not work with parameterized tests.
     """
     import vtk
 

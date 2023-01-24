@@ -4,7 +4,6 @@ import os
 from itertools import chain
 
 from setuptools import setup
-from setuptools.config import read_configuration
 
 VERSION_TEMPLATE = """
 # Note that we need to fall back to the hard-coded version if either
@@ -16,6 +15,13 @@ try:
 except Exception:
     __version__ = '{version}'
 """.lstrip()
+
+try:
+    # Recommended for setuptools 61.0.0+
+    # (though may disappear in the future)
+    from setuptools.config.setupcfg import read_configuration
+except ImportError:
+    from setuptools.config import read_configuration
 
 ################################################################################
 # Programmatically generate some extras combos.

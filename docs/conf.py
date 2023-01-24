@@ -102,9 +102,6 @@ intersphinx_mapping = {
 }
 
 # -- pyvista configuration ---------------------------------------------------
-# Manage errors
-pyvista.set_error_output_file("errors.txt")
-pyvista.OFF_SCREEN = True  # Not necessary - simply an insurance policy
-# Preferred plotting style for documentation
+pyvista.OFF_SCREEN = True
 pyvista.set_plot_theme("document")
 pyvista.global_theme.window_size = np.array([512, 512]) * 2

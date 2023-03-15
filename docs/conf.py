@@ -57,30 +57,14 @@ master_doc = "index"
 
 # Enable nitpicky mode, which forces links to be non-broken
 nitpicky = True
-nitpick_ignore = [
-    # Prevents sphinx nitpicky mode picking up on optional
-    # (see https://github.com/sphinx-doc/sphinx/issues/6861)
-    ("py:class", "optional"),
-    # See https://github.com/numpy/numpy/issues/10039
-    ("py:obj", "numpy.datetime64"),
-    # There's no specific file or function classes to link to
-    ("py:class", "file object"),
-    ("py:class", "function"),
-    ("py:obj", "function"),
-    ("py:class", "any type"),
-    ("py:class", "Unit('pix')"),
-    ("py:class", "Unit('deg')"),
-    ("py:class", "Unit('arcsec')"),
-    ("py:class", "Unit('%')"),
-    ("py:class", "Unit('s')"),
-    ("py:class", "Unit('Angstrom')"),
-    ("py:class", "Unit('arcsec / pix')"),
-    ("py:class", "Unit('W / m2')"),
-    ("py:class", "array-like"),
-    ("py:obj", "parfive"),
-    ("py:class", "string"),
-    ("py:class", "floats"),
-]
+# This is not used. See docs/nitpick-exceptions file for the actual listing.
+nitpick_ignore = []
+for line in open("nitpick-exceptions"):
+    if line.strip() == "" or line.startswith("#"):
+        continue
+    dtype, target = line.split(None, 1)
+    target = target.strip()
+    nitpick_ignore.append((dtype, target))
 
 # -- Options for intersphinx extension ---------------------------------------
 intersphinx_mapping = {

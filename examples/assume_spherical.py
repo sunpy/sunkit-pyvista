@@ -15,7 +15,7 @@ This example shows how off-limb pixels can be ignored altogether.
 import astropy.units as u
 
 from sunkit_pyvista import SunpyPlotter
-from sunkit_pyvista.sample import low_res_aia_193
+from sunkit_pyvista.sample import LOW_RES_AIA_193
 
 ###############################################################################
 # We will use an AIA 193 image from the sunpy sample data as the base image.
@@ -24,7 +24,7 @@ from sunkit_pyvista.sample import low_res_aia_193
 plotter = SunpyPlotter()
 # Plot a map setting the `assume_spherical_screen` to False
 plotter.plot_map(
-    low_res_aia_193, clip_interval=[1, 99] * u.percent, assume_spherical_screen=False
+    LOW_RES_AIA_193, clip_interval=[1, 99] * u.percent, assume_spherical_screen=False
 )
 
 plotter.show()

@@ -22,7 +22,7 @@ from astropy.constants import R_sun
 from astropy.coordinates import SkyCoord
 
 from sunkit_pyvista import SunpyPlotter
-from sunkit_pyvista.sample import low_res_aia_193
+from sunkit_pyvista.sample import LOW_RES_AIA_193
 
 ###############################################################################
 # We will be using an AIA 193 image from the sunpy sample data as the base image.
@@ -31,7 +31,7 @@ from sunkit_pyvista.sample import low_res_aia_193
 plotter = SunpyPlotter()
 
 # Plot a map
-plotter.plot_map(low_res_aia_193, clip_interval=[1, 99] * u.percent)
+plotter.plot_map(LOW_RES_AIA_193, clip_interval=[1, 99] * u.percent)
 # Add an arrow to show the solar rotation axis
 plotter.plot_solar_axis()
 

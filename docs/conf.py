@@ -1,16 +1,14 @@
 """
 Configuration file for the Sphinx documentation builder.
 """
-import warnings
-import numpy as np
-import pyvista
 
-# Use the sunpy theme
-from sunpy_sphinx_theme.conf import *
-from packaging.version import Version
-from sunkit_pyvista import __version__
 import os
 from datetime import datetime
+
+from packaging.version import Version
+from sunpy_sphinx_theme.conf import *
+
+from sunkit_pyvista import __version__
 
 # -- Project information -----------------------------------------------------
 on_rtd = os.environ.get("READTHEDOCS", None) == "True"
@@ -41,7 +39,6 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
-    # "jupyter_sphinx",
 ]
 
 # List of patterns, relative to source directory, that match files and
@@ -87,14 +84,22 @@ intersphinx_mapping = {
 }
 
 # -- pyvista configuration ---------------------------------------------------
+import pyvista
+
 pyvista.OFF_SCREEN = True
+# Preferred plotting style for documentation
 pyvista.set_plot_theme("document")
-pyvista.global_theme.window_size = np.array([512, 512]) * 2
+pyvista.global_theme.window_size = [512, 512]
+pyvista.global_theme.font.size = 18
+pyvista.global_theme.font.label_size = 18
+pyvista.global_theme.font.title_size = 18
+pyvista.global_theme.return_cpos = False
+# Necessary when building the sphinx gallery
+pyvista.BUILDING_GALLERY = True
+pyvista.set_jupyter_backend(None)
+
 
 # -- Sphinx Gallery ------------------------------------------------------------
-# JSOC email os env
-# see https://github.com/sunpy/sunpy/wiki/Home:-JSOC
-os.environ["JSOC_EMAIL"] = "jsoc@sunpy.org"
 sphinx_gallery_conf = {
     "backreferences_dir": os.path.join("generated", "modules"),
     "filename_pattern": "^((?!skip_).)*$",
@@ -108,4 +113,5 @@ sphinx_gallery_conf = {
     "remove_config_comments": True,
     "doc_module": ("sunpy"),
     "only_warn_on_example_error": True,
+    "image_scrapers": ("matplotlib", "pyvista"),
 }

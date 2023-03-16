@@ -20,6 +20,8 @@ from sunkit_pyvista.sample import LOW_RES_AIA_193
 ###############################################################################
 # We will use an AIA 193 image from the sunpy sample data as the base image.
 
+# sphinx_gallery_defer_figures
+
 # Start by creating a plotter
 plotter = SunpyPlotter()
 # Plot a map

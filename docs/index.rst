@@ -10,6 +10,6 @@ It is built on top of the `pyvista` package, which itself is built as a Python i
 
    installing
    getting_started
-   generated/gallery/index
+   examples/index
    api
    changelog

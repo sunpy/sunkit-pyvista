@@ -20,6 +20,7 @@ import astropy.units as u
 import sunpy.map
 from astropy.constants import R_sun
 from astropy.coordinates import SkyCoord
+from sunpy.coordinates import frames
 
 from sunkit_pyvista import SunpyPlotter
 from sunkit_pyvista.sample import LOW_RES_AIA_193
@@ -74,5 +75,15 @@ def my_fline_color_func(field_line):
 # Plotting the field lines
 plotter.plot_field_lines(field_lines, color_func=my_fline_color_func)
 plotter.plotter.add_mesh(pv.Sphere(radius=1))
+
+# Set the camera coordinate to view the plot correctly
+camera_coord = SkyCoord(
+    0 * u.deg,
+    0 * u.deg,
+    6 * R_sun,
+    frame=frames.HeliographicStonyhurst,
+    obstime=LOW_RES_AIA_193.date,
+)
+plotter.set_camera_coordinate(camera_coord)
 
 plotter.show()

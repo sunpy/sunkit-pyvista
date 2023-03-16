@@ -7,7 +7,6 @@ build:
   apt_packages:
     - xvfb
     - libgl1-mesa-dev
-    - mesa-utils
 
 conda:
   environment: .rtd-environment.yml

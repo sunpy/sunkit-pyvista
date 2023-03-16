@@ -48,6 +48,7 @@ bottom_left = SkyCoord(
 plotter.plot_quadrangle(
     bottom_left=bottom_left, width=20 * u.deg, height=60 * u.deg, color="blue"
 )
+
 # Set the camera coordinate to view the plot correctly
 camera_coord = SkyCoord(
     30 * u.deg,

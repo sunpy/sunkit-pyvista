@@ -30,6 +30,7 @@ extensions = [
     "sphinx_automodapi.automodapi",
     "sphinx_automodapi.smart_resolver",
     "sphinx_changelog",
+    "sphinx_gallery.gen_gallery",
     "sphinx.ext.autodoc",
     "sphinx.ext.coverage",
     "sphinx.ext.doctest",
@@ -39,7 +40,6 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
-    "jupyter_sphinx",
 ]
 
 # List of patterns, relative to source directory, that match files and
@@ -87,8 +87,33 @@ intersphinx_mapping = {
 # -- pyvista configuration ---------------------------------------------------
 import pyvista
 
-pyvista.OFF_SCREEN = True
+# Preferred plotting style for documentation
 pyvista.set_plot_theme("document")
 pyvista.global_theme.window_size = [512, 512]
+pyvista.global_theme.font.size = 18
+pyvista.global_theme.font.label_size = 18
+pyvista.global_theme.font.title_size = 18
+pyvista.global_theme.return_cpos = False
+# Necessary when building the sphinx gallery
+pyvista.OFF_SCREEN = True
+pyvista.BUILDING_GALLERY = True
+pyvista.set_jupyter_backend(None)
 if on_rtd:
     pyvista.start_xvfb()
+
+# -- Sphinx Gallery ------------------------------------------------------------
+sphinx_gallery_conf = {
+    "backreferences_dir": os.path.join("generated", "modules"),
+    "filename_pattern": "^((?!skip_).)*$",
+    "examples_dirs": os.path.join("..", "examples"),
+    "gallery_dirs": os.path.join("generated", "gallery"),
+    "matplotlib_animations": True,
+    # Comes from the theme.
+    "default_thumb_file": png_icon,  # NOQA
+    "abort_on_example_error": False,
+    "plot_gallery": "True",
+    "remove_config_comments": True,
+    "doc_module": ("sunpy"),
+    "only_warn_on_example_error": True,
+    "image_scrapers": ("matplotlib", "pyvista"),
+}

@@ -58,7 +58,7 @@ master_doc = "index"
 nitpicky = True
 # This is not used. See docs/nitpick-exceptions file for the actual listing.
 nitpick_ignore = []
-for line in open("nitpick-exceptions"):
+for line in open("nitpick-exceptions.txt"):
     if line.strip() == "" or line.startswith("#"):
         continue
     dtype, target = line.split(None, 1)

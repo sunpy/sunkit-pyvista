@@ -11,7 +11,7 @@ from sunpy_sphinx_theme.conf import *  # NOQA
 from sunkit_pyvista import __version__
 
 # -- Project information -----------------------------------------------------
-on_rtd = os.environ.get("READTHEDOCS", None) == "True"
+on_rtd = os.environ.get("READTHEDOCS")
 os.environ["HIDE_PARFIVE_PROGESS"] = "True"
 os.environ["PYDEVD_DISABLE_FILE_VALIDATION"] = "1"
 project = "sunkit-pyvista"
@@ -93,12 +93,12 @@ pyvista.global_theme.window_size = [512, 512]
 pyvista.global_theme.font.size = 18
 pyvista.global_theme.font.label_size = 18
 pyvista.global_theme.font.title_size = 18
-pyvista.global_theme.return_cpos = False
 # Necessary when building the sphinx gallery
 pyvista.OFF_SCREEN = True
 pyvista.BUILDING_GALLERY = True
 pyvista.set_jupyter_backend(None)
-if on_rtd:
+# We also need to start this on CI services and GitHub Actions has a CI env var
+if on_rtd or os.environ.get("CI"):
     pyvista.start_xvfb()
 
 # -- Sphinx Gallery ------------------------------------------------------------

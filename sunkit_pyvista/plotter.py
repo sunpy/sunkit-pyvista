@@ -448,7 +448,7 @@ class SunpyPlotter:
             spline.add_field_data([color], "color")
 
             kwargs["render_lines_as_tubes"] = kwargs.pop("render_lines_as_tubes", True)
-            kwargs["line_width"] = kwargs.pop("line_width", 5)
+            kwargs["line_width"] = kwargs.pop("line_width", 2)
             self.plotter.add_mesh(spline, color=color, opacity=opacity, **kwargs)
             field_line_meshes.append(spline)
 

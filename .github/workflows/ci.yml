@@ -41,11 +41,13 @@ jobs:
     needs: [core]
     uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@main
     with:
-      default_python: '3.9'
+      default_python: '3.10'
       pytest: false
       libraries: |
         apt:
           - graphviz
+          - xvfb
+          - libgl1-mesa-dev
       envs: |
         - linux: build_docs
 

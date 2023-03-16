@@ -1,0 +1,18 @@
+py:class optional
+py:obj numpy.datetime64
+py:class file object
+py:class function
+py:obj function
+py:class any type
+py:class Unit('pix')
+py:class Unit('deg')
+py:class Unit('arcsec')
+py:class Unit('%')
+py:class Unit('s')
+py:class Unit('Angstrom')
+py:class Unit('arcsec / pix')
+py:class Unit('W / m2')
+py:class array-like
+py:obj parfive
+py:class string
+py:class floats

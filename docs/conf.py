@@ -1,20 +1,19 @@
 """
 Configuration file for the Sphinx documentation builder.
 """
-import warnings
-import numpy as np
-import pyvista
 
-# Use the sunpy theme
-from sunpy_sphinx_theme.conf import *
-from packaging.version import Version
-from sunkit_pyvista import __version__
 import os
 from datetime import datetime
 
+from packaging.version import Version
+from sunpy_sphinx_theme.conf import *  # NOQA
+
+from sunkit_pyvista import __version__
+
 # -- Project information -----------------------------------------------------
-on_rtd = os.environ.get("READTHEDOCS", None) == "True"
+on_rtd = os.environ.get("READTHEDOCS")
 os.environ["HIDE_PARFIVE_PROGESS"] = "True"
+os.environ["PYDEVD_DISABLE_FILE_VALIDATION"] = "1"
 project = "sunkit-pyvista"
 author = "SunPy Community"
 copyright = "{}, {}".format(datetime.now().year, author)
@@ -31,6 +30,7 @@ extensions = [
     "sphinx_automodapi.automodapi",
     "sphinx_automodapi.smart_resolver",
     "sphinx_changelog",
+    "sphinx_gallery.gen_gallery",
     "sphinx.ext.autodoc",
     "sphinx.ext.coverage",
     "sphinx.ext.doctest",
@@ -40,7 +40,6 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
-    "jupyter_sphinx",
 ]
 
 # List of patterns, relative to source directory, that match files and
@@ -57,30 +56,14 @@ master_doc = "index"
 
 # Enable nitpicky mode, which forces links to be non-broken
 nitpicky = True
-nitpick_ignore = [
-    # Prevents sphinx nitpicky mode picking up on optional
-    # (see https://github.com/sphinx-doc/sphinx/issues/6861)
-    ("py:class", "optional"),
-    # See https://github.com/numpy/numpy/issues/10039
-    ("py:obj", "numpy.datetime64"),
-    # There's no specific file or function classes to link to
-    ("py:class", "file object"),
-    ("py:class", "function"),
-    ("py:obj", "function"),
-    ("py:class", "any type"),
-    ("py:class", "Unit('pix')"),
-    ("py:class", "Unit('deg')"),
-    ("py:class", "Unit('arcsec')"),
-    ("py:class", "Unit('%')"),
-    ("py:class", "Unit('s')"),
-    ("py:class", "Unit('Angstrom')"),
-    ("py:class", "Unit('arcsec / pix')"),
-    ("py:class", "Unit('W / m2')"),
-    ("py:class", "array-like"),
-    ("py:obj", "parfive"),
-    ("py:class", "string"),
-    ("py:class", "floats"),
-]
+# This is not used. See docs/nitpick-exceptions file for the actual listing.
+nitpick_ignore = []
+for line in open("nitpick-exceptions.txt"):
+    if line.strip() == "" or line.startswith("#"):
+        continue
+    dtype, target = line.split(None, 1)
+    target = target.strip()
+    nitpick_ignore.append((dtype, target))
 
 # -- Options for intersphinx extension ---------------------------------------
 intersphinx_mapping = {
@@ -102,6 +85,35 @@ intersphinx_mapping = {
 }
 
 # -- pyvista configuration ---------------------------------------------------
-pyvista.OFF_SCREEN = True
+import pyvista
+
+# Preferred plotting style for documentation
 pyvista.set_plot_theme("document")
-pyvista.global_theme.window_size = np.array([512, 512]) * 2
+pyvista.global_theme.window_size = [512, 512]
+pyvista.global_theme.font.size = 18
+pyvista.global_theme.font.label_size = 18
+pyvista.global_theme.font.title_size = 18
+# Necessary when building the sphinx gallery
+pyvista.OFF_SCREEN = True
+pyvista.BUILDING_GALLERY = True
+pyvista.set_jupyter_backend(None)
+# We also need to start this on CI services and GitHub Actions has a CI env var
+if on_rtd or os.environ.get("CI"):
+    pyvista.start_xvfb()
+
+# -- Sphinx Gallery ------------------------------------------------------------
+sphinx_gallery_conf = {
+    "backreferences_dir": os.path.join("generated", "modules"),
+    "filename_pattern": "^((?!skip_).)*$",
+    "examples_dirs": os.path.join("..", "examples"),
+    "gallery_dirs": os.path.join("generated", "gallery"),
+    "matplotlib_animations": True,
+    # Comes from the theme.
+    "default_thumb_file": png_icon,  # NOQA
+    "abort_on_example_error": False,
+    "plot_gallery": "True",
+    "remove_config_comments": True,
+    "doc_module": ("sunpy"),
+    "only_warn_on_example_error": True,
+    "image_scrapers": ("matplotlib", "pyvista"),
+}

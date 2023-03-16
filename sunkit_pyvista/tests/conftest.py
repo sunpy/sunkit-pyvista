@@ -10,7 +10,7 @@ import pyvista
 try:
     pyvista.start_xvfb()
 except Exception as e:
-    print("Could not start xvfb server:")
+    print("Could not start xvfb server:\n")
     print(e)
 
 

@@ -1,0 +1,6 @@
+Increased minium versions of dependencies.
+
+
+* Minimum Python version is now 3.9.
+* Minimum ``pyvista`` version is now 0.38.4.
+* Minimum ``pfsspy`` version is now 1.1.2.

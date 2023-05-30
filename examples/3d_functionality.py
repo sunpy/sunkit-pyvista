@@ -1,6 +1,5 @@
 """
-==================================
-Extending functionality from sunpy
+================================== Extending functionality from sunpy
 ==================================
 
 sunkit-pyvista also extends :meth:`~sunpy.map.GenericMap.draw_quadrangle` from

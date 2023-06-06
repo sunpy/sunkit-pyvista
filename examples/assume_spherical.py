@@ -1,7 +1,5 @@
 """
-========================
-Ignoring off-limb pixels
-========================
+======================== Ignoring off-limb pixels ========================
 
 How to not plot off-limb pixels.
 

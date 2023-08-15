@@ -32,6 +32,15 @@ These are for "sunpy" but the same works for sunkt-pyvista with a quick name sub
 
 .. _Development installation:  https://docs.sunpy.org/en/latest/dev_guide/contents/newcomers.html#setting-up-a-development-environment
 
+Running Figure tests
+--------------------
+
+3 command line arguments can be passed to pytest:
+
+* reset_image_cache : rests the image_cache directory with all the new figures
+* add_image_cache : option I added to make sure we don't mistakenly add a new figure unless this is specified to be True
+* ignore_image_cache : ignores the image cache, doesn't perform comparing of the images.
+
 Getting Help
 ============
 

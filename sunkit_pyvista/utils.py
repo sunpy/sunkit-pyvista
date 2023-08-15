@@ -1,13 +1,14 @@
-import numpy as np
-
 import astropy.units as u
+import numpy as np
 from astropy.coordinates import SkyCoord
 from sunpy.coordinates import HeliographicStonyhurst
 from sunpy.sun import constants
 
+__all__ = ["get_limb_coordinates"]
+
 
 @u.quantity_input
-def get_limb_coordinates(observer, rsun=constants.radius, resolution=1000):
+def get_limb_coordinates(observer, *, rsun=constants.radius, resolution=1000):
     """
     Get coordinates for the solar limb as viewed by a specified observer.
 
@@ -31,7 +32,7 @@ def get_limb_coordinates(observer, rsun=constants.radius, resolution=1000):
     limb_hcr_rho = limb_radial_distance * rsun / dsun
     limb_hcr_z = dsun - np.sqrt(limb_radial_distance**2 - limb_hcr_rho**2)
     limb_hcr_psi = np.linspace(0, 2 * np.pi, resolution + 1)[:-1] << u.rad
-    limb = SkyCoord(
+    return SkyCoord(
         limb_hcr_rho,
         limb_hcr_psi,
         limb_hcr_z,
@@ -40,4 +41,3 @@ def get_limb_coordinates(observer, rsun=constants.radius, resolution=1000):
         observer=observer,
         obstime=observer.obstime,
     )
-    return limb

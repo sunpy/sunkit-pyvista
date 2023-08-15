@@ -1,15 +1,14 @@
 import contextlib
 from pathlib import Path
 
+import astropy.units as u
 import numpy as np
 import pyvista as pv
-from matplotlib import colors
-
-import astropy.units as u
 from astropy.constants import R_sun
 from astropy.coordinates import Longitude, SkyCoord
 from astropy.visualization import AsymmetricPercentileInterval
 from astropy.visualization.wcsaxes import Quadrangle
+from matplotlib import colors
 from sunpy.coordinates import HeliocentricInertial, Helioprojective
 from sunpy.coordinates.utils import get_rectangle_coordinates
 from sunpy.map.maputils import all_corner_coords_from_map
@@ -40,7 +39,7 @@ class SunpyPlotter:
         Stores a reference to all the plotted meshes in a dictionary.
     """
 
-    def __init__(self, coordinate_frame=None):
+    def __init__(self, *, coordinate_frame=None):
         if coordinate_frame is None:
             coordinate_frame = HeliocentricInertial()
         self._coordinate_frame = coordinate_frame
@@ -82,11 +81,10 @@ class SunpyPlotter:
         -------
         tuple
             A tuple containing the (r, g, b) values from the strings passed
-            to it. Deafults to (255, 255, 255) - white.
+            to it. Defaults to (255, 255, 255) - white.
         """
         color_string = mesh_kwargs.pop("color", "white")
-        color = colors.to_rgb(color_string)
-        return color
+        return colors.to_rgb(color_string)
 
     def _add_mesh_to_dict(self, block_name, mesh):
         """
@@ -161,7 +159,7 @@ class SunpyPlotter:
         zoom_value = self.camera.view_angle / view_angle
         self.plotter.camera.zoom(zoom_value)
 
-    def _map_to_mesh(self, m, assume_spherical=True):
+    def _map_to_mesh(self, m, *, assume_spherical=True):
         """
         Create a mesh from a map.
 
@@ -180,7 +178,8 @@ class SunpyPlotter:
 
         if assume_spherical:
             context = Helioprojective.assume_spherical_screen(
-                m.observer_coordinate, only_off_disk=True
+                m.observer_coordinate,
+                only_off_disk=True,
             )
         else:
             context = contextlib.nullcontext()
@@ -206,7 +205,7 @@ class SunpyPlotter:
                 lower_right.ravel(),
                 upper_right.ravel(),
                 upper_left.ravel(),
-            ]
+            ],
         )
         # Remove faces that don't have a finite vertex
         # this can often happen with off-limb vertices)
@@ -231,7 +230,12 @@ class SunpyPlotter:
 
     @u.quantity_input
     def plot_map(
-        self, m, clip_interval: u.percent = None, assume_spherical_screen=True, **kwargs
+        self,
+        m,
+        *,
+        clip_interval: u.percent = None,
+        assume_spherical_screen=True,
+        **kwargs,
     ):
         """
         Plot a sunpy map.
@@ -254,11 +258,12 @@ class SunpyPlotter:
         if clip_interval is not None:
             if len(clip_interval) == 2:
                 clim = self._get_clim(
-                    data=map_mesh["data"], clip_interval=clip_interval
+                    data=map_mesh["data"],
+                    clip_interval=clip_interval,
                 )
             else:
                 raise ValueError(
-                    "Clip percentile interval must be " "specified as two numbers."
+                    "Clip percentile interval must be " "specified as two numbers.",
                 )
         else:
             clim = [0, 1]
@@ -277,10 +282,9 @@ class SunpyPlotter:
         -------
         str
         """
-        cmap = kwargs.pop("cmap", m.plot_settings["cmap"])
-        return cmap
+        return kwargs.pop("cmap", m.plot_settings["cmap"])
 
-    def plot_coordinates(self, coords, radius=0.05, **kwargs):
+    def plot_coordinates(self, coords, *, radius=0.05, **kwargs):
         """
         Plot a sphere if a single coordinate is passed and plots a line if
         multiple coordinates are passed.
@@ -316,7 +320,7 @@ class SunpyPlotter:
         self.plotter.add_mesh(point_mesh, color=color, smooth_shading=True, **kwargs)
         self._add_mesh_to_dict(block_name="coordinates", mesh=point_mesh)
 
-    def plot_solar_axis(self, length=2.5, arrow_kwargs={}, **kwargs):
+    def plot_solar_axis(self, *, length=2.5, arrow_kwargs=None, **kwargs):
         """
         Plot the solar rotation axis as an arrow.
 
@@ -331,6 +335,8 @@ class SunpyPlotter:
         **kwargs :
             Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
+        if arrow_kwargs is None:
+            arrow_kwargs = {}
         defaults = {"shaft_radius": 0.01, "tip_length": 0.05, "tip_radius": 0.02}
         defaults.update(arrow_kwargs)
         arrow_mesh = pv.Arrow(
@@ -347,6 +353,7 @@ class SunpyPlotter:
     def plot_quadrangle(
         self,
         bottom_left,
+        *,
         top_right=None,
         width: u.deg = None,
         height: u.deg = None,
@@ -378,13 +385,19 @@ class SunpyPlotter:
         **kwargs : Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
         bottom_left, top_right = get_rectangle_coordinates(
-            bottom_left, top_right=top_right, width=width, height=height
+            bottom_left,
+            top_right=top_right,
+            width=width,
+            height=height,
         )
         width = Longitude(top_right.spherical.lon - bottom_left.spherical.lon)
         height = top_right.spherical.lat - bottom_left.spherical.lat
 
         quadrangle_patch = Quadrangle(
-            (bottom_left.lon, bottom_left.lat), width, height, resolution=1000
+            (bottom_left.lon, bottom_left.lat),
+            width,
+            height,
+            resolution=1000,
         )
         quadrangle_coordinates = quadrangle_patch.get_xy()
         c = SkyCoord(
@@ -402,7 +415,7 @@ class SunpyPlotter:
         self.plotter.add_mesh(quad_block, color=color, **kwargs)
         self._add_mesh_to_dict(block_name="quadrangles", mesh=quad_block)
 
-    def plot_field_lines(self, field_lines, color_func=None, **kwargs):
+    def plot_field_lines(self, field_lines, *, color_func=None, **kwargs):
         """
         Plot magnetic field lines from `pfsspy`.
 
@@ -427,7 +440,7 @@ class SunpyPlotter:
 
             def color_func(field_line):
                 color = {0: "black", -1: "tab:blue", 1: "tab:red"}.get(
-                    field_line.polarity
+                    field_line.polarity,
                 )
                 return colors.to_rgb(color)
 
@@ -454,7 +467,7 @@ class SunpyPlotter:
 
         self._add_mesh_to_dict(block_name="field_lines", mesh=spline)
 
-    def save(self, filepath, overwrite=False):
+    def save(self, filepath, *, overwrite=False):
         """
         Save all the meshes.
 
@@ -479,7 +492,7 @@ class SunpyPlotter:
         if not overwrite:
             if file_path.is_file():
                 raise ValueError(
-                    f"VTM file '{directory_path.absolute()}' already exists"
+                    f"VTM file '{directory_path.absolute()}' already exists",
                 )
         if directory_path.exists():
             raise ValueError(f"Directory '{directory_path.absolute()}' already exists")
@@ -516,7 +529,7 @@ class SunpyPlotter:
         mesh_block = pv.read(file_path)
         self._loop_through_meshes(mesh_block)
 
-    def plot_limb(self, m, radius=0.02, **kwargs):
+    def plot_limb(self, m, *, radius=0.02, **kwargs):
         """
         Draws the solar limb as seen by the map's observer.
 
@@ -530,7 +543,9 @@ class SunpyPlotter:
         **kwargs : Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
         limb_coordinates = get_limb_coordinates(
-            m.observer_coordinate, m.rsun_meters, resolution=1000
+            m.observer_coordinate,
+            rsun=m.rsun_meters,
+            resolution=1000,
         )
         limb_coordinates.transform_to(self.coordinate_frame)
         limb_grid = self._coords_to_xyz(limb_coordinates)

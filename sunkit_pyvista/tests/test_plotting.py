@@ -1,20 +1,19 @@
 """
 This file contains figure comparison tests.
 """
+import astropy.constants as const
+import astropy.units as u
 import matplotlib.pyplot as plt
 import numpy as np
 import pfsspy
 import pytest
 import pyvista
-from matplotlib import colors
-from pfsspy import tracing
-from pfsspy.sample_data import get_gong_map
-
-import astropy.constants as const
-import astropy.units as u
 import sunpy.data.test as test
 import sunpy.map as smap
 from astropy.coordinates import SkyCoord
+from matplotlib import colors
+from pfsspy import tracing
+from pfsspy.sample_data import get_gong_map
 from sunpy.coordinates import frames
 
 from sunkit_pyvista import SunpyPlotter
@@ -22,18 +21,21 @@ from sunkit_pyvista import SunpyPlotter
 pyvista.OFF_SCREEN = True
 
 
-@pytest.fixture
+@pytest.fixture()
 def aia171_test_map():
     return smap.Map(test.get_test_filepath("aia_171_level1.fits"))
 
 
-@pytest.fixture
+@pytest.fixture()
 def plotter():
     return SunpyPlotter()
 
 
 def test_plot_map_with_functionality(
-    aia171_test_map, plotter, verify_cache_image, tmp_path
+    aia171_test_map,
+    plotter,
+    verify_cache_image,
+    tmp_path,
 ):
     plotter.plot_map(aia171_test_map, clip_interval=(0, 99) * u.percent)
     plotter.plot_solar_axis()
@@ -45,7 +47,10 @@ def test_plot_map_with_functionality(
         obstime=aia171_test_map.date,
     )
     plotter.plot_quadrangle(
-        bottom_left=bottom_left, width=20 * u.deg, height=60 * u.deg, color="blue"
+        bottom_left=bottom_left,
+        width=20 * u.deg,
+        height=60 * u.deg,
+        color="blue",
     )
     plotter.plot_limb(aia171_test_map)
 
@@ -96,5 +101,5 @@ def test_field_lines_figure(aia171_test_map, plotter, verify_cache_image):
         return cmap(norm(np.abs(field_line.expansion_factor)))
 
     plotter.plot_map(aia171_test_map)
-    plotter.plot_field_lines(field_lines, color_function)
+    plotter.plot_field_lines(field_lines, color_func=color_function)
     plotter.show(cpos=(0, 1, 0), before_close_callback=verify_cache_image)

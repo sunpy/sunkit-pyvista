@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os
+from pathlib import Path
 from itertools import chain
 
 from setuptools import setup
@@ -40,7 +40,7 @@ extras["all"] = list(chain.from_iterable(ex_extras.values()))
 setup(
     extras_require=extras,
     use_scm_version={
-        "write_to": os.path.join("sunkit_pyvista", "version.py"),
+        "write_to": Path("sunkit_pyvista") / "version.py",
         "write_to_template": VERSION_TEMPLATE,
     },
 )

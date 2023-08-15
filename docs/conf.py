@@ -2,11 +2,11 @@
 Configuration file for the Sphinx documentation builder.
 """
 import os
+from pathlib import Path
 from datetime import datetime
 
 import pyvista
 from packaging.version import Version
-from path import Path
 from pyvista.plotting.utilities.sphinx_gallery import DynamicScraper
 from sunpy_sphinx_theme.conf import *  # NOQA: F403
 

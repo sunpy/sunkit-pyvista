@@ -34,6 +34,7 @@ These are for "sunpy" but the same works for sunkt-pyvista with a quick name sub
 
 Running Figure tests
 --------------------
+You need to use your local environment and make sure its up to date.
 
 3 command line arguments can be passed to pytest:
 

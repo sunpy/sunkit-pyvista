@@ -36,6 +36,7 @@ jobs:
       envs: |
         - linux: py39
         - macos: py310
+        - windows: py311
 
   docs:
     needs: [core]

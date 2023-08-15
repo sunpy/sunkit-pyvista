@@ -544,7 +544,7 @@ class SunpyPlotter:
         """
         limb_coordinates = get_limb_coordinates(
             m.observer_coordinate,
-            m.rsun_meters,
+            rsun=m.rsun_meters,
             resolution=1000,
         )
         limb_coordinates.transform_to(self.coordinate_frame)

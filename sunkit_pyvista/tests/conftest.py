@@ -72,13 +72,13 @@ def verify_cache_images(plotter):
     # is being reset.
     if add_image_cache and (glb_reset_image_cache or not image_filename.is_file()):
         logging.info("Image doesn't exist, saving file in image_cache")
-        return plotter.screenshot(image_filename)
+        return plotter.screenshot(str(image_filename))
 
     if glb_ignore_image_cache:
         return None
 
     # otherwise, compare with the existing cached image
-    error = pyvista.compare_images(image_filename, plotter)
+    error = pyvista.compare_images(str(image_filename), plotter)
     if error > allowed_error:
         raise RuntimeError(
             "Exceeded image regression error of " f"{IMAGE_REGRESSION_ERROR} with an image error of " f"{error}",

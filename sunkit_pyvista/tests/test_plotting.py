@@ -101,5 +101,5 @@ def test_field_lines_figure(aia171_test_map, plotter, verify_cache_image):
         return cmap(norm(np.abs(field_line.expansion_factor)))
 
     plotter.plot_map(aia171_test_map)
-    plotter.plot_field_lines(field_lines, color_function)
+    plotter.plot_field_lines(field_lines, color_func=color_function)
     plotter.show(cpos=(0, 1, 0), before_close_callback=verify_cache_image)

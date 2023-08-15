@@ -7,6 +7,7 @@ from datetime import datetime
 import pyvista
 from packaging.version import Version
 from path import Path
+from pyvista.plotting.utilities.sphinx_gallery import DynamicScraper
 from sunpy_sphinx_theme.conf import *  # NOQA: F403
 
 from sunkit_pyvista import __version__
@@ -28,6 +29,7 @@ extensions = [
     "sphinx_automodapi.smart_resolver",
     "sphinx_changelog",
     "sphinx_gallery.gen_gallery",
+    "pyvista.ext.viewer_directive",
     "sphinx.ext.autodoc",
     "sphinx.ext.coverage",
     "sphinx.ext.doctest",
@@ -80,7 +82,6 @@ pyvista.global_theme.font.title_size = 18
 # Necessary when building the sphinx gallery
 pyvista.OFF_SCREEN = True
 pyvista.BUILDING_GALLERY = True
-pyvista.set_jupyter_backend(None)
 # We also need to start this on CI services and GitHub Actions has a CI env var
 if on_rtd or os.environ.get("CI"):
     pyvista.start_xvfb()
@@ -98,5 +99,5 @@ sphinx_gallery_conf = {
     "remove_config_comments": True,
     "doc_module": ("sunpy"),
     "only_warn_on_example_error": True,
-    "image_scrapers": ("matplotlib", "pyvista"),
+    "image_scrapers": (DynamicScraper(), "matplotlib", "pyvista"),
 }

@@ -1,5 +1,4 @@
-Increased minium versions of dependencies.
-
+Increased minimum versions of dependencies.
 
 * Minimum Python version is now 3.9.
 * Minimum ``pyvista`` version is now 0.38.4.

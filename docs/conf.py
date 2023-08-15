@@ -1,12 +1,13 @@
 """
 Configuration file for the Sphinx documentation builder.
 """
-
 import os
 from datetime import datetime
 
+import pyvista
 from packaging.version import Version
-from sunpy_sphinx_theme.conf import *  # NOQA
+from path import Path
+from sunpy_sphinx_theme.conf import *  # NOQA: F403
 
 from sunkit_pyvista import __version__
 
@@ -16,14 +17,10 @@ os.environ["HIDE_PARFIVE_PROGESS"] = "True"
 os.environ["PYDEVD_DISABLE_FILE_VALIDATION"] = "1"
 project = "sunkit-pyvista"
 author = "SunPy Community"
-copyright = "{}, {}".format(datetime.now().year, author)
-
-# The full version, including alpha/beta/rc tags
+copyright = f"{datetime.now().year}, {author}"  # NOQA: A001
 release = __version__
 sunkit_pyvista_version = Version(__version__)
-is_release = not (
-    sunkit_pyvista_version.is_prerelease or sunkit_pyvista_version.is_devrelease
-)
+is_release = not (sunkit_pyvista_version.is_prerelease or sunkit_pyvista_version.is_devrelease)
 
 # -- General configuration ---------------------------------------------------
 extensions = [
@@ -42,23 +39,12 @@ extensions = [
     "sphinx.ext.viewcode",
 ]
 
-# List of patterns, relative to source directory, that match files and
-# directories to ignore when looking for source files.
-# This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
-
-# The suffix(es) of source filenames.
-# You can specify multiple suffix as a list of string:
 source_suffix = ".rst"
-
-# The master toctree document.
 master_doc = "index"
-
-# Enable nitpicky mode, which forces links to be non-broken
 nitpicky = True
-# This is not used. See docs/nitpick-exceptions file for the actual listing.
 nitpick_ignore = []
-for line in open("nitpick-exceptions.txt"):
+for line in Path("nitpick-exceptions.txt").open():
     if line.strip() == "" or line.startswith("#"):
         continue
     dtype, target = line.split(None, 1)
@@ -85,8 +71,6 @@ intersphinx_mapping = {
 }
 
 # -- pyvista configuration ---------------------------------------------------
-import pyvista
-
 # Preferred plotting style for documentation
 pyvista.set_plot_theme("document")
 pyvista.global_theme.window_size = [512, 512]
@@ -103,13 +87,12 @@ if on_rtd or os.environ.get("CI"):
 
 # -- Sphinx Gallery ------------------------------------------------------------
 sphinx_gallery_conf = {
-    "backreferences_dir": os.path.join("generated", "modules"),
+    "backreferences_dir": Path("generated") / "modules",
     "filename_pattern": "^((?!skip_).)*$",
-    "examples_dirs": os.path.join("..", "examples"),
-    "gallery_dirs": os.path.join("generated", "gallery"),
+    "examples_dirs": Path("..") / "examples",
+    "gallery_dirs": Path("generated") / "gallery",
     "matplotlib_animations": True,
-    # Comes from the theme.
-    "default_thumb_file": png_icon,  # NOQA
+    "default_thumb_file": png_icon,  # NOQA: F405
     "abort_on_example_error": False,
     "plot_gallery": "True",
     "remove_config_comments": True,

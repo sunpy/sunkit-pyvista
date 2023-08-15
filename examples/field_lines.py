@@ -8,18 +8,17 @@ sunkit-pyvista can be used to plot field lines from `pfsspy`.
 This example will only work on a UNIX system as it requires pre-compiled FORTRAN
 code from `streamtracer <https://streamtracer.readthedocs.io/en/stable/>`__.
 """
+import astropy.units as u
 import matplotlib.pyplot as plt
 import numpy as np
 import pfsspy
 import pyvista as pv
-from matplotlib import colors
-from pfsspy import tracing
-from pfsspy.sample_data import get_gong_map
-
-import astropy.units as u
 import sunpy.map
 from astropy.constants import R_sun
 from astropy.coordinates import SkyCoord
+from matplotlib import colors
+from pfsspy import tracing
+from pfsspy.sample_data import get_gong_map
 from sunpy.coordinates import frames
 
 from sunkit_pyvista import SunpyPlotter

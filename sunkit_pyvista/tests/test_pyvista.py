@@ -1,35 +1,34 @@
 import pathlib
 
+import astropy.constants as const
+import astropy.units as u
 import matplotlib.pyplot as plt
 import numpy as np
 import pfsspy
 import pytest
 import pyvista as pv
-from matplotlib import colors
-from pfsspy import tracing
-from pfsspy.sample_data import get_gong_map
-
-import astropy.constants as const
-import astropy.units as u
 import sunpy.data.test as test
 import sunpy.map as smap
 from astropy.coordinates import SkyCoord
+from matplotlib import colors
+from pfsspy import tracing
+from pfsspy.sample_data import get_gong_map
 from sunpy.coordinates import HeliocentricInertial, HeliographicStonyhurst
 
 from sunkit_pyvista import SunpyPlotter
 
 
-@pytest.fixture
+@pytest.fixture()
 def aia171_test_map():
     return smap.Map(test.get_test_filepath("aia_171_level1.fits"))
 
 
-@pytest.fixture
+@pytest.fixture()
 def plotter():
     return SunpyPlotter()
 
 
-@pytest.mark.display_server
+@pytest.mark.display_server()
 def test_basic(plotter):
     assert isinstance(plotter.plotter, pv.Plotter)
     plotter.show()
@@ -56,7 +55,8 @@ def test_set_view_angle(plotter):
     plotter.set_view_angle(45 * u.deg)
     assert plotter.camera.view_angle == 45
     with pytest.raises(
-        ValueError, match=r"specified view angle must be " r"0 deg < angle <= 180 deg"
+        ValueError,
+        match=r"specified view angle must be " r"0 deg < angle <= 180 deg",
     ):
         plotter.set_view_angle(190 * u.deg)
 
@@ -81,7 +81,10 @@ def test_plot_quadrangle(aia171_test_map, plotter):
         obstime=aia171_test_map.date,
     )
     plotter.plot_quadrangle(
-        bottom_left=bottom_left, width=20 * u.deg, height=60 * u.deg, color="blue"
+        bottom_left=bottom_left,
+        width=20 * u.deg,
+        height=60 * u.deg,
+        color="blue",
     )
     assert plotter.plotter.mesh.n_cells == 22
     assert plotter.plotter.mesh.n_points == 80060
@@ -112,9 +115,7 @@ def test_plot_coordinates(aia171_test_map, plotter):
     expected_center = [-0.5000000149011612, -0.5, 0.7071067690849304]
     assert np.allclose(plotter.plotter.mesh.center, expected_center)
 
-    pixel_pos = (
-        np.argwhere(aia171_test_map.data == aia171_test_map.data.max()) * u.pixel
-    )
+    pixel_pos = np.argwhere(aia171_test_map.data == aia171_test_map.data.max()) * u.pixel
     hpc_max = aia171_test_map.pixel_to_world(pixel_pos[:, 1], pixel_pos[:, 0])
     plotter.plot_coordinates(hpc_max, color="blue")
     assert plotter.plotter.mesh.n_cells == 1680
@@ -124,14 +125,16 @@ def test_plot_coordinates(aia171_test_map, plotter):
 def test_clip_interval(aia171_test_map, plotter):
     plotter.plot_map(aia171_test_map, clip_interval=(1, 99) * u.percent)
     clim = plotter._get_clim(
-        data=plotter.plotter.mesh["data"], clip_interval=(1, 99) * u.percent
+        data=plotter.plotter.mesh["data"],
+        clip_interval=(1, 99) * u.percent,
     )
     expected_clim = [0.006716044038535769, 0.8024368512284383]
     assert np.allclose(clim, expected_clim)
 
     expected_clim = [0, 1]
     clim = plotter._get_clim(
-        data=plotter.plotter.mesh["data"], clip_interval=(0, 100) * u.percent
+        data=plotter.plotter.mesh["data"],
+        clip_interval=(0, 100) * u.percent,
     )
     assert np.allclose(clim, expected_clim)
 
@@ -190,9 +193,9 @@ def test_save_and_load(aia171_test_map, plotter, tmp_path):
 
     with pytest.raises(ValueError, match="VTM file"):
         plotter.save(filepath=filepath)
+    pathlib.Path(tmp_path / "save_data_dir").mkdir(parents=True, exist_ok=True)
+    filepath = tmp_path / "save_data_dir.vtm"
     with pytest.raises(ValueError, match="already exists"):
-        pathlib.Path(tmp_path / "save_data_dir").mkdir(parents=True, exist_ok=True)
-        filepath = tmp_path / "save_data_dir.vtm"
         plotter.save(filepath=filepath)
 
 

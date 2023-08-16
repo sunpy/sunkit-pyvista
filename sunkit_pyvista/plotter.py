@@ -138,6 +138,25 @@ class SunpyPlotter:
         vmin, vmax = AsymmetricPercentileInterval(*percent_limits).get_limits(data)
         return [vmin, vmax]
 
+    def coordinates_to_polydata(self, coords):
+        """
+        Convert a set of coordinates in a `.SkyCoord` to a `pyvista.PolyData`
+        mesh.
+
+        Parameters
+        ----------
+        coords : `astropy.coordinates.SkyCoord`
+            Coordinates to convert.
+
+        Returns
+        -------
+        `pyvista.PolyData`
+        """
+        points = self._coords_to_xyz(coords)
+        pd = pv.PolyData(points.reshape(-1, 3))
+        self._add_mesh_to_dict("polydata", pd)
+        return pd
+
     def set_camera_coordinate(self, coord):
         """
         Set the camera position.
@@ -150,6 +169,19 @@ class SunpyPlotter:
         camera_position = self._coords_to_xyz(coord)
         pos = tuple(camera_position)
         self.plotter.camera.position = pos
+
+    def set_camera_focus(self, coord):
+        """
+        Set the camera focus.
+
+        Parameters
+        ----------
+        coords : `astropy.coordinates.SkyCoord`
+            Camera coordinate.
+        """
+        camera_position = self._coords_to_xyz(coord)
+        pos = tuple(camera_position)
+        self.plotter.set_focus(pos)
 
     @u.quantity_input
     def set_view_angle(self, angle: u.deg):

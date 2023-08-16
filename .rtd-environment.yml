@@ -6,3 +6,5 @@ dependencies:
   - pip
   - graphviz!=2.42.*,!=2.43.*
   - xvfbwrapper
+  - pip:
+    - git+https://github.com/pyvista/pyvista.git@main

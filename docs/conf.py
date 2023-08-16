@@ -73,15 +73,15 @@ intersphinx_mapping = {
 }
 
 # -- pyvista configuration ---------------------------------------------------
-# Preferred plotting style for documentation
-pyvista.set_plot_theme("document")
-pyvista.global_theme.window_size = [512, 512]
-pyvista.global_theme.font.size = 18
-pyvista.global_theme.font.label_size = 18
-pyvista.global_theme.font.title_size = 18
-# Necessary when building the sphinx gallery
-pyvista.OFF_SCREEN = True
+os.environ["PYVISTA_BUILDING_GALLERY"] = "True"
 pyvista.BUILDING_GALLERY = True
+pyvista.global_theme.font.label_size = 18
+pyvista.global_theme.font.size = 18
+pyvista.global_theme.font.title_size = 18
+pyvista.global_theme.window_size = [512, 512]
+pyvista.OFF_SCREEN = True
+pyvista.set_error_output_file("errors.txt")
+pyvista.set_plot_theme("document")
 # We also need to start this on CI services and GitHub Actions has a CI env var
 if on_rtd or os.environ.get("CI"):
     pyvista.start_xvfb()
@@ -99,5 +99,5 @@ sphinx_gallery_conf = {
     "remove_config_comments": True,
     "doc_module": ("sunpy"),
     "only_warn_on_example_error": True,
-    "image_scrapers": (DynamicScraper(), "matplotlib", "pyvista"),
+    "image_scrapers": (DynamicScraper(), "matplotlib"),
 }

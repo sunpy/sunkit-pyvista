@@ -23,7 +23,7 @@ aia = sunpy.map.Map(LOW_RES_AIA_193)
 # Next let's generate some point data.
 # For this example we are going to generate a could which is roughly spherical.
 # We start by defining the center of our sphere.
-sphere_center = SkyCoord(10 * u.deg, 10 * u.deg, 1.2 * Rsun, frame="heliographic_stonyhurst", obstime=aia.date)
+sphere_center = SkyCoord(10 * u.deg, 10 * u.deg, 1.2 * Rsun, frame="heliographic_stonyhurst")
 
 ################################################################################
 # Let's generate some spherical coordinates for theta and phi, with 50 points in
@@ -35,7 +35,8 @@ radius = 0.05 * Rsun + np.random.random(theta.shape) * 0.01 * Rsun
 ################################################################################
 # Next we use these vectors to make a SkyCoord around the defined sphere center.
 vectors = SphericalRepresentation(theta, phi, radius)
-point_cloud = sphere_center.frame.realize_frame(sphere_center.cartesian + vectors.to_cartesian())
+new_points = sphere_center.cartesian + vectors.to_cartesian()
+point_cloud = sphere_center.frame.realize_frame(new_points)
 
 ################################################################################
 # Now we setup the pyvista visualization.
@@ -57,7 +58,7 @@ plotter.plot_map(aia)
 # sphinx_gallery_defer_figures
 
 cloud = plotter.coordinates_to_polydata(point_cloud)
-plotter.plotter.add_points(cloud, point_size=0.7, color="cyan", style="points_gaussian")
+_ = plotter.plotter.add_points(cloud, point_size=0.7, color="cyan", style="points_gaussian")
 
 ################################################################################
 # Next we want to build a surface from these points.
@@ -67,11 +68,12 @@ plotter.plotter.add_points(cloud, point_size=0.7, color="cyan", style="points_ga
 # sphinx_gallery_defer_figures
 
 surf = cloud.delaunay_3d()
-plotter.plotter.add_mesh(surf)
+_ = plotter.plotter.add_mesh(surf)
 
 ################################################################################
 # Finally set up the camera position and focus.
 plotter.set_camera_focus(sphere_center)
-plotter.set_camera_coordinate(SkyCoord(0 * u.deg, 0 * u.deg, 5 * Rsun, frame="heliographic_stonyhurst"))
+cam_coord = SkyCoord(0 * u.deg, 0 * u.deg, 5 * Rsun, frame="heliographic_stonyhurst")
+plotter.set_camera_coordinate(cam_coord)
 
 plotter.show()

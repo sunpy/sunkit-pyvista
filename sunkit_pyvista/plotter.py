@@ -32,6 +32,12 @@ class SunpyPlotter:
     coordinate_frame : `astropy.coordinates.BaseFrame`
         Coordinate frame of the plot. The x, y, z axes of the pyvista plotter
         will be the x, y, z axes in this coordinate system.
+    obstime : `astropy.time.Time`
+        The obstime to use for the default coordinate frame if
+        `coordinate_frame=` is not specified.  Must not be specified if
+        `coordinate_frame` is given.
+    kwargs : dict
+        All other keyword arguments are passed through to `pyvista.Plotter`.
 
     Attributes
     ----------
@@ -39,11 +45,13 @@ class SunpyPlotter:
         Stores a reference to all the plotted meshes in a dictionary.
     """
 
-    def __init__(self, *, coordinate_frame=None):
+    def __init__(self, *, coordinate_frame=None, obstime=None, **kwargs):
+        if coordinate_frame is not None and obstime is not None:
+            raise ValueError("Only coordinate_frame or obstime can be specified, not both.")
         if coordinate_frame is None:
-            coordinate_frame = HeliocentricInertial()
+            coordinate_frame = HeliocentricInertial(obstime=obstime)
         self._coordinate_frame = coordinate_frame
-        self._plotter = pv.Plotter()
+        self._plotter = pv.Plotter(**kwargs)
         self.camera = self._plotter.camera
         self.all_meshes = {}
 

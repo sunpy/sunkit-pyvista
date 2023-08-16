@@ -73,7 +73,7 @@ intersphinx_mapping = {
 }
 
 # -- pyvista configuration ---------------------------------------------------
-os.environ["PYVISTA_BUILDING_GALLERY"] = "true"
+os.environ["PYVISTA_BUILDING_GALLERY"] = "True"
 pyvista.BUILDING_GALLERY = True
 pyvista.global_theme.font.label_size = 18
 pyvista.global_theme.font.size = 18

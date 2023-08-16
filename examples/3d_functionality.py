@@ -4,7 +4,7 @@ Extending functionality from sunpy
 ==================================
 
 sunkit-pyvista also extends :meth:`~sunpy.map.GenericMap.draw_quadrangle` from
-`sunpy` and :meth:`~astropy.visualization.wcsaxes.WCSAxes.plot_coord` from `astropy`
+``sunpy`` and :meth:`~astropy.visualization.wcsaxes.WCSAxes.plot_coord` from ``astropy``
 to produce them in 3D.
 """
 import astropy.units as u
@@ -17,7 +17,7 @@ from sunkit_pyvista import SunpyPlotter
 from sunkit_pyvista.sample import LOW_RES_AIA_193
 
 ###############################################################################
-# We will use an AIA 193 image from the sunpy sample data as the base image.
+# We will use an AIA 193 image from the ``sunpy`` sample data as the base image.
 
 # sphinx_gallery_defer_figures
 

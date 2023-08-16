@@ -41,6 +41,8 @@ point_cloud = sphere_center.frame.realize_frame(sphere_center.cartesian + vector
 # Now we setup the pyvista visualization.
 # For the coordinate conversions to work we need to set the obstime correctly
 # for the visualization frame.
+
+# sphinx_gallery_defer_figures
 plotter = SunpyPlotter(obstime=aia.date)
 
 # Draw the map for context
@@ -51,6 +53,9 @@ plotter.plot_map(aia)
 # visualization and then build a `pyvista.PolyData` object (which needs a 1D
 # list of vectors).
 # Then we plot these points
+
+# sphinx_gallery_defer_figures
+
 cloud = plotter.coordinates_to_polydata(point_cloud)
 plotter.plotter.add_points(cloud, point_size=0.7, color="cyan", style="points_gaussian")
 
@@ -58,6 +63,9 @@ plotter.plotter.add_points(cloud, point_size=0.7, color="cyan", style="points_ga
 # Next we want to build a surface from these points.
 # We use the Delauny triangulation method as the results are better than other
 # options.
+
+# sphinx_gallery_defer_figures
+
 surf = cloud.delaunay_3d()
 plotter.plotter.add_mesh(surf)
 

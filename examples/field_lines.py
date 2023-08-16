@@ -81,7 +81,6 @@ def my_fline_color_func(field_line):
 
 # Plotting the field lines
 plotter.plot_field_lines(field_lines, color_func=my_fline_color_func)
-# Adds a sphere to fill in the gap at the back
 
 # Set the camera coordinate to view the plot correctly
 camera_coord = SkyCoord(

@@ -12,8 +12,8 @@ repos:
       - id: autoflake
         args: ['--in-place', '--remove-all-unused-imports', '--remove-unused-variable']
         exclude: ".*(.fits|.fts|.fit|.txt|tca.*|extern.*|.rst|.md|docs/conf.py)$"
-  - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: 'v0.0.284'
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: 'v0.0.285'
     hooks:
       - id: ruff
         args: ['--fix']

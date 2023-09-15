@@ -14,6 +14,7 @@ import numpy as np
 import sunpy.map
 from astropy.constants import R_sun
 from astropy.coordinates import SkyCoord
+
 from matplotlib import colors
 from sunkit_magex import pfss
 from sunkit_magex.pfss import tracing
@@ -44,13 +45,16 @@ plotter.plot_solar_axis()
 # We load a gong_map from sunkit-magex
 gong_fname = get_gong_map()
 gong_map = sunpy.map.Map(gong_fname)
+gong_map.plot()
+
+plotter = SunpyPlotter()
 # Now we plot the Gong Map to fill in the farside.
 plotter.plot_map(gong_map, cmap="hmimag", clip_interval=[1, 99] * u.percent)
 
 # Create points spaced between lat={-90, 90} degrees
-lat = np.linspace(-np.pi / 2, np.pi / 2, 32, endpoint=False)
+lat = np.linspace(-np.pi / 2, np.pi / 2, 16, endpoint=False)
 # Create 32 points spaced between long={0, 360} degrees
-lon = np.linspace(0, 2 * np.pi, 32, endpoint=False)
+lon = np.linspace(0, np.pi*2, 16, endpoint=False)
 # Make a 2D grid from these 1D points
 lat, lon = np.meshgrid(lat, lon, indexing="ij")
 # Create lon, lat and radial coordinate values by using a sunkit-magex
@@ -80,15 +84,7 @@ def my_fline_color_func(field_line):
 
 # Plotting the field lines
 plotter.plot_field_lines(field_lines, color_func=my_fline_color_func)
-
-# Set the camera coordinate to view the plot correctly
-camera_coord = SkyCoord(
-    0 * u.deg,
-    0 * u.deg,
-    6 * R_sun,
-    frame=frames.HeliographicStonyhurst,
-    obstime=LOW_RES_AIA_193.date,
-)
-plotter.set_camera_coordinate(camera_coord)
+# Plotting the current sheet
+plotter.plot_current_sheet(output_)
 
 plotter.show()

@@ -9,10 +9,10 @@ from astropy.coordinates import Longitude, SkyCoord
 from astropy.visualization import AsymmetricPercentileInterval
 from astropy.visualization.wcsaxes import Quadrangle
 from matplotlib import colors
+from pfsspy.coords import strum2cart
 from sunpy.coordinates import HeliocentricInertial, Helioprojective
 from sunpy.coordinates.utils import get_rectangle_coordinates
 from sunpy.map.maputils import all_corner_coords_from_map
-from pfsspy.coords import strum2cart
 
 from sunkit_pyvista.utils import get_limb_coordinates
 
@@ -521,15 +521,14 @@ class SunpyPlotter:
         **kwargs
             Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         -------
-
         """
-        lon0 = ((pfss_out.input_map.meta['crval1']) * u.deg).to(u.rad).value
+        lon0 = ((pfss_out.input_map.meta["crval1"]) * u.deg).to(u.rad).value
 
         sc_vect = pfss_out.grid.sc
         pc_vect = np.insert(pfss_out.grid.pc, 0, pfss_out.grid.pc[-1])
         rg_vect = pfss_out.grid.rg
 
-        c = SkyCoord(lon0*u.rad, 0.*u.rad, frame=HeliocentricInertial)
+        c = SkyCoord(lon0 * u.rad, 0.0 * u.rad, frame=HeliocentricInertial)
         c = c.transform_to(self.coordinate_frame)
 
         bc_r = np.insert(pfss_out.bc[0], 0, pfss_out.bc[0][-1], axis=0)
@@ -538,12 +537,12 @@ class SunpyPlotter:
         x_arr, y_arr, z_arr = strum2cart(r_arr, s_arr, p_arr + c.lon.to(u.rad).value)
 
         pfss_out_pv = pv.StructuredGrid(x_arr, y_arr, z_arr)
-        pfss_out_pv['Br'] = bc_r.ravel('F')
+        pfss_out_pv["Br"] = bc_r.ravel("F")
 
         isos_br = pfss_out_pv.contour(isosurfaces=1, rng=[0, 0])
 
-        self.plotter.add_mesh(isos_br,**kwargs)
-        self._add_mesh_to_dict(block_name='current_sheet', mesh=isos_br)
+        self.plotter.add_mesh(isos_br, **kwargs)
+        self._add_mesh_to_dict(block_name="current_sheet", mesh=isos_br)
         self.plotter.show_grid()
 
     def save(self, filepath, *, overwrite=False):

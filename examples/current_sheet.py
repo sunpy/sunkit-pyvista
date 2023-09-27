@@ -14,7 +14,6 @@ import numpy as np
 import sunpy.map
 from astropy.constants import R_sun
 from astropy.coordinates import SkyCoord
-
 from matplotlib import colors
 from sunkit_magex import pfss
 from sunkit_magex.pfss import tracing
@@ -54,7 +53,7 @@ plotter.plot_map(gong_map, cmap="hmimag", clip_interval=[1, 99] * u.percent)
 # Create points spaced between lat={-90, 90} degrees
 lat = np.linspace(-np.pi / 2, np.pi / 2, 16, endpoint=False)
 # Create 32 points spaced between long={0, 360} degrees
-lon = np.linspace(0, np.pi*2, 16, endpoint=False)
+lon = np.linspace(0, np.pi * 2, 16, endpoint=False)
 # Make a 2D grid from these 1D points
 lat, lon = np.meshgrid(lat, lon, indexing="ij")
 # Create lon, lat and radial coordinate values by using a sunkit-magex

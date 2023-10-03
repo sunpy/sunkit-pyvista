@@ -27,10 +27,10 @@ def plotter():
 
 
 def test_plot_map_with_functionality(
-        aia171_test_map,
-        plotter,
-        verify_cache_image,
-        tmp_path,
+    aia171_test_map,
+    plotter,
+    verify_cache_image,
+    tmp_path,
 ):
     plotter.plot_map(aia171_test_map, clip_interval=(0, 99) * u.percent)
     plotter.plot_solar_axis()

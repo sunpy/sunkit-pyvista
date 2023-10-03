@@ -32,10 +32,10 @@ def plotter():
 
 
 def test_plot_map_with_functionality(
-    aia171_test_map,
-    plotter,
-    verify_cache_image,
-    tmp_path,
+        aia171_test_map,
+        plotter,
+        verify_cache_image,
+        tmp_path,
 ):
     plotter.plot_map(aia171_test_map, clip_interval=(0, 99) * u.percent)
     plotter.plot_solar_axis()
@@ -104,7 +104,8 @@ def test_field_lines_figure(aia171_test_map, plotter, verify_cache_image):
     plotter.plot_field_lines(field_lines, color_func=color_function)
     plotter.show(cpos=(0, 1, 0), before_close_callback=verify_cache_image)
 
-def test_current_sheet_figure(plotter,verify_cache_image):
+
+def test_current_sheet_figure(plotter, verify_cache_image):
     gong_fname = get_gong_map()
     gong_map = smap.Map(gong_fname)
     nrho = 35
@@ -113,4 +114,3 @@ def test_current_sheet_figure(plotter,verify_cache_image):
     output_ = pfsspy.pfss(input_)
     plotter.plot_current_sheet(output_)
     plotter.show(before_close_callback=verify_cache_image)
-

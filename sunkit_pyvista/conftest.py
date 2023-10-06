@@ -12,20 +12,26 @@ try:
 except Exception as e:  # NOQA:BLE001
     logging.info(f"Could not start xvfb server:\n{e}")
 
-IMAGE_CACHE_DIR = Path(__file__).parent.absolute() / "image_cache"
+IMAGE_CACHE_DIR = Path(__file__).parent.absolute() / "tests" / "image_cache"
 if not IMAGE_CACHE_DIR.is_dir():
     IMAGE_CACHE_DIR.mkdir()
 # Normal image warning/error thresholds (assumes using use_vtk)
-IMAGE_REGRESSION_ERROR = 500  # major differences
-IMAGE_REGRESSION_WARNING = 400  # minor differences
+IMAGE_REGRESSION_ERROR = 400  # major differences
+IMAGE_REGRESSION_WARNING = 200  # minor differences
 
 
 @pytest.fixture(scope="session", autouse=True)
 def _get_cmd_opt(pytestconfig):
-    global glb_reset_image_cache, glb_ignore_image_cache, add_image_cache
-    glb_reset_image_cache = pytestconfig.getoption("reset_image_cache")
-    glb_ignore_image_cache = pytestconfig.getoption("ignore_image_cache")
+    global reset_image_cache, ignore_image_cache, add_image_cache
+    reset_image_cache = pytestconfig.getoption("reset_image_cache")
+    ignore_image_cache = pytestconfig.getoption("ignore_image_cache")
     add_image_cache = pytestconfig.getoption("add_image_cache")
+
+
+def pytest_addoption(parser):
+    parser.addoption("--reset_image_cache", action="store_true", default=False)
+    parser.addoption("--add_image_cache", action="store_true", default=True)
+    parser.addoption("--ignore_image_cache", action="store_true", default=False)
 
 
 def verify_cache_images(plotter):
@@ -43,7 +49,7 @@ def verify_cache_images(plotter):
 
     # Image cache is only valid for VTK9.2 on Linux
     if not vtk.__version__ >= "9.2.0" or platform.system() != "Linux":
-        pytest.skip("VTK9.2 on linux required for this test")
+        pytest.skip("VTK 9.2 or above and linux required for figure tests.")
 
     # since each test must contain a unique name, we can simply
     # use the function test to name the image
@@ -70,11 +76,11 @@ def verify_cache_images(plotter):
 
     # simply save the last screenshot if it doesn't exist or the cache
     # is being reset.
-    if add_image_cache and (glb_reset_image_cache or not image_filename.is_file()):
+    if add_image_cache and (reset_image_cache or not image_filename.is_file()):
         logging.info("Image doesn't exist, saving file in image_cache")
         return plotter.screenshot(str(image_filename))
 
-    if glb_ignore_image_cache:
+    if ignore_image_cache:
         return None
 
     # otherwise, compare with the existing cached image
@@ -90,12 +96,6 @@ def verify_cache_images(plotter):
         )
         return None
     return None
-
-
-def pytest_addoption(parser):
-    parser.addoption("--reset_image_cache", action="store_true", default=False)
-    parser.addoption("--add_image_cache", action="store_true", default=True)
-    parser.addoption("--ignore_image_cache", action="store_true", default=False)
 
 
 @pytest.fixture()

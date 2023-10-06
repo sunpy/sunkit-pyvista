@@ -38,9 +38,9 @@ You need to use your local environment and make sure its up to date.
 
 3 command line arguments can be passed to pytest:
 
-* reset_image_cache : rests the image_cache directory with all the new figures
-* add_image_cache : option I added to make sure we don't mistakenly add a new figure unless this is specified to be True
-* ignore_image_cache : ignores the image cache, doesn't perform comparing of the images.
+* ``reset_image_cache`` : Resets the ``image_cache`` directory with new figures generated from your local environment.
+* ``add_image_cache`` : It will not add a new figure unless this is specified to be ``True`` (the default).
+* ``ignore_image_cache`` : Ignores the image cache and will not perform any image comparison.
 
 Getting Help
 ============

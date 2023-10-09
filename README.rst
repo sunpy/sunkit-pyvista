@@ -34,13 +34,20 @@ These are for "sunpy" but the same works for sunkt-pyvista with a quick name sub
 
 Running Figure tests
 --------------------
+
 You need to use your local environment and make sure its up to date.
+This does not with tox for now.
 
-3 command line arguments can be passed to pytest:
+2 command line arguments can be passed to pytest:
 
-* reset_image_cache : rests the image_cache directory with all the new figures
-* add_image_cache : option I added to make sure we don't mistakenly add a new figure unless this is specified to be True
-* ignore_image_cache : ignores the image cache, doesn't perform comparing of the images.
+* ``update_image_cache`` : Resets the ``image_cache`` directory with new figures generated from your local environment.
+* ``ignore_image_cache`` : Ignores the image cache and will not perform any image comparison.
+
+Example usage:
+
+.. code-block:: bash
+
+   pytest -s -vvv --update_image_cache sunkit_pyvista/
 
 Getting Help
 ============

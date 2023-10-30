@@ -454,7 +454,7 @@ class SunpyPlotter:
             if isinstance(color, tuple):
                 color = list(color)
                 if len(color) == 4:
-                    opacity = color[3]
+                    kwargs["opacity"] = color[3]
                     color = color[:3]
 
             spline.add_field_data([color], "color")

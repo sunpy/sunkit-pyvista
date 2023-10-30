@@ -451,18 +451,17 @@ class SunpyPlotter:
                 continue
             spline = pv.Spline(xyz)
             color = color_func(field_line)
-            opacity = 1
             if isinstance(color, tuple):
                 color = list(color)
                 if len(color) == 4:
-                    opacity = color[3]
+                    kwargs["opacity"] = color[3]
                     color = color[:3]
 
             spline.add_field_data([color], "color")
 
             kwargs["render_lines_as_tubes"] = kwargs.pop("render_lines_as_tubes", True)
             kwargs["line_width"] = kwargs.pop("line_width", 2)
-            self.plotter.add_mesh(spline, color=color, opacity=opacity, **kwargs)
+            self.plotter.add_mesh(spline, color=color, **kwargs)
             field_line_meshes.append(spline)
 
         self._add_mesh_to_dict(block_name="field_lines", mesh=spline)

@@ -1,1 +1,0 @@
-Fixed the online documentation to display static images of the examples instead of interactive ones.

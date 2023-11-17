@@ -1,1 +1,0 @@
-Fixed the opacity keyword argument in :meth:`~sunkit_pyvista.plotter.SunpyPlotter.plot_field_lines`.

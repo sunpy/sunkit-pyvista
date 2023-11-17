@@ -34,9 +34,9 @@ jobs:
       submodules: false
       coverage: codecov
       envs: |
-        - linux: py39
         - macos: py310
-        - windows: py311
+        - windows: py39
+        - linux: py311-devdeps
 
   docs:
     needs: [core]
@@ -67,5 +67,7 @@ jobs:
       )
     needs: [core]
     uses: OpenAstronomy/github-actions-workflows/.github/workflows/publish_pure_python.yml@v1
+    with:
+      python-version: "3.11"
     secrets:
       pypi_token: ${{ secrets.pypi_token }}

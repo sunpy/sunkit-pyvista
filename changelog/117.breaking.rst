@@ -1,1 +1,0 @@
-Default ``line_width`` for :meth:`~sunkit_pyvista.plotter.SunpyPlotter.plot_field_lines` has been reduced to 2, from 5.

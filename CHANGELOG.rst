@@ -1,3 +1,26 @@
+0.2.0 (2023-11-17)
+==================
+
+Breaking Changes
+----------------
+
+- Increased minimum versions of dependencies.
+
+  * Minimum Python version is now 3.9.
+  * Minimum ``pyvista`` version is now 0.38.4.
+  * Minimum ``sunpy`` version is now 5.0.0.
+  * Minimum ``pfsspy`` version is now 1.1.2. (`#116 <https://github.com/sunpy/sunkit-pyvista/pull/116>`__)
+- Default ``line_width`` for :meth:`~sunkit_pyvista.plotter.SunpyPlotter.plot_field_lines` has been reduced to 2, from 5. (`#117 <https://github.com/sunpy/sunkit-pyvista/pull/117>`__)
+
+
+Internal Changes
+----------------
+
+- Fixed the online documentation to display static images of the examples instead of interactive ones. (`#117 <https://github.com/sunpy/sunkit-pyvista/pull/117>`__)
+- Fixed a failing unit test due to upstream deprecation. (`#118 <https://github.com/sunpy/sunkit-pyvista/pull/118>`__)
+- Fixed the opacity keyword argument in :meth:`~sunkit_pyvista.plotter.SunpyPlotter.plot_field_lines`. (`#150 <https://github.com/sunpy/sunkit-pyvista/pull/150>`__)
+
+
 0.1.0 (2022-08-04)
 ==================
 

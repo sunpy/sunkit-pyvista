@@ -1,3 +1,12 @@
+0.2.1 (2023-11-27)
+==================
+
+Breaking Changes
+----------------
+
+- Due to an incompatibility between ``pffspy`` and ``sunpy`` 5.1.0, `sunkit-pyvista` is not compatible with ``sunpy`` 5.1.0.
+  The ``sunpy`` version is pinned for the time being.
+
 0.2.0 (2023-11-17)
 ==================
 
@@ -11,7 +20,6 @@ Breaking Changes
   * Minimum ``sunpy`` version is now 5.0.0.
   * Minimum ``pfsspy`` version is now 1.1.2. (`#116 <https://github.com/sunpy/sunkit-pyvista/pull/116>`__)
 - Default ``line_width`` for :meth:`~sunkit_pyvista.plotter.SunpyPlotter.plot_field_lines` has been reduced to 2, from 5. (`#117 <https://github.com/sunpy/sunkit-pyvista/pull/117>`__)
-
 
 Internal Changes
 ----------------

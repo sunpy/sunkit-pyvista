@@ -7,6 +7,7 @@ sunkit-pyvista also extends :meth:`~sunpy.map.GenericMap.draw_quadrangle` from
 ``sunpy`` and :meth:`~astropy.visualization.wcsaxes.WCSAxes.plot_coord` from ``astropy``
 to produce them in 3D.
 """
+
 import astropy.units as u
 import numpy as np
 from astropy.constants import R_sun

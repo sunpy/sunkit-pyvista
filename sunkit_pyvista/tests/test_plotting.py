@@ -1,6 +1,7 @@
 """
 This file contains figure comparison tests.
 """
+
 import astropy.constants as const
 import astropy.units as u
 import matplotlib.pyplot as plt

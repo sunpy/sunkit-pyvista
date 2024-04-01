@@ -9,6 +9,7 @@ This example requires the pre-compiled FORTRAN
 code from `streamtracer <https://streamtracer.readthedocs.io/en/stable/>`__.
 Wheels are provided for all major platforms, so this example should run without issue.
 """
+
 import astropy.units as u
 import matplotlib.pyplot as plt
 import numpy as np

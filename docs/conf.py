@@ -7,22 +7,27 @@ from datetime import datetime
 from pathlib import Path
 
 import pyvista
-from packaging.version import Version
 from pyvista.plotting.utilities.sphinx_gallery import DynamicScraper
-from sunpy_sphinx_theme.conf import PNG_ICON
+from sunpy_sphinx_theme import PNG_ICON
 
 from sunkit_pyvista import __version__
 
+# -- Read the Docs Specific Configuration --------------------------------------
+# This needs to be done before sunpy is imported
+on_rtd = os.environ.get("READTHEDOCS", None) == "True"
+if on_rtd:
+    os.environ["SUNPY_CONFIGDIR"] = "/home/docs/"
+    os.environ["HOME"] = "/home/docs/"
+    os.environ["LANG"] = "C"
+    os.environ["LC_ALL"] = "C"
+    os.environ["PARFIVE_HIDE_PROGRESS"] = "True"
+    os.environ["PYDEVD_DISABLE_FILE_VALIDATION"] = "1"
+
 # -- Project information -----------------------------------------------------
-on_rtd = os.environ.get("READTHEDOCS")
-os.environ["HIDE_PARFIVE_PROGESS"] = "True"
-os.environ["PYDEVD_DISABLE_FILE_VALIDATION"] = "1"
 project = "sunkit-pyvista"
 author = "SunPy Community"
-copyright = f"{datetime.now(datetime.timezone.utc).year}, {author}"  # NOQA: A001
+copyright = f"{datetime.now().year}, {author}"  # NOQA: A001, DTZ005
 release = __version__
-sunkit_pyvista_version = Version(__version__)
-is_release = not (sunkit_pyvista_version.is_prerelease or sunkit_pyvista_version.is_devrelease)
 
 # -- General configuration ---------------------------------------------------
 extensions = [
@@ -42,6 +47,17 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx_design",
 ]
+
+html_theme = "sunpy"
+
+# For the linkcheck
+linkcheck_ignore = [
+    r"https://doi.org/\d+",
+    r"https://element.io/\d+",
+    r"https://github.com/\d+",
+    r"https://docs.sunpy.org/\d+",
+]
+linkcheck_anchors = False
 
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 source_suffix = ".rst"

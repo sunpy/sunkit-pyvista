@@ -21,13 +21,13 @@ def test_coordinate_frame(plotter):
 
 def test_coord_to_xyz(aia171_test_map, plotter):
     coordinate = aia171_test_map.observer_coordinate
-    plot_coord = plotter._coords_to_xyz(coordinate)
+    plot_coord = plotter._coords_to_xyz(coordinate)  # NOQA: SLF001
     assert plot_coord.shape == (3,)
 
 
 def test_camera_position(aia171_test_map, plotter):
     coord = aia171_test_map.observer_coordinate
-    camera_position = plotter._coords_to_xyz(coord)
+    camera_position = plotter._coords_to_xyz(coord)  # NOQA: SLF001
     plotter.set_camera_coordinate(coord)
     assert (plotter.camera.position == camera_position).all()
 
@@ -105,7 +105,7 @@ def test_plot_coordinates(aia171_test_map, plotter):
 
 def test_clip_interval(aia171_test_map, plotter):
     plotter.plot_map(aia171_test_map, clip_interval=(1, 99) * u.percent)
-    clim = plotter._get_clim(
+    clim = plotter._get_clim(  # NOQA: SLF001
         data=plotter.plotter.mesh["data"],
         clip_interval=(1, 99) * u.percent,
     )
@@ -113,7 +113,7 @@ def test_clip_interval(aia171_test_map, plotter):
     assert np.allclose(clim, expected_clim)
 
     expected_clim = [0, 1]
-    clim = plotter._get_clim(
+    clim = plotter._get_clim(  # NOQA: SLF001
         data=plotter.plotter.mesh["data"],
         clip_interval=(0, 100) * u.percent,
     )
@@ -158,7 +158,7 @@ def test_loop_through_meshes(plotter):
     sphere2 = pv.Cube(center=(0, 1, 1))
     inner_block = pv.MultiBlock([sphere])
     outer_block = pv.MultiBlock([inner_block, sphere2])
-    plotter._loop_through_meshes(outer_block)
+    plotter._loop_through_meshes(outer_block)  # NOQA: SLF001
 
     assert plotter.plotter.mesh.center == [0, 1, 1]
 

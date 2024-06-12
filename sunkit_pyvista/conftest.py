@@ -9,8 +9,9 @@ import pyvista
 
 try:
     pyvista.start_xvfb()
-except Exception as e:  # NOQA:BLE001
-    logging.info(f"Could not start xvfb server:\n{e}")
+except Exception as e:  # NOQA: BLE001
+    msg = f"Could not start xvfb server:\n{e}"
+    logging.info(msg)
 
 IMAGE_CACHE_DIR = Path(__file__).parent.absolute() / "tests" / "image_cache"
 if not IMAGE_CACHE_DIR.is_dir():
@@ -63,9 +64,12 @@ def verify_cache_images(plotter):
     allowed_warning = IMAGE_REGRESSION_WARNING
 
     if test_name is None:
-        raise RuntimeError(
+        msg = (
             "Unable to identify calling test function. This function "
-            "should only be used within a pytest environment.",
+            "should only be used within a pytest environment."
+        )
+        raise RuntimeError(
+            msg,
         )
 
     image_filename = IMAGE_CACHE_DIR / (test_name[5:] + ".png")
@@ -79,8 +83,9 @@ def verify_cache_images(plotter):
 
     error = pyvista.compare_images(str(image_filename), plotter)
     if error > allowed_error:
+        msg = "Exceeded image regression error of " f"{IMAGE_REGRESSION_ERROR} with an image error of " f"{error}"
         raise RuntimeError(
-            "Exceeded image regression error of " f"{IMAGE_REGRESSION_ERROR} with an image error of " f"{error}",
+            msg,
         )
     if error > allowed_warning:
         warnings.warn(

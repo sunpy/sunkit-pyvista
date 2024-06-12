@@ -1,9 +1,10 @@
 """
 Configuration file for the Sphinx documentation builder.
 """
+
 import os
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 
 import pyvista
 from packaging.version import Version
@@ -18,7 +19,7 @@ os.environ["HIDE_PARFIVE_PROGESS"] = "True"
 os.environ["PYDEVD_DISABLE_FILE_VALIDATION"] = "1"
 project = "sunkit-pyvista"
 author = "SunPy Community"
-copyright = f"{datetime.now().year}, {author}"  # NOQA: A001
+copyright = f"{datetime.now(datetime.timezone.utc).year}, {author}"  # NOQA: A001
 release = __version__
 sunkit_pyvista_version = Version(__version__)
 is_release = not (sunkit_pyvista_version.is_prerelease or sunkit_pyvista_version.is_devrelease)
@@ -47,12 +48,13 @@ source_suffix = ".rst"
 master_doc = "index"
 nitpicky = True
 nitpick_ignore = []
-for line in Path("nitpick-exceptions.txt").open():
-    if line.strip() == "" or line.startswith("#"):
-        continue
-    dtype, target = line.split(None, 1)
-    target = target.strip()
-    nitpick_ignore.append((dtype, target))
+with Path("nitpick-exceptions.txt").open() as f:
+    for line in f:
+        if line.strip() == "" or line.startswith("#"):
+            continue
+        dtype, target = line.split(None, 1)
+        target = target.strip()
+        nitpick_ignore.append((dtype, target))
 
 # -- Options for intersphinx extension ---------------------------------------
 intersphinx_mapping = {

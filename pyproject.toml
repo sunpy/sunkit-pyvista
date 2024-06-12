@@ -32,7 +32,7 @@ classifiers = [
   "Topic :: Scientific/Engineering :: Visualization",
 ]
 dependencies = [
-  'pyvista[all]>= 0.38.4',
+  'pyvista[all]>= 0.43.9',
   'sunpy[map]>=5.0.0',
 ]
 

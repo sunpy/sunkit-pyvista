@@ -26,7 +26,8 @@ def get_limb_coordinates(observer, *, rsun=constants.radius, resolution=1000):
     observer = observer.transform_to(HeliographicStonyhurst(obstime=observer.obstime))
     dsun = observer.radius
     if dsun <= rsun:
-        raise ValueError("Observer distance must be greater than rsun")
+        msg = "Observer distance must be greater than rsun"
+        raise ValueError(msg)
     # Create the limb coordinate array using Heliocentric Radial
     limb_radial_distance = np.sqrt(dsun**2 - rsun**2)
     limb_hcr_rho = limb_radial_distance * rsun / dsun

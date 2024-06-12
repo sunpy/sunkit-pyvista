@@ -10,12 +10,13 @@ from matplotlib import colors
 
 from sunkit_pyvista import SunpyPlotter
 
-pfss = pytest.importorskip("sunkit_magex.pfss")
-from sunkit_magex.pfss import tracing  # noqa: E402
-from sunkit_magex.pfss.sample_data import get_gong_map  # noqa: E402
-
 
 def test_field_lines_figure(aia171_test_map, plotter, verify_cache_image):
+    pfss = pytest.importorskip("sunkit_magex.pfss")
+
+    from sunkit_magex.pfss import tracing
+    from sunkit_magex.pfss.sample_data import get_gong_map
+
     gong_fname = get_gong_map()
     gong_map = smap.Map(gong_fname)
     nrho = 35
@@ -41,7 +42,12 @@ def test_field_lines_figure(aia171_test_map, plotter, verify_cache_image):
     plotter.show(cpos=(0, 1, 0), before_close_callback=verify_cache_image)
 
 
-def test_field_lines_and_color_func(aia171_test_map, plotter):
+def test_field_lines_and_color_func(plotter):
+    pfss = pytest.importorskip("sunkit_magex.pfss")
+
+    from sunkit_magex.pfss import tracing
+    from sunkit_magex.pfss.sample_data import get_gong_map
+
     gong_fname = get_gong_map()
     gong_map = smap.Map(gong_fname)
     nrho = 35

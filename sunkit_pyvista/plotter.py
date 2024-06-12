@@ -155,7 +155,8 @@ class SunpyPlotter:
         """
         view_angle = angle.to_value(u.deg)
         if not (view_angle > 0 and view_angle <= 180):
-            raise ValueError("specified view angle must be " "0 deg < angle <= 180 deg")
+            msg = "specified view angle must be " "0 deg < angle <= 180 deg"
+            raise ValueError(msg)
         zoom_value = self.camera.view_angle / view_angle
         self.plotter.camera.zoom(zoom_value)
 
@@ -262,8 +263,9 @@ class SunpyPlotter:
                     clip_interval=clip_interval,
                 )
             else:
+                msg = "Clip percentile interval must be " "specified as two numbers."
                 raise ValueError(
-                    "Clip percentile interval must be " "specified as two numbers.",
+                    msg,
                 )
         else:
             clim = [0, 1]
@@ -483,18 +485,19 @@ class SunpyPlotter:
         >>> from sunkit_pyvista import SunpyPlotter
         >>> plotter = SunpyPlotter()
         >>> plotter.plot_solar_axis()
-        >>> plotter.save('./filename.vtm') # doctest: +SKIP
+        >>> plotter.save("./filename.vtm")  # doctest: +SKIP
         """
         file_path = Path(filepath)
         directory_path = file_path.with_suffix("")
 
-        if not overwrite:
-            if file_path.is_file():
-                raise ValueError(
-                    f"VTM file '{directory_path.absolute()}' already exists",
-                )
+        if not overwrite and file_path.is_file():
+            msg = f"VTM file '{directory_path.absolute()}' already exists"
+            raise ValueError(
+                msg,
+            )
         if directory_path.exists():
-            raise ValueError(f"Directory '{directory_path.absolute()}' already exists")
+            msg = f"Directory '{directory_path.absolute()}' already exists"
+            raise ValueError(msg)
 
         mesh_block = pv.MultiBlock()
         for objects in self.all_meshes:

@@ -32,7 +32,7 @@ from sunkit_pyvista.sample import LOW_RES_AIA_193
 plotter = SunpyPlotter()
 
 # Plot a map
-plotter.plot_map(LOW_RES_AIA_193, clip_interval=[1, 99] * u.percent)
+plotter.plot_map(LOW_RES_AIA_193, clip_interval=[1, 99] * u.percent, assume_spherical_screen=False)
 # Add an arrow to show the solar rotation axis
 plotter.plot_solar_axis()
 

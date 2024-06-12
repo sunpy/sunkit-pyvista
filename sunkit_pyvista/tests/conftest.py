@@ -1,7 +1,9 @@
 import pytest
-import sunpy.map as smap
-from sunkit_pyvista import SunpyPlotter
 import sunpy.data.test as test
+import sunpy.map as smap
+
+from sunkit_pyvista import SunpyPlotter
+
 
 @pytest.fixture()
 def aia171_test_map():

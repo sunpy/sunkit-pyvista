@@ -3,15 +3,16 @@ import astropy.units as u
 import matplotlib.pyplot as plt
 import numpy as np
 import pytest
+import pyvista as pv
+import sunpy.map as smap
 from astropy.coordinates import SkyCoord
 from matplotlib import colors
-import sunpy.map as smap
+
 from sunkit_pyvista import SunpyPlotter
-import pyvista as pv
 
 pfss = pytest.importorskip("sunkit_magex.pfss")
-from sunkit_magex.pfss import tracing
-from sunkit_magex.pfss.sample_data import get_gong_map
+from sunkit_magex.pfss import tracing  # noqa: E402
+from sunkit_magex.pfss.sample_data import get_gong_map  # noqa: E402
 
 
 def test_field_lines_figure(aia171_test_map, plotter, verify_cache_image):
@@ -38,7 +39,6 @@ def test_field_lines_figure(aia171_test_map, plotter, verify_cache_image):
     plotter.plot_map(aia171_test_map)
     plotter.plot_field_lines(field_lines, color_func=color_function)
     plotter.show(cpos=(0, 1, 0), before_close_callback=verify_cache_image)
-
 
 
 def test_field_lines_and_color_func(aia171_test_map, plotter):

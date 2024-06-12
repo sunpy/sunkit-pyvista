@@ -32,6 +32,12 @@ class SunpyPlotter:
     coordinate_frame : `astropy.coordinates.BaseFrame`
         Coordinate frame of the plot. The x, y, z axes of the pyvista plotter
         will be the x, y, z axes in this coordinate system.
+    obstime : `astropy.time.Time`
+        The obstime to use for the default coordinate frame if
+        `coordinate_frame=` is not specified.  Must not be specified if
+        `coordinate_frame` is given.
+    kwargs : dict
+        All other keyword arguments are passed through to `pyvista.Plotter`.
 
     Attributes
     ----------
@@ -39,11 +45,14 @@ class SunpyPlotter:
         Stores a reference to all the plotted meshes in a dictionary.
     """
 
-    def __init__(self, *, coordinate_frame=None):
+    def __init__(self, *, coordinate_frame=None, obstime=None, **kwargs):
+        if coordinate_frame is not None and obstime is not None:
+            msg = "Only coordinate_frame or obstime can be specified, not both."
+            raise ValueError(msg)
         if coordinate_frame is None:
-            coordinate_frame = HeliocentricInertial()
+            coordinate_frame = HeliocentricInertial(obstime=obstime)
         self._coordinate_frame = coordinate_frame
-        self._plotter = pv.Plotter()
+        self._plotter = pv.Plotter(**kwargs)
         self.camera = self._plotter.camera
         self.all_meshes = {}
 
@@ -130,6 +139,25 @@ class SunpyPlotter:
         vmin, vmax = AsymmetricPercentileInterval(*percent_limits).get_limits(data)
         return [vmin, vmax]
 
+    def coordinates_to_polydata(self, coords):
+        """
+        Convert a set of coordinates in a `.SkyCoord` to a `pyvista.PolyData`
+        mesh.
+
+        Parameters
+        ----------
+        coords : `astropy.coordinates.SkyCoord`
+            Coordinates to convert.
+
+        Returns
+        -------
+        `pyvista.PolyData`
+        """
+        points = self._coords_to_xyz(coords)
+        pd = pv.PolyData(points.reshape(-1, 3))
+        self._add_mesh_to_dict("polydata", pd)
+        return pd
+
     def set_camera_coordinate(self, coord):
         """
         Set the camera position.
@@ -142,6 +170,19 @@ class SunpyPlotter:
         camera_position = self._coords_to_xyz(coord)
         pos = tuple(camera_position)
         self.plotter.camera.position = pos
+
+    def set_camera_focus(self, coord):
+        """
+        Set the camera focus.
+
+        Parameters
+        ----------
+        coords : `astropy.coordinates.SkyCoord`
+            Camera coordinate.
+        """
+        camera_position = self._coords_to_xyz(coord)
+        pos = tuple(camera_position)
+        self.plotter.set_focus(pos)
 
     @u.quantity_input
     def set_view_angle(self, angle: u.deg):

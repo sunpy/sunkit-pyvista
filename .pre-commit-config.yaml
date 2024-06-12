@@ -44,3 +44,6 @@ repos:
     rev: v4.0.0-alpha.8
     hooks:
       - id: prettier
+ci:
+  autofix_prs: false
+  autoupdate_schedule: "quarterly"

@@ -18,11 +18,11 @@ from sunkit_pyvista.utils import get_limb_coordinates
 __all__ = ["SunpyPlotter"]
 
 
-class SunpyPlotter:
+class SunpyPlotter(pv.Plotter):
     """
     A plotter for 3D data.
 
-    This class wraps `pyvsita.Plotter` to provide coordinate-aware plotting.
+    This class inherits `pyvsita.Plotter` so we can provide coordinate-aware plotting.
     For now, all coordinates are converted to
     a specific frame (`~sunpy.coordinates.HeliocentricInertial` by default),
     and distance units are such that :math:`R_{sun} = 1`.
@@ -39,13 +39,13 @@ class SunpyPlotter:
         Stores a reference to all the plotted meshes in a dictionary.
     """
 
-    def __init__(self, *, coordinate_frame=None):
+    def __init__(self, *args, coordinate_frame=None, **kwargs):
+        super().__init__(*args, **kwargs)
         if coordinate_frame is None:
             coordinate_frame = HeliocentricInertial()
         self._coordinate_frame = coordinate_frame
-        self._plotter = pv.Plotter()
-        self.camera = self._plotter.camera
         self.all_meshes = {}
+        self._initialized = True
 
     @property
     def coordinate_frame(self):
@@ -53,21 +53,6 @@ class SunpyPlotter:
         Coordinate frame of the plot.
         """
         return self._coordinate_frame
-
-    @property
-    def plotter(self):
-        """
-        `pyvista.Plotter`.
-        """
-        return self._plotter
-
-    def show(self, *args, **kwargs):
-        """
-        Show the plot.
-
-        See `pyvista.Plotter.show` for accepted arguments.
-        """
-        self.plotter.show(*args, **kwargs)
 
     def _extract_color(self, mesh_kwargs):
         """
@@ -141,7 +126,7 @@ class SunpyPlotter:
         """
         camera_position = self._coords_to_xyz(coord)
         pos = tuple(camera_position)
-        self.plotter.camera.position = pos
+        self.camera.position = pos
 
     @u.quantity_input
     def set_view_angle(self, angle: u.deg):
@@ -158,7 +143,7 @@ class SunpyPlotter:
             msg = "specified view angle must be " "0 deg < angle <= 180 deg"
             raise ValueError(msg)
         zoom_value = self.camera.view_angle / view_angle
-        self.plotter.camera.zoom(zoom_value)
+        self.camera.zoom(zoom_value)
 
     def _map_to_mesh(self, m, *, assume_spherical=True):
         """
@@ -271,7 +256,7 @@ class SunpyPlotter:
             clim = [0, 1]
         cmap = self._get_cmap(kwargs, m)
         kwargs.setdefault("show_scalar_bar", False)
-        self.plotter.add_mesh(map_mesh, cmap=cmap, clim=clim, **kwargs)
+        self.add_mesh(map_mesh, cmap=cmap, clim=clim, **kwargs)
         map_mesh.add_field_data([cmap], "cmap")
         self._add_mesh_to_dict(block_name="maps", mesh=map_mesh)
 
@@ -319,7 +304,7 @@ class SunpyPlotter:
         point_mesh.add_field_data(color, "color")
 
         kwargs["render_lines_as_tubes"] = kwargs.pop("render_lines_as_tubes", True)
-        self.plotter.add_mesh(point_mesh, color=color, smooth_shading=True, **kwargs)
+        self.add_mesh(point_mesh, color=color, smooth_shading=True, **kwargs)
         self._add_mesh_to_dict(block_name="coordinates", mesh=point_mesh)
 
     def plot_solar_axis(self, *, length=2.5, arrow_kwargs=None, **kwargs):
@@ -349,7 +334,7 @@ class SunpyPlotter:
         )
         color = self._extract_color(kwargs)
         arrow_mesh.add_field_data(color, "color")
-        self.plotter.add_mesh(arrow_mesh, color=color, **kwargs)
+        self.add_mesh(arrow_mesh, color=color, **kwargs)
         self._add_mesh_to_dict(block_name="solar_axis", mesh=arrow_mesh)
 
     def plot_quadrangle(
@@ -414,7 +399,7 @@ class SunpyPlotter:
         quad_block = quad_block.tube(radius=radius)
         color = self._extract_color(kwargs)
         quad_block.add_field_data(color, "color")
-        self.plotter.add_mesh(quad_block, color=color, **kwargs)
+        self.add_mesh(quad_block, color=color, **kwargs)
         self._add_mesh_to_dict(block_name="quadrangles", mesh=quad_block)
 
     def plot_field_lines(self, field_lines, *, color_func=None, **kwargs):
@@ -463,7 +448,7 @@ class SunpyPlotter:
 
             kwargs["render_lines_as_tubes"] = kwargs.pop("render_lines_as_tubes", True)
             kwargs["line_width"] = kwargs.pop("line_width", 2)
-            self.plotter.add_mesh(spline, color=color, **kwargs)
+            self.add_mesh(spline, color=color, **kwargs)
             field_line_meshes.append(spline)
 
         self._add_mesh_to_dict(block_name="field_lines", mesh=spline)
@@ -516,7 +501,7 @@ class SunpyPlotter:
             else:
                 color = dict(block.field_data).get("color", None)
                 cmap = dict(block.field_data).get("cmap", [None])[0]
-                self.plotter.add_mesh(block, color=color, cmap=cmap)
+                self.add_mesh(block, color=color, cmap=cmap)
 
     def load(self, filepath):
         """
@@ -555,5 +540,5 @@ class SunpyPlotter:
         color = self._extract_color(mesh_kwargs=kwargs)
         limb_block = limb_block.tube(radius=radius)
         limb_block.add_field_data(color, "color")
-        self.plotter.add_mesh(limb_block, color=color, **kwargs)
+        self.add_mesh(limb_block, color=color, **kwargs)
         self._add_mesh_to_dict(block_name="limbs", mesh=limb_block)

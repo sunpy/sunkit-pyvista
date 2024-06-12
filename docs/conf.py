@@ -1,7 +1,6 @@
 """
 Configuration file for the Sphinx documentation builder.
 """
-
 import os
 from pathlib import Path
 from datetime import datetime
@@ -9,7 +8,7 @@ from datetime import datetime
 import pyvista
 from packaging.version import Version
 from pyvista.plotting.utilities.sphinx_gallery import DynamicScraper
-from sunpy_sphinx_theme.conf import *  # NOQA: F403
+from sunpy_sphinx_theme.conf import PNG_ICON
 
 from sunkit_pyvista import __version__
 
@@ -72,6 +71,7 @@ intersphinx_mapping = {
     "astropy": ("https://docs.astropy.org/en/stable/", None),
     "sunpy": ("https://docs.sunpy.org/en/stable", None),
     "pyvista": ("https://docs.pyvista.org/", None),
+    "sunkit_magex": ("https://docs.sunpy.org/projects/sunkit-magex/en/stable/", None),
 }
 
 # -- pyvista configuration ---------------------------------------------------
@@ -95,7 +95,7 @@ sphinx_gallery_conf = {
     "examples_dirs": Path("..") / "examples",
     "gallery_dirs": Path("generated") / "gallery",
     "matplotlib_animations": True,
-    "default_thumb_file": png_icon,  # NOQA: F405
+    "default_thumb_file": PNG_ICON,
     "abort_on_example_error": False,
     "plot_gallery": "True",
     "remove_config_comments": True,

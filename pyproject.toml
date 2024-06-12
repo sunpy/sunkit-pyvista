@@ -1,93 +1,82 @@
 [build-system]
-requires = ["setuptools",
-            "setuptools_scm",
-            "wheel"]
+requires = [
+  "setuptools",
+  "setuptools_scm[toml]",
+  "wheel",
+]
 build-backend = 'setuptools.build_meta'
 
-[tool.black]
-line-length = 120
-target-version = ['py39']
 
-[tool.isort]
-profile = "black"
-line_length = 120
-length_sort = "False"
-length_sort_sections = "stdlib"
-
-[tool.ruff]
-# Allow unused variables when underscore-prefixed.
-dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
-target-version = "py39"
-line-length = 120
-exclude=[
-    ".git,",
-    "__pycache__",
-    "build",
-    "tools/**",
+[project]
+name = "sunkit_pyvista"
+dynamic = ["version"]
+description = "3D visualisation of solar physics data with pyvista."
+readme = "README.rst"
+requires-python = ">=3.10"
+license = {file = "LICENSE.txt"}
+keywords = ["solar physics", "solar", "science", "3d", "plotting", "visualisation"]
+authors = [
+  { name = "The SunPy Community", email = "sunpy@googlegroups.com" }
 ]
-select = [
-       "E",
-       "F",
-       "W",
-       "UP",
-       "PT",
-       "RET",
-       "TID",
-       "PLE",
-       "NPY",
-       "RUF",
-       "PGH",
-       "PTH",
-       "BLE",
-       "FBT",
-       "B",
-       "A",
-       "COM",
-       "C4",
-       "T20",
-       "RSE",
-       "ERA",
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: BSD License",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Visualization",
 ]
-fixable = [
-       "E",
-       "F",
-       "W",
-       "UP",
-       "PT",
-       "RET",
-       "TID",
-       "PLE",
-       "NPY",
-       "RUF",
-       "PGH",
-       "PTH",
-       "BLE",
-       "FBT",
-       "B",
-       "A",
-       "COM",
-       "C4",
-       "T20",
-       "RSE",
-       "ERA",
-]
-extend-ignore = [
-    "E501",  # Line too long
-    # TODO: Fix in future
-    "E741",  # Ambiguous variable name
+dependencies = [
+  'pyvista[all]>= 0.43.9',
+  'sunpy[map]>=5.0.0',
 ]
 
-[tool.ruff.per-file-ignores]
-"examples/*.py" = [
-    "T201", # We need print in our examples
+[project.urls]
+changelog = "https://docs.sunpy.org/projects/sunkit-magex/en/stable/changelog"
+documentation = "https://docs.sunpy.org/projects/sunkit-magex/en/stable/"
+homepage = "https://sunpy.org/"
+issue_tracker = "https://github.com/sunpy/sunkit-pyvista/issues"
+repository = "https://github.com/sunpy/sunkit-pyvista"
+
+[project.optional-dependencies]
+all = ["sunkit_pyvista"]
+tests = [
+  "sunkit_pyvista[all]",
+  'pytest-astropy',
+  "scikit-image",
+  "streamtracer", # Required by sunkit-magex
+  "sunkit-magex",
 ]
+docs = [
+  "sunkit_pyvista[all]",
+  'sphinx-automodapi',
+  'sphinx-changelog',
+  'sphinx-design',
+  'sphinx-gallery',
+  'sphinx',
+  'sunkit-magex',
+  'sunpy-sphinx-theme',
+  "streamtracer", # Required by sunkit-magex
+]
+dev = ["sunkit_pyvista[tests,docs]"]
 
-[tool.ruff.pydocstyle]
-convention = "numpy"
+[tool.setuptools_scm]
+write_to = "sunkit_pyvista/_version.py"
 
-[tool.codespell]
-skip = "*.asdf,*.fits,*.fts,*.header,*.json,*.xsh,*cache*,*egg*,*extern*,.git,.idea,.tox,_build,*truncated,*.svg,.asv_env,.history"
-ignore-words-list = "sav,"
+[tool.setuptools]
+include-package-data = true
+platforms = ["any"]
+provides = ["sunkit_pyvista"]
+license-files = ["LICENSE.rst"]
+
+[tool.setuptools.packages.find]
+exclude = ["sunkit_pyvista._dev"]
+namespaces = false
 
 [ tool.gilesbot ]
   [ tool.gilesbot.pull_requests ]

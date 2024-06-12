@@ -3,26 +3,31 @@ Configuration file for the Sphinx documentation builder.
 """
 
 import os
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 
 import pyvista
-from packaging.version import Version
 from pyvista.plotting.utilities.sphinx_gallery import DynamicScraper
-from sunpy_sphinx_theme.conf import *  # NOQA: F403
+from sunpy_sphinx_theme import PNG_ICON
 
 from sunkit_pyvista import __version__
 
+# -- Read the Docs Specific Configuration --------------------------------------
+# This needs to be done before sunpy is imported
+on_rtd = os.environ.get("READTHEDOCS", None) == "True"
+if on_rtd:
+    os.environ["SUNPY_CONFIGDIR"] = "/home/docs/"
+    os.environ["HOME"] = "/home/docs/"
+    os.environ["LANG"] = "C"
+    os.environ["LC_ALL"] = "C"
+    os.environ["PARFIVE_HIDE_PROGRESS"] = "True"
+    os.environ["PYDEVD_DISABLE_FILE_VALIDATION"] = "1"
+
 # -- Project information -----------------------------------------------------
-on_rtd = os.environ.get("READTHEDOCS")
-os.environ["HIDE_PARFIVE_PROGESS"] = "True"
-os.environ["PYDEVD_DISABLE_FILE_VALIDATION"] = "1"
 project = "sunkit-pyvista"
 author = "SunPy Community"
-copyright = f"{datetime.now().year}, {author}"  # NOQA: A001
+copyright = f"{datetime.now().year}, {author}"  # NOQA: A001, DTZ005
 release = __version__
-sunkit_pyvista_version = Version(__version__)
-is_release = not (sunkit_pyvista_version.is_prerelease or sunkit_pyvista_version.is_devrelease)
 
 # -- General configuration ---------------------------------------------------
 extensions = [
@@ -40,19 +45,32 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
+    "sphinx_design",
 ]
+
+html_theme = "sunpy"
+
+# For the linkcheck
+linkcheck_ignore = [
+    r"https://doi.org/\d+",
+    r"https://element.io/\d+",
+    r"https://github.com/\d+",
+    r"https://docs.sunpy.org/\d+",
+]
+linkcheck_anchors = False
 
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 source_suffix = ".rst"
 master_doc = "index"
 nitpicky = True
 nitpick_ignore = []
-for line in Path("nitpick-exceptions.txt").open():
-    if line.strip() == "" or line.startswith("#"):
-        continue
-    dtype, target = line.split(None, 1)
-    target = target.strip()
-    nitpick_ignore.append((dtype, target))
+with Path("nitpick-exceptions.txt").open() as f:
+    for line in f:
+        if line.strip() == "" or line.startswith("#"):
+            continue
+        dtype, target = line.split(None, 1)
+        target = target.strip()
+        nitpick_ignore.append((dtype, target))
 
 # -- Options for intersphinx extension ---------------------------------------
 intersphinx_mapping = {
@@ -71,6 +89,7 @@ intersphinx_mapping = {
     "astropy": ("https://docs.astropy.org/en/stable/", None),
     "sunpy": ("https://docs.sunpy.org/en/stable", None),
     "pyvista": ("https://docs.pyvista.org/", None),
+    "sunkit_magex": ("https://docs.sunpy.org/projects/sunkit-magex/en/stable/", None),
 }
 
 # -- pyvista configuration ---------------------------------------------------
@@ -94,7 +113,7 @@ sphinx_gallery_conf = {
     "examples_dirs": Path("..") / "examples",
     "gallery_dirs": Path("generated") / "gallery",
     "matplotlib_animations": True,
-    "default_thumb_file": png_icon,  # NOQA: F405
+    "default_thumb_file": PNG_ICON,
     "abort_on_example_error": False,
     "plot_gallery": "True",
     "remove_config_comments": True,

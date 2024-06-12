@@ -70,6 +70,7 @@ instance/
 
 # Sphinx documentation
 docs/_build/
+docs/sg_execution_times.rst
 
 # PyBuilder
 target/
@@ -233,3 +234,4 @@ sunkit_pyvista/version.py
 
 errors.txt
 docs/errors.txt
+sunkit_pyvista/_version.py

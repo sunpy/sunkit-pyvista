@@ -1,25 +1,23 @@
 """
-================================
-Plotting Field Lines from pfsspy
-================================
+======================================
+Plotting Field Lines from sunkit-magex
+======================================
 
-``sunkit-pyvista`` can be used to plot field lines from ``pfsspy``.
+``sunkit-pyvista`` can be used to plot field lines from ``sunkit-magex``.
 
-This example requires the pre-compiled FORTRAN
-code from `streamtracer <https://streamtracer.readthedocs.io/en/stable/>`__.
-Wheels are provided for all major platforms, so this example should run without issue.
+This example requires the `streamtracer <https://streamtracer.readthedocs.io/en/stable/>`__ package.
 """
 
 import astropy.units as u
 import matplotlib.pyplot as plt
 import numpy as np
-import pfsspy
 import sunpy.map
 from astropy.constants import R_sun
 from astropy.coordinates import SkyCoord
 from matplotlib import colors
-from pfsspy import tracing
-from pfsspy.sample_data import get_gong_map
+from sunkit_magex import pfss
+from sunkit_magex.pfss import tracing
+from sunkit_magex.pfss.sample_data import get_gong_map
 from sunpy.coordinates import frames
 
 from sunkit_pyvista import SunpyPlotter
@@ -34,16 +32,16 @@ from sunkit_pyvista.sample import LOW_RES_AIA_193
 plotter = SunpyPlotter()
 
 # Plot a map
-plotter.plot_map(LOW_RES_AIA_193, clip_interval=[1, 99] * u.percent)
+plotter.plot_map(LOW_RES_AIA_193, clip_interval=[1, 99] * u.percent, assume_spherical_screen=False)
 # Add an arrow to show the solar rotation axis
 plotter.plot_solar_axis()
 
 ###############################################################################
-# We now need to do the magnetic field extrapolation using ``pfsspy``.
+# We now need to do the magnetic field extrapolation using ``sunkit-magex``.
 
 # sphinx_gallery_defer_figures
 
-# We load a gong_map from pfsspy
+# We load a gong_map from sunkit-magex
 gong_fname = get_gong_map()
 gong_map = sunpy.map.Map(gong_fname)
 # Now we plot the Gong Map to fill in the farside.
@@ -55,14 +53,14 @@ lat = np.linspace(-np.pi / 2, np.pi / 2, 32, endpoint=False)
 lon = np.linspace(0, 2 * np.pi, 32, endpoint=False)
 # Make a 2D grid from these 1D points
 lat, lon = np.meshgrid(lat, lon, indexing="ij")
-# Create lon, lat and radial coordinate values by using a pfsspy
+# Create lon, lat and radial coordinate values by using a sunkit-magex
 # and trace them using tracer
 lat, lon = lat.ravel() * u.rad, lon.ravel() * u.rad
 # Define the number of grid points in rho and solar surface radius
 nrho = 30
 rss = 1.5
-input_ = pfsspy.Input(gong_map, nrho, rss)
-output_ = pfsspy.pfss(input_)
+input_ = pfss.Input(gong_map, nrho, rss)
+output_ = pfss.pfss(input_)
 seeds = SkyCoord(lon, lat, 1.2 * R_sun, frame=gong_map.coordinate_frame)
 tracer = tracing.FortranTracer()
 field_lines = tracer.trace(seeds, output_)

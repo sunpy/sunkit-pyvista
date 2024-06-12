@@ -25,7 +25,7 @@ jobs:
       submodules: false
       coverage: codecov
       envs: |
-        - linux: py311
+        - linux: py312
 
   test:
     needs: [core]
@@ -34,15 +34,15 @@ jobs:
       submodules: false
       coverage: codecov
       envs: |
-        - macos: py310
-        - windows: py39
-        - linux: py311-devdeps
+        - macos: py311
+        - windows: py310
+        - linux: py312-devdeps
 
   docs:
     needs: [core]
     uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@main
     with:
-      default_python: '3.10'
+      default_python: '3.12'
       pytest: false
       libraries: |
         apt:
@@ -68,6 +68,6 @@ jobs:
     needs: [core]
     uses: OpenAstronomy/github-actions-workflows/.github/workflows/publish_pure_python.yml@v1
     with:
-      python-version: "3.11"
+      python-version: "3.12"
     secrets:
       pypi_token: ${{ secrets.pypi_token }}

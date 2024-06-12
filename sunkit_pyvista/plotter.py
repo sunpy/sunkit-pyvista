@@ -417,11 +417,11 @@ class SunpyPlotter:
 
     def plot_field_lines(self, field_lines, *, color_func=None, **kwargs):
         """
-        Plot magnetic field lines from `pfsspy`.
+        Plot magnetic field lines.
 
         Parameters
         ----------
-        field_lines : `pfsspy.fieldline.FieldLines`
+        field_lines : `sunkit_magex.pfss.fieldline.FieldLines`
             Field lines to be plotted.
         color_func : function
             Function to get the color for each field line.
@@ -429,7 +429,7 @@ class SunpyPlotter:
             and open field lines in blue (positive polarity) or red (negative polarity).
             The function must have the signature::
 
-                def color_func(field_line: pfsspy.fieldline.FieldLine) -> color:
+                def color_func(field_line: sunkit_magex.pfss.fieldline.FieldLine) -> color:
 
              Where ``color`` is any color that `pyvista` recognises
              (e.g. a RGBA tuple, a RGB tuple, a color string)

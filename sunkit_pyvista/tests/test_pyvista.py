@@ -2,30 +2,11 @@ import pathlib
 
 import astropy.constants as const
 import astropy.units as u
-import matplotlib.pyplot as plt
 import numpy as np
-import pfsspy
 import pytest
 import pyvista as pv
-import sunpy.data.test as test
-import sunpy.map as smap
 from astropy.coordinates import SkyCoord
-from matplotlib import colors
-from pfsspy import tracing
-from pfsspy.sample_data import get_gong_map
 from sunpy.coordinates import HeliocentricInertial, HeliographicStonyhurst
-
-from sunkit_pyvista import SunpyPlotter
-
-
-@pytest.fixture()
-def aia171_test_map():
-    return smap.Map(test.get_test_filepath("aia_171_level1.fits"))
-
-
-@pytest.fixture()
-def plotter():
-    return SunpyPlotter()
 
 
 @pytest.mark.display_server()
@@ -149,33 +130,6 @@ def test_multi_block(plotter):
     plotter.plot_solar_axis()
     assert plotter.all_meshes["solar_axis"][0].n_cells == 43
     assert plotter.all_meshes["solar_axis"][0].n_points == 101
-
-
-def test_field_lines_and_color_func(aia171_test_map, plotter):
-    gong_fname = get_gong_map()
-    gong_map = smap.Map(gong_fname)
-    nrho = 35
-    rss = 2.5
-    lat = np.linspace(-np.pi / 2, np.pi / 2, 8, endpoint=False)
-    lon = np.linspace(0, 2 * np.pi, 8, endpoint=False)
-    lat, lon = np.meshgrid(lat, lon, indexing="ij")
-    lat, lon = lat.ravel() * u.rad, lon.ravel() * u.rad
-    radius = 1.2
-    tracer = tracing.PythonTracer()
-    input_ = pfsspy.Input(gong_map, nrho, rss)
-    output_ = pfsspy.pfss(input_)
-    seeds = SkyCoord(lon, lat, radius * const.R_sun, frame=gong_map.coordinate_frame)
-    field_lines = tracer.trace(seeds, output_)
-    plotter.plot_field_lines(field_lines)
-    assert isinstance(plotter.all_meshes["field_lines"][0], pv.PolyData)
-
-    def color_func(field_line):
-        norm = colors.LogNorm(vmin=1, vmax=1000)
-        cmap = plt.get_cmap("viridis")
-        return cmap(norm(np.abs(field_line.expansion_factor)))
-
-    plotter = SunpyPlotter()
-    plotter.plot_field_lines(field_lines, color_func=color_func)
 
 
 def test_save_and_load(aia171_test_map, plotter, tmp_path):

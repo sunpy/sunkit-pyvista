@@ -47,7 +47,8 @@ class SunpyPlotter:
 
     def __init__(self, *, coordinate_frame=None, obstime=None, **kwargs):
         if coordinate_frame is not None and obstime is not None:
-            raise ValueError("Only coordinate_frame or obstime can be specified, not both.")
+            msg = "Only coordinate_frame or obstime can be specified, not both."
+            raise ValueError(msg)
         if coordinate_frame is None:
             coordinate_frame = HeliocentricInertial(obstime=obstime)
         self._coordinate_frame = coordinate_frame

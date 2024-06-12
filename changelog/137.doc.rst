@@ -1,0 +1,1 @@
+Added a new gallery example (:ref:`sphx_glr_generated_gallery_floating_sphere.py`) that plots a volume of points from the solar surface.

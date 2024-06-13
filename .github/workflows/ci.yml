@@ -24,6 +24,7 @@ jobs:
     with:
       submodules: false
       coverage: codecov
+      display: true
       envs: |
         - linux: py312
 
@@ -33,6 +34,7 @@ jobs:
     with:
       submodules: false
       coverage: codecov
+      display: true
       envs: |
         - macos: py311
         - windows: py310
@@ -44,11 +46,10 @@ jobs:
     with:
       default_python: "3.12"
       pytest: false
+      display: true
       libraries: |
         apt:
           - graphviz
-          - xvfb
-          - libgl1-mesa-dev
       envs: |
         - linux: build_docs
 

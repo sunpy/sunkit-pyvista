@@ -1,1 +1,1 @@
-Add feature 'plot_current_sheet' in sunkit-pyvista.
+Added a method to plot a current sheet via :meth:`~sunkit_pyvista.plotter.SunpyPlotter.plot_current_sheet`.

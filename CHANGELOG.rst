@@ -1,3 +1,19 @@
+0.3.0 (2024-06-13)
+==================
+
+Breaking Changes
+----------------
+
+- Migrated from pfsspy to sunkit-magex to handle the magnetic field fieldlines and extrapolation. (`#157 <https://github.com/sunpy/sunkit-pyvista/pull/157>`__)
+- Increased minimum version of Python to 3.10 (`#157 <https://github.com/sunpy/sunkit-pyvista/pull/157>`__)
+
+
+Documentation
+-------------
+
+- Added a new gallery example (:ref:`sphx_glr_generated_gallery_floating_sphere.py`) that plots a volume of points from the solar surface. (`#137 <https://github.com/sunpy/sunkit-pyvista/pull/137>`__)
+
+
 0.2.1 (2023-11-27)
 ==================
 

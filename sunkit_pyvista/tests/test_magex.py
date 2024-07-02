@@ -7,8 +7,10 @@ import pyvista as pv
 import sunpy.map as smap
 from astropy.coordinates import SkyCoord
 from matplotlib import colors
+from sunpy.coordinates import HeliocentricInertial
 
 from sunkit_pyvista import SunpyPlotter
+from sunkit_pyvista.magex import pfss_to_grid
 
 
 def test_field_lines_figure(aia171_test_map, plotter, verify_cache_image):
@@ -72,3 +74,22 @@ def test_field_lines_and_color_func(plotter):
 
     plotter = SunpyPlotter()
     plotter.plot_field_lines(field_lines, color_func=color_func)
+
+
+def test_pfss_to_grid():
+    pfss = pytest.importorskip("sunkit_magex.pfss")
+
+    from sunkit_magex.pfss.sample_data import get_gong_map
+
+    gong_fname = get_gong_map()
+    gong_map = smap.Map(gong_fname)
+    nrho = 35
+    rss = 2.5
+    lat = np.linspace(-np.pi / 2, np.pi / 2, 8, endpoint=False)
+    lon = np.linspace(0, 2 * np.pi, 8, endpoint=False)
+    lat, lon = np.meshgrid(lat, lon, indexing="ij")
+    lat, lon = lat.ravel() * u.rad, lon.ravel() * u.rad
+    input_ = pfss.Input(gong_map, nrho, rss)
+    output_ = pfss.pfss(input_)
+    pfss_grid = pfss_to_grid(output_, HeliocentricInertial())
+    assert pfss_grid.point_data.keys() == ["Br", "Btheta", "Bphi"]

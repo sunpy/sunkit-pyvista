@@ -50,8 +50,6 @@ jobs:
       libraries: |
         apt:
           - graphviz
-          - xvfb
-          - libgl1-mesa-dev
       envs: |
         - linux: build_docs
 

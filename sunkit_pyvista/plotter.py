@@ -167,7 +167,7 @@ class SunpyPlotter(pv.Plotter):
         """
         camera_position = self._coords_to_xyz(coord)
         pos = tuple(camera_position)
-        self.plotter.set_focus(pos)
+        self.set_focus(pos)
 
     @u.quantity_input
     def set_view_angle(self, angle: u.deg):

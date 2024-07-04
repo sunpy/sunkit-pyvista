@@ -65,7 +65,7 @@ plotter.plot_map(aia)
 # sphinx_gallery_defer_figures
 
 cloud = plotter.coordinates_to_polydata(point_cloud)
-_ = plotter.plotter.add_points(cloud, point_size=0.7, color="cyan", style="points_gaussian")
+_ = plotter.add_points(cloud, point_size=0.7, color="cyan", style="points_gaussian")
 
 ################################################################################
 # Next we want to build a surface from these points.
@@ -75,7 +75,7 @@ _ = plotter.plotter.add_points(cloud, point_size=0.7, color="cyan", style="point
 # sphinx_gallery_defer_figures
 
 surf = cloud.delaunay_3d()
-_ = plotter.plotter.add_mesh(surf)
+_ = plotter.add_mesh(surf)
 
 ################################################################################
 # Finally set up the camera position and focus.

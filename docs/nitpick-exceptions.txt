@@ -16,3 +16,6 @@ py:class array-like
 py:obj parfive
 py:class string
 py:class floats
+py:class pyvista.plotting.plotter.BasePlotter
+py:class pyvista.plotting.picking.PickingMethods
+py:class pyvista.plotting.picking.PickingInterface

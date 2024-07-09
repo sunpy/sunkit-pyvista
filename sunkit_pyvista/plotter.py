@@ -54,7 +54,6 @@ class SunpyPlotter(pv.Plotter):
             coordinate_frame = HeliocentricInertial(obstime=obstime)
         self._coordinate_frame = coordinate_frame
         self.all_meshes = {}
-        self._initialized = True
 
     @property
     def coordinate_frame(self):

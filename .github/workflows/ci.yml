@@ -22,9 +22,9 @@ jobs:
   core:
     uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@main
     with:
+      display: true
       submodules: false
       coverage: codecov
-      display: true
       envs: |
         - linux: py312
 
@@ -32,9 +32,9 @@ jobs:
     needs: [core]
     uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@main
     with:
+      display: true
       submodules: false
       coverage: codecov
-      display: true
       envs: |
         - macos: py311
         - windows: py310
@@ -44,9 +44,9 @@ jobs:
     needs: [core]
     uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@main
     with:
+      display: true
       default_python: "3.12"
       pytest: false
-      display: true
       libraries: |
         apt:
           - graphviz

@@ -1,11 +1,11 @@
 """
-This file contains figure comparison tests.
+This file contains tests for the main plotting routines.
 """
 
 import astropy.constants as const
 import astropy.units as u
 import pytest
-import pyvista
+import pyvista as pv
 import sunpy.data.test as test
 import sunpy.map as smap
 from astropy.coordinates import SkyCoord
@@ -13,7 +13,7 @@ from sunpy.coordinates import frames
 
 from sunkit_pyvista import SunpyPlotter
 
-pyvista.OFF_SCREEN = True
+pv.OFF_SCREEN = True
 
 
 @pytest.fixture()

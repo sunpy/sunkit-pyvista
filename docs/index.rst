@@ -7,6 +7,7 @@ It is built on top of the `pyvista` package, which itself is built as a Python i
 
 .. toctree::
    :maxdepth: 2
+   :caption: Contents:
 
    installing
    getting_started

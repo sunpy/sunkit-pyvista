@@ -12,8 +12,6 @@ import pyvista
 from pyvista.plotting.utilities.sphinx_gallery import DynamicScraper
 from sunpy_sphinx_theme import PNG_ICON
 
-# -- Project information -----------------------------------------------------
-
 
 # -- Read the Docs Specific Configuration --------------------------------------
 # This needs to be done before sunkit-pyvista is imported
@@ -101,7 +99,7 @@ intersphinx_mapping = {
     ),
     "astropy": ("https://docs.astropy.org/en/stable/", None),
     "sunpy": ("https://docs.sunpy.org/en/stable", None),
-    "pyvista": ("https://docs.pyvista.org/", None),
+    "pyvista": ("https://docs.pyvista.org/version/stable", None),
     "sunkit_magex": ("https://docs.sunpy.org/projects/sunkit-magex/en/stable/", None),
 }
 

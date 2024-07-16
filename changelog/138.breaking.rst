@@ -1,2 +1,2 @@
-Instead of wrapping `pyvsita.Plotter`, we now inherit from it.
-This allows us to drop the ``plotter.plotter`` lines in examples and user facing API.
+Instead of wrapping ``pyvsita.Plotter``, we now inherit from it.
+This allows us to drop the ``plotter.Plotter`` lines in examples and user facing API.

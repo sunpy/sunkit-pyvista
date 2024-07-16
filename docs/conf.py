@@ -139,6 +139,15 @@ sphinx_gallery_conf = {
 # a list of builtin themes.
 html_theme = "sunpy"
 
+# for the lint check
+lintcheck_ignore = [
+    r"https://doi.org/\d+",
+    r"https://element.io/\d+",
+    r"https://github.com/\d+",
+    r"https://docs.sunpy.org/\d+",
+]
+linkcheck_anchors = False
+
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".

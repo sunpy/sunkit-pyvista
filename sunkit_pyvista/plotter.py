@@ -29,15 +29,15 @@ class SunpyPlotter(pv.Plotter):
 
     Parameters
     ----------
-    coordinate_frame : ``astropy.coordinates.BaseFrame``
+    coordinate_frame : `astropy.coordinates.BaseCoordinateFrame`
         Coordinate frame of the plot. The x, y, z axes of the pyvista plotter
         will be the x, y, z axes in this coordinate system.
-    obstime : ``astropy.time.Time``
+    obstime : `astropy.time.Time`
         The obstime to use for the default coordinate frame if
         ``coordinate_frame=`` is not specified.  Must not be specified if
         ``coordinate_frame`` is given.
     kwargs : dict
-        All other keyword arguments are passed through to ``pyvista.Plotter``.
+        All other keyword arguments are passed through to `pyvista.Plotter`.
 
     Attributes
     ----------
@@ -125,12 +125,12 @@ class SunpyPlotter(pv.Plotter):
 
     def coordinates_to_polydata(self, coords):
         """
-        Convert a set of coordinates in a ``.SkyCoord`` to a `pyvista.PolyData`
+        Convert a set of coordinates in a `~astropy.coordinates.SkyCoord` to a `pyvista.PolyData`
         mesh.
 
         Parameters
         ----------
-        coords : ``astropy.coordinates.SkyCoord``
+        coords : `astropy.coordinates.SkyCoord`
             Coordinates to convert.
 
         Returns

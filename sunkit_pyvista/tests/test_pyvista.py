@@ -1,11 +1,13 @@
 import pathlib
 
-import astropy.constants as const
-import astropy.units as u
 import numpy as np
 import pytest
 import pyvista as pv
+
+import astropy.constants as const
+import astropy.units as u
 from astropy.coordinates import SkyCoord
+
 from sunpy.coordinates import HeliocentricInertial, HeliographicStonyhurst
 
 

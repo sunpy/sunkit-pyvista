@@ -15,6 +15,7 @@ This example shows how off-limb pixels can be ignored altogether.
 import astropy.units as u
 from astropy.constants import R_sun
 from astropy.coordinates import SkyCoord
+
 from sunpy.coordinates import frames
 
 from sunkit_pyvista import SunpyPlotter

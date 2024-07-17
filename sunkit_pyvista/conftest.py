@@ -83,13 +83,19 @@ def verify_cache_images(plotter):
 
     error = pyvista.compare_images(str(image_filename), plotter)
     if error > allowed_error:
-        msg = "Exceeded image regression error of " f"{IMAGE_REGRESSION_ERROR} with an image error of " f"{error}"
+        msg = (
+            "Exceeded image regression error of "
+            f"{IMAGE_REGRESSION_ERROR} with an image error of "
+            f"{error}"
+        )
         raise RuntimeError(
             msg,
         )
     if error > allowed_warning:
         warnings.warn(
-            "Exceeded image regression warning of " f"{IMAGE_REGRESSION_WARNING} with an image error of " f"{error}",
+            "Exceeded image regression warning of "
+            f"{IMAGE_REGRESSION_WARNING} with an image error of "
+            f"{error}",
             stacklevel=2,
         )
     return None

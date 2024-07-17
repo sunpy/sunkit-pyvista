@@ -1,14 +1,16 @@
 import contextlib
 from pathlib import Path
 
-import astropy.units as u
 import numpy as np
 import pyvista as pv
+from matplotlib import colors
+
+import astropy.units as u
 from astropy.constants import R_sun
 from astropy.coordinates import Longitude, SkyCoord
 from astropy.visualization import AsymmetricPercentileInterval
 from astropy.visualization.wcsaxes import Quadrangle
-from matplotlib import colors
+
 from sunpy.coordinates import HeliocentricInertial, Helioprojective
 from sunpy.coordinates.utils import get_rectangle_coordinates
 from sunpy.map.maputils import all_corner_coords_from_map
@@ -125,8 +127,8 @@ class SunpyPlotter(pv.Plotter):
 
     def coordinates_to_polydata(self, coords):
         """
-        Convert a set of coordinates in a `~astropy.coordinates.SkyCoord` to a `pyvista.PolyData`
-        mesh.
+        Convert a set of coordinates in a `~astropy.coordinates.SkyCoord` to a
+        `pyvista.PolyData` mesh.
 
         Parameters
         ----------

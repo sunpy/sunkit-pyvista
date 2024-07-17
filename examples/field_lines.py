@@ -11,15 +11,15 @@ This example requires the `streamtracer <https://streamtracer.readthedocs.io/en/
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import colors
-from sunkit_magex import pfss
-from sunkit_magex.pfss import tracing
-from sunkit_magex.pfss.sample_data import get_gong_map
 
 import astropy.units as u
 from astropy.constants import R_sun
 from astropy.coordinates import SkyCoord
 
 import sunpy.map
+from sunkit_magex import pfss
+from sunkit_magex.pfss import tracing
+from sunkit_magex.pfss.sample_data import get_gong_map
 from sunpy.coordinates import frames
 
 from sunkit_pyvista import SunpyPlotter

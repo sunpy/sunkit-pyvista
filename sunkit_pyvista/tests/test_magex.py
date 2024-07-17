@@ -1,12 +1,14 @@
-import astropy.constants as const
-import astropy.units as u
 import matplotlib.pyplot as plt
 import numpy as np
 import pytest
 import pyvista as pv
-import sunpy.map as smap
-from astropy.coordinates import SkyCoord
 from matplotlib import colors
+
+import astropy.constants as const
+import astropy.units as u
+from astropy.coordinates import SkyCoord
+
+import sunpy.map as smap
 
 from sunkit_pyvista import SunpyPlotter
 

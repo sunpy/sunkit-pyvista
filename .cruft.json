@@ -1,0 +1,31 @@
+{
+  "template": "https://github.com/sunpy/package-template",
+  "commit": "4af76be5c4219bfc2038c716866327f8d48c0dfa",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "package_name": "sunkit-pyvista",
+      "module_name": "sunkit_pyvista",
+      "short_description": "3D visualisation of solar physics data with pyvista",
+      "author_name": "The SunPy Community",
+      "author_email": "sunpy@googlegroups.com",
+      "project_url": "https://github.com/sunpy/sunkit-pyvista",
+      "license": "BSD 3-Clause",
+      "minimum_python_version": "3.10",
+      "use_compiled_extensions": "n",
+      "enable_dynamic_dev_versions": "y",
+      "include_example_code": "n",
+      "include_cruft_update_github_workflow": "y",
+      "_sphinx_theme": "alabaster",
+      "_parent_project": "",
+      "_install_requires": "",
+      "_copy_without_render": [
+        "docs/_templates",
+        "docs/_static",
+        ".github/workflows/sub_package_update.yml"
+      ],
+      "_template": "https://github.com/sunpy/package-template"
+    }
+  },
+  "directory": null
+}

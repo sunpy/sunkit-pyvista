@@ -7,10 +7,12 @@ This example demonstrates how to take a collection of points which you want to
 visualize as either a cloud of points or a surface.
 """
 
-import astropy.units as u
 import numpy as np
-import sunpy.map
+
+import astropy.units as u
 from astropy.coordinates import SkyCoord, SphericalRepresentation
+
+import sunpy.map
 from sunpy.sun.constants import radius as Rsun
 
 from sunkit_pyvista import SunpyPlotter

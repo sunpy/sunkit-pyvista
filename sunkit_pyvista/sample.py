@@ -1,4 +1,5 @@
 import astropy.units as u
+
 import sunpy.map
 
 __all__ = ["LOW_RES_AIA_193"]

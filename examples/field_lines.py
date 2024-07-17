@@ -8,13 +8,15 @@ Plotting Field Lines from sunkit-magex
 This example requires the `streamtracer <https://streamtracer.readthedocs.io/en/stable/>`__ package.
 """
 
-import astropy.units as u
 import matplotlib.pyplot as plt
 import numpy as np
-import sunpy.map
+from matplotlib import colors
+
+import astropy.units as u
 from astropy.constants import R_sun
 from astropy.coordinates import SkyCoord
-from matplotlib import colors
+
+import sunpy.map
 from sunkit_magex import pfss
 from sunkit_magex.pfss import tracing
 from sunkit_magex.pfss.sample_data import get_gong_map

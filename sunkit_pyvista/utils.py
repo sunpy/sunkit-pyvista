@@ -1,6 +1,8 @@
-import astropy.units as u
 import numpy as np
+
+import astropy.units as u
 from astropy.coordinates import SkyCoord
+
 from sunpy.coordinates import HeliographicStonyhurst
 from sunpy.sun import constants
 

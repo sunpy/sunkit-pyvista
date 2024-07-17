@@ -1,17 +1,19 @@
+
 name: CI
 
 on:
   push:
     branches:
-      - "main"
-      - "*.*"
-      - "!*backport*"
+      - 'main'
+      - '*.*'
+      - '!*backport*'
     tags:
-      - "v*"
-      - "!*dev*"
-      - "!*pre*"
-      - "!*post*"
+      - 'v*'
+      - '!*dev*'
+      - '!*pre*'
+      - '!*post*'
   pull_request:
+  # Allow manual runs through the web UI
   workflow_dispatch:
 
 concurrency:
@@ -25,50 +27,78 @@ jobs:
       display: true
       submodules: false
       coverage: codecov
+      toxdeps: tox-pypi-filter
       envs: |
         - linux: py312
+    secrets:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  sdist_verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -U --user build
+      - run: python -m build . --sdist
+      - run: python -m pip install -U --user twine
+      - run: python -m twine check dist/*
 
   test:
-    needs: [core]
+    needs: [core, sdist_verify]
     uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@main
     with:
       display: true
       submodules: false
       coverage: codecov
+      toxdeps: tox-pypi-filter
       envs: |
-        - macos: py311
-        - windows: py310
-        - linux: py312-devdeps
+        - windows: py311
+        - macos: py310
+        - linux: py310-oldestdeps
+    secrets:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   docs:
     needs: [core]
     uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@main
     with:
       display: true
-      default_python: "3.12"
+      default_python: '3.12'
+      submodules: false
       pytest: false
+      toxdeps: tox-pypi-filter
       libraries: |
         apt:
           - graphviz
       envs: |
         - linux: build_docs
 
-  publish:
-    # Build wheels when pushing to any branch except main
-    # publish.yml will only publish if tagged ^v.*
+  cron:
     if: |
-      (
-        github.event_name != 'pull_request' && (
-          github.ref_name != 'main' ||
-          github.event_name == 'workflow_dispatch'
-        )
-      ) || (
+      github.event_name == 'workflow_dispatch' || (
         github.event_name == 'pull_request' &&
-        contains(github.event.pull_request.labels.*.name, 'Run publish')
+        contains(github.event.pull_request.labels.*.name, 'Run cron CI')
       )
-    needs: [core]
-    uses: OpenAstronomy/github-actions-workflows/.github/workflows/publish_pure_python.yml@v1
+    uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@main
     with:
-      python-version: "3.12"
+      default_python: '3.12'
+      submodules: false
+      coverage: codecov
+      toxdeps: tox-pypi-filter
+      envs: |
+        - linux: py311-devdeps
     secrets:
-      pypi_token: ${{ secrets.pypi_token }}
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  publish_pure:
+      needs: [test, docs]
+      uses: OpenAstronomy/github-actions-workflows/.github/workflows/publish_pure_python.yml@main
+      with:
+        python-version: '3.12'
+        test_extras: 'tests'
+        test_command: 'pytest -p no:warnings --doctest-rst --pyargs sunkit_pyvista'
+        submodules: false
+      secrets:
+        pypi_token: ${{ secrets.pypi_token }}

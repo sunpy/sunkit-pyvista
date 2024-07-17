@@ -1,14 +1,16 @@
 import contextlib
 from pathlib import Path
 
-import astropy.units as u
 import numpy as np
 import pyvista as pv
+from matplotlib import colors
+
+import astropy.units as u
 from astropy.constants import R_sun
 from astropy.coordinates import Longitude, SkyCoord
 from astropy.visualization import AsymmetricPercentileInterval
 from astropy.visualization.wcsaxes import Quadrangle
-from matplotlib import colors
+
 from sunpy.coordinates import HeliocentricInertial, Helioprojective
 from sunpy.coordinates.utils import get_rectangle_coordinates
 from sunpy.map.maputils import all_corner_coords_from_map
@@ -22,20 +24,20 @@ class SunpyPlotter(pv.Plotter):
     """
     A plotter for 3D data.
 
-    This class inherits `pyvsita.Plotter` so we can provide coordinate-aware plotting.
+    This class inherits `pyvista.Plotter` so we can provide coordinate-aware plotting.
     For now, all coordinates are converted to
     a specific frame (`~sunpy.coordinates.HeliocentricInertial` by default),
     and distance units are such that :math:`R_{sun} = 1`.
 
     Parameters
     ----------
-    coordinate_frame : `astropy.coordinates.BaseFrame`
+    coordinate_frame : `astropy.coordinates.BaseCoordinateFrame`
         Coordinate frame of the plot. The x, y, z axes of the pyvista plotter
         will be the x, y, z axes in this coordinate system.
     obstime : `astropy.time.Time`
         The obstime to use for the default coordinate frame if
-        `coordinate_frame=` is not specified.  Must not be specified if
-        `coordinate_frame` is given.
+        ``coordinate_frame=`` is not specified.  Must not be specified if
+        ``coordinate_frame`` is given.
     kwargs : dict
         All other keyword arguments are passed through to `pyvista.Plotter`.
 
@@ -125,8 +127,8 @@ class SunpyPlotter(pv.Plotter):
 
     def coordinates_to_polydata(self, coords):
         """
-        Convert a set of coordinates in a `.SkyCoord` to a `pyvista.PolyData`
-        mesh.
+        Convert a set of coordinates in a `~astropy.coordinates.SkyCoord` to a
+        `pyvista.PolyData` mesh.
 
         Parameters
         ----------

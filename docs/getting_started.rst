@@ -28,7 +28,7 @@ You can plot a quadrangle using  :meth:`~sunkit_pyvista.SunpyPlotter.plot_quadra
 
 You can find an example of this in ``Extending functionality from sunpy``.
 
-You can plot a field lines from `pfsspy` using :meth:`~sunkit_pyvista.SunpyPlotter.plot_field_lines`::
+You can plot a field lines from `sunkit_magex` using :meth:`~sunkit_pyvista.SunpyPlotter.plot_field_lines`::
 
     plotter.plot_field_lines(field_lines)
 

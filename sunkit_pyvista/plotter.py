@@ -24,7 +24,7 @@ class SunpyPlotter(pv.Plotter):
     """
     A plotter for 3D data.
 
-    This class inherits ``pyvsita.Plotter`` so we can provide coordinate-aware plotting.
+    This class inherits `pyvista.Plotter` so we can provide coordinate-aware plotting.
     For now, all coordinates are converted to
     a specific frame (`~sunpy.coordinates.HeliocentricInertial` by default),
     and distance units are such that :math:`R_{sun} = 1`.
@@ -280,7 +280,7 @@ class SunpyPlotter(pv.Plotter):
             :meth:`sunpy.coordinates.Helioprojective.assume_spherical_screen`.
             If `False`, off-limb pixels are not plotted.
         **kwargs :
-            Keyword arguments are handed to ``pyvista.Plotter.add_mesh``.
+            Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
         map_mesh = self._map_to_mesh(m, assume_spherical=assume_spherical_screen)
         if clip_interval is not None:
@@ -327,7 +327,7 @@ class SunpyPlotter(pv.Plotter):
             to be plotted when a single coordinate is passed.
             Defaults to ``0.05`` times the radius of the sun.
         **kwargs :
-            Keyword arguments are passed to ``pyvista.Plotter.add_mesh``.
+            Keyword arguments are passed to `pyvista.Plotter.add_mesh`.
 
         Notes
         -----
@@ -411,7 +411,7 @@ class SunpyPlotter(pv.Plotter):
         radius : `float`
             Radius of the `pyvista.Spline` used to create the quadrangle.
             Defaults to ``0.01`` times the radius of the sun.
-        **kwargs : Keyword arguments are handed to ``pyvista.Plotter.add_mesh``.
+        **kwargs : Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
         bottom_left, top_right = get_rectangle_coordinates(
             bottom_left,
@@ -463,7 +463,7 @@ class SunpyPlotter(pv.Plotter):
              Where ``color`` is any color that `pyvista` recognises
              (e.g. a RGBA tuple, a RGB tuple, a color string)
         **kwargs :
-            Keyword arguments are handed to ``pyvista.Plotter.add_mesh``.
+            Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
         if not color_func:
 
@@ -534,8 +534,8 @@ class SunpyPlotter(pv.Plotter):
 
     def _loop_through_meshes(self, mesh_block):
         """
-        Recursively loop to add nested ``~pyvista.core.MultiBlock`` to the
-        ``pyvsita.Plotter`` along with the color of the mesh.
+        Recursively loop to add nested `~pyvista.core.MultiBlock` to the
+        `pyvsita.Plotter` along with the color of the mesh.
         """
         for block in mesh_block:
             if isinstance(block, pv.MultiBlock):
@@ -569,7 +569,7 @@ class SunpyPlotter(pv.Plotter):
         radius : `float`
             Radius of the `pyvista.Spline` used to create the limb.
             Defaults to ``0.02`` times the radius of the sun.
-        **kwargs : Keyword arguments are handed to ``pyvista.Plotter.add_mesh``.
+        **kwargs : Keyword arguments are handed to `pyvista.Plotter.add_mesh`.
         """
         limb_coordinates = get_limb_coordinates(
             m.observer_coordinate,

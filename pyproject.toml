@@ -31,7 +31,7 @@ classifiers = [
 ]
 dependencies = [
   'pyvista[all]>= 0.44.0',
-  'sunpy[map]>=5.0.0',
+  'sunpy[map]>=5.1.0',
 ]
 
 [project.urls]

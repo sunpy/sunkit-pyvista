@@ -12,7 +12,7 @@ dynamic = ["version"]
 description = "3D visualisation of solar physics data with pyvista"
 requires-python = ">=3.10"
 readme = { file = "README.rst", content-type = "text/x-rst" }
-license = { file = "licenses/LICENSE.rst", content-type = "text/plain" }
+license = { file = "licenses/LICENSE.rst" }
 authors = [
   { name = "The SunPy Community", email = "sunpy@googlegroups.com" },
 ]
@@ -31,7 +31,7 @@ classifiers = [
 ]
 dependencies = [
   'pyvista[all]>= 0.44.0',
-  'sunpy[map]>=5.1.0',
+  'sunpy[map]>=6.0.0',
 ]
 
 [project.urls]

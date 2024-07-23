@@ -49,6 +49,8 @@ Example usage:
 
    pytest -s -vvv --update_image_cache sunkit_pyvista/
 
+Using tox for this does not work for now.
+
 Getting Help
 ============
 

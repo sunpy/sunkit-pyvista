@@ -75,6 +75,7 @@ provides = ["sunkit_pyvista"]
 license-files = ["LICENSE.rst"]
 
 [tool.setuptools.packages.find]
+include = ["sunkit_pyvista*"]
 exclude = ["sunkit_pyvista._dev*"]
 namespaces = false
 

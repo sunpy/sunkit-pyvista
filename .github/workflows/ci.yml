@@ -64,10 +64,7 @@ jobs:
     needs: [core]
     uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@main
     with:
-<<<<<<<
       display: true
-=======
->>>>>>>
       default_python: '3.12'
       submodules: false
       pytest: false
@@ -95,18 +92,6 @@ jobs:
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-<<<<<<<
-  publish_pure:
-      needs: [test, docs]
-      uses: OpenAstronomy/github-actions-workflows/.github/workflows/publish_pure_python.yml@main
-      with:
-        python-version: '3.12'
-        test_extras: 'tests'
-        test_command: 'pytest -p no:warnings --doctest-rst --pyargs sunkit_pyvista'
-        submodules: false
-      secrets:
-        pypi_token: ${{ secrets.pypi_token }}
-=======
   publish:
     needs: [test, docs]
     # Build wheels on PRs only when labelled. Releases will only be published if tagged ^v.*
@@ -125,4 +110,3 @@ jobs:
       submodules: false
     secrets:
       pypi_token: ${{ secrets.pypi_token }}
->>>>>>>

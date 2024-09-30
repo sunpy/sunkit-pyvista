@@ -8,6 +8,8 @@ import os
 import datetime
 from pathlib import Path
 
+from packaging.version import Version
+
 import pyvista
 from pyvista.plotting.utilities.sphinx_gallery import DynamicScraper
 from sunpy_sphinx_theme import PNG_ICON
@@ -24,10 +26,6 @@ if on_rtd:
     os.environ["LC_ALL"] = "C"
     os.environ["PARFIVE_HIDE_PROGRESS"] = "True"
     os.environ["PYDEVD_DISABLE_FILE_VALIDATION"] = "1"
-
-import datetime
-
-from packaging.version import Version
 
 # -- Project information -----------------------------------------------------
 

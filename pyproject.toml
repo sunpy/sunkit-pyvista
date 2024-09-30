@@ -32,6 +32,13 @@ classifiers = [
 dependencies = [
   'pyvista[all]>= 0.44.0',
   'sunpy[map]>=6.0.0',
+<<<<<<<
+=======
+docs = [
+  "sphinx",
+  "sphinx-automodapi",
+  "packaging",
+>>>>>>>
 ]
 
 [project.urls]

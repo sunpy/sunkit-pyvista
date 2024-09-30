@@ -30,8 +30,8 @@ classifiers = [
   "Topic :: Scientific/Engineering :: Visualization",
 ]
 dependencies = [
-  'pyvista[all]>= 0.44.0',
-  'sunpy[map]>=6.0.0',
+  "pyvista[all]>= 0.44.0",
+  "sunpy[map]>=6.0.0",
 ]
 
 [project.urls]
@@ -55,14 +55,15 @@ tests = [
   "sunkit_pyvista[all]",
 ]
 docs = [
+  "sphinx",
+  "sphinx-automodapi",
+  "packaging",
   "sunkit_pyvista[all]",
-  'sphinx-automodapi',
-  'sphinx-changelog',
-  'sphinx-design',
-  'sphinx-gallery',
-  'sphinx',
-  'sunkit-magex',
-  'sunpy-sphinx-theme',
+  "sphinx-changelog",
+  "sphinx-design",
+  "sphinx-gallery",
+  "sunkit-magex",
+  "sunpy-sphinx-theme",
   "streamtracer", # Required by sunkit-magex
 ]
 dev = ["sunkit_pyvista[tests,docs]"]

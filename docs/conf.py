@@ -14,17 +14,16 @@ from sunpy_sphinx_theme import PNG_ICON
 
 
 # -- Read the Docs Specific Configuration --------------------------------------
+
 # This needs to be done before sunkit-pyvista is imported
 on_rtd = os.environ.get("READTHEDOCS", None) == "True"
 if on_rtd:
     os.environ["SUNPY_CONFIGDIR"] = "/home/docs/"
     os.environ["HOME"] = "/home/docs/"
-<<<<<<<
     os.environ["LANG"] = "C"
     os.environ["LC_ALL"] = "C"
     os.environ["PARFIVE_HIDE_PROGRESS"] = "True"
     os.environ["PYDEVD_DISABLE_FILE_VALIDATION"] = "1"
-=======
 
 import datetime
 
@@ -34,12 +33,7 @@ from packaging.version import Version
 
 # The full version, including alpha/beta/rc tags
 from sunkit_pyvista import __version__
->>>>>>>
 
-<<<<<<<
-# The full version, including alpha/beta/rc tags
-from sunkit_pyvista import __version__
-=======
 _version = Version(__version__)
 version = release = str(_version)
 # Avoid "post" appearing in version string in rendered docs
@@ -49,12 +43,10 @@ if _version.is_postrelease:
 elif _version.is_devrelease:
     version = release = f'{_version.base_version}.dev{_version.dev}'
 is_development = _version.is_devrelease
->>>>>>>
 
 project = "sunkit-pyvista"
 author = "The SunPy Community"
 copyright = f"{datetime.datetime.now().year}, {author}"  # noqa: A001
-release = __version__
 
 # -- General configuration ---------------------------------------------------
 
@@ -108,6 +100,7 @@ with Path("nitpick-exceptions.txt").open() as f:
         nitpick_ignore.append((dtype, target))
 
 # -- Options for intersphinx extension ---------------------------------------
+
 intersphinx_mapping = {
     "python": (
         "https://docs.python.org/3/",
@@ -128,6 +121,7 @@ intersphinx_mapping = {
 }
 
 # -- pyvista configuration ---------------------------------------------------
+
 os.environ["PYVISTA_BUILDING_GALLERY"] = "True"
 pyvista.BUILDING_GALLERY = True
 pyvista.global_theme.font.label_size = 18
@@ -142,6 +136,7 @@ if on_rtd or os.environ.get("CI"):
     pyvista.start_xvfb()
 
 # -- Sphinx Gallery ------------------------------------------------------------
+
 sphinx_gallery_conf = {
     "backreferences_dir": Path("generated") / "modules",
     "filename_pattern": "^((?!skip_).)*$",

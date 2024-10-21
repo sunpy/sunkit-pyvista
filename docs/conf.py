@@ -14,7 +14,6 @@ import pyvista
 from pyvista.plotting.utilities.sphinx_gallery import DynamicScraper
 from sunpy_sphinx_theme import PNG_ICON
 
-
 # -- Read the Docs Specific Configuration --------------------------------------
 
 # This needs to be done before sunkit-pyvista is imported
@@ -88,16 +87,6 @@ master_doc = "index"
 # Treat everything in single ` as a Python reference.
 default_role = "py:obj"
 
-nitpicky = True
-nitpick_ignore = []
-with Path("nitpick-exceptions.txt").open() as f:
-    for line in f:
-        if line.strip() == "" or line.startswith("#"):
-            continue
-        dtype, target = line.split(None, 1)
-        target = target.strip()
-        nitpick_ignore.append((dtype, target))
-
 # -- Options for intersphinx extension ---------------------------------------
 
 intersphinx_mapping = {
@@ -118,6 +107,59 @@ intersphinx_mapping = {
     "pyvista": ("https://docs.pyvista.org/version/stable", None),
     "sunkit_magex": ("https://docs.sunpy.org/projects/sunkit-magex/en/stable/", None),
 }
+
+# -- Options for HTML output -------------------------------------------------
+
+# The theme to use for HTML and HTML Help pages.  See the documentation for
+# a list of builtin themes.
+html_theme = "sunpy"
+
+# Render inheritance diagrams in SVG
+graphviz_output_format = "svg"
+
+graphviz_dot_args = [
+    "-Nfontsize=10",
+    "-Nfontname=Helvetica Neue, Helvetica, Arial, sans-serif",
+    "-Efontsize=10",
+    "-Efontname=Helvetica Neue, Helvetica, Arial, sans-serif",
+    "-Gfontsize=10",
+    "-Gfontname=Helvetica Neue, Helvetica, Arial, sans-serif",
+]
+
+# Add any paths that contain custom static files (such as style sheets) here,
+# relative to this directory. They are copied after the builtin static files,
+# so a file named "default.css" will overwrite the builtin "default.css".
+# html_static_path = ["_static"]
+
+# By default, when rendering docstrings for classes, sphinx.ext.autodoc will
+# make docs with the class-level docstring and the class-method docstrings,
+# but not the __init__ docstring, which often contains the parameters to
+# class constructors across the scientific Python ecosystem. The option below
+# will append the __init__ docstring to the class-level docstring when rendering
+# the docs. For more options, see:
+# https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html#confval-autoclass_content
+autoclass_content = "both"
+
+# -- Other options ----------------------------------------------------------
+
+# for the lint check
+lintcheck_ignore = [
+    r"https://doi.org/\d+",
+    r"https://element.io/\d+",
+    r"https://github.com/\d+",
+    r"https://docs.sunpy.org/\d+",
+]
+linkcheck_anchors = False
+
+nitpicky = True
+nitpick_ignore = []
+with Path("nitpick-exceptions.txt").open() as f:
+    for line in f:
+        if line.strip() == "" or line.startswith("#"):
+            continue
+        dtype, target = line.split(None, 1)
+        target = target.strip()
+        nitpick_ignore.append((dtype, target))
 
 # -- pyvista configuration ---------------------------------------------------
 
@@ -150,34 +192,3 @@ sphinx_gallery_conf = {
     "only_warn_on_example_error": True,
     "image_scrapers": (DynamicScraper(), "matplotlib"),
 }
-
-# -- Options for HTML output -------------------------------------------------
-
-# The theme to use for HTML and HTML Help pages.  See the documentation for
-# a list of builtin themes.
-html_theme = "sunpy"
-
-# for the lint check
-lintcheck_ignore = [
-    r"https://doi.org/\d+",
-    r"https://element.io/\d+",
-    r"https://github.com/\d+",
-    r"https://docs.sunpy.org/\d+",
-]
-linkcheck_anchors = False
-
-# Add any paths that contain custom static files (such as style sheets) here,
-# relative to this directory. They are copied after the builtin static files,
-# so a file named "default.css" will overwrite the builtin "default.css".
-# html_static_path = ["_static"]
-
-# By default, when rendering docstrings for classes, sphinx.ext.autodoc will
-# make docs with the class-level docstring and the class-method docstrings,
-# but not the __init__ docstring, which often contains the parameters to
-# class constructors across the scientific Python ecosystem. The option below
-# will append the __init__ docstring to the class-level docstring when rendering
-# the docs. For more options, see:
-# https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html#confval-autoclass_content
-autoclass_content = "both"
-
-# -- Other options ----------------------------------------------------------

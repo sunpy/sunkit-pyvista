@@ -57,6 +57,7 @@ tests = [
 docs = [
   "sphinx",
   "sphinx-automodapi",
+  "sunpy-sphinx-theme",
   "packaging",
   "sunkit_pyvista[all]",
   "sphinx-changelog",

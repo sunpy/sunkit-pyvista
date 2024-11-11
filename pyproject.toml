@@ -64,7 +64,6 @@ docs = [
   "sphinx-design",
   "sphinx-gallery",
   "sunkit-magex",
-  "sunpy-sphinx-theme",
   "streamtracer", # Required by sunkit-magex
 ]
 dev = ["sunkit_pyvista[tests,docs]"]

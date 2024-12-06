@@ -8,6 +8,14 @@ It is built on top of the `pyvista <https://pyvista.org/>`__ package, which itse
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+<<<<<<<
+=======
+
+   whatsnew/index
+
+Indices and tables
+==================
+>>>>>>>
 
    installing
    getting_started

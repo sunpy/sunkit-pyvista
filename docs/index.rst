@@ -13,4 +13,4 @@ It is built on top of the `pyvista <https://pyvista.org/>`__ package, which itse
    getting_started
    generated/gallery/index
    api
-   changelog
+   whatsnew/index

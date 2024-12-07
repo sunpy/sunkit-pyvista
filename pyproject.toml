@@ -34,13 +34,6 @@ dependencies = [
   "sunpy[map]>=6.0.0",
 ]
 
-[project.urls]
-changelog = "https://docs.sunpy.org/projects/sunkit-magex/en/stable/changelog"
-documentation = "https://docs.sunpy.org/projects/sunkit-magex/en/stable/"
-homepage = "https://sunpy.org/"
-issue_tracker = "https://github.com/sunpy/sunkit-pyvista/issues"
-repository = "https://github.com/sunpy/sunkit-pyvista"
-
 [project.optional-dependencies]
 all = ["sunkit_pyvista"]
 tests = [
@@ -68,8 +61,11 @@ docs = [
 dev = ["sunkit_pyvista[tests,docs]"]
 
 [project.urls]
-Homepage = "https://github.com/sunpy/sunkit-pyvista"
-Download = "https://pypi.org/project/sunkit-pyvista"
+changelog = "https://docs.sunpy.org/projects/sunkit-magex/en/stable/changelog"
+documentation = "https://docs.sunpy.org/projects/sunkit-magex/en/stable/"
+homepage = "https://sunpy.org/"
+issue_tracker = "https://github.com/sunpy/sunkit-pyvista/issues"
+repository = "https://github.com/sunpy/sunkit-pyvista"
 
 [tool.setuptools]
 zip-safe = false

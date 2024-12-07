@@ -65,11 +65,8 @@ extensions = [
     "sphinx_automodapi.automodapi",
     "sphinx_automodapi.smart_resolver",
     "sphinx_changelog",
-<<<<<<<
     "sphinx_design",
     "sphinx_gallery.gen_gallery",
-=======
->>>>>>>
 ]
 
 # Add any paths that contain templates here, relative to this directory.

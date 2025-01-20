@@ -64,10 +64,7 @@ def verify_cache_images(plotter):
     allowed_warning = IMAGE_REGRESSION_WARNING
 
     if test_name is None:
-        msg = (
-            "Unable to identify calling test function. This function "
-            "should only be used within a pytest environment."
-        )
+        msg = "Unable to identify calling test function. This function should only be used within a pytest environment."
         raise RuntimeError(
             msg,
         )
@@ -83,13 +80,13 @@ def verify_cache_images(plotter):
 
     error = pyvista.compare_images(str(image_filename), plotter)
     if error > allowed_error:
-        msg = "Exceeded image regression error of " f"{IMAGE_REGRESSION_ERROR} with an image error of " f"{error}"
+        msg = f"Exceeded image regression error of {IMAGE_REGRESSION_ERROR} with an image error of {error}"
         raise RuntimeError(
             msg,
         )
     if error > allowed_warning:
         warnings.warn(
-            "Exceeded image regression warning of " f"{IMAGE_REGRESSION_WARNING} with an image error of " f"{error}",
+            f"Exceeded image regression warning of {IMAGE_REGRESSION_WARNING} with an image error of {error}",
             stacklevel=2,
         )
     return None

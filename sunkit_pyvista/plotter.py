@@ -182,7 +182,7 @@ class SunpyPlotter(pv.Plotter):
         """
         view_angle = angle.to_value(u.deg)
         if not (view_angle > 0 and view_angle <= 180):
-            msg = "specified view angle must be " "0 deg < angle <= 180 deg"
+            msg = "specified view angle must be 0 deg < angle <= 180 deg"
             raise ValueError(msg)
         zoom_value = self.camera.view_angle / view_angle
         self.camera.zoom(zoom_value)
@@ -290,7 +290,7 @@ class SunpyPlotter(pv.Plotter):
                     clip_interval=clip_interval,
                 )
             else:
-                msg = "Clip percentile interval must be " "specified as two numbers."
+                msg = "Clip percentile interval must be specified as two numbers."
                 raise ValueError(
                     msg,
                 )

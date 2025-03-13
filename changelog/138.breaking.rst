@@ -1,2 +1,0 @@
-Instead of wrapping `pyvista.Plotter`, we now inherit from it.
-This allows us to drop the ``plotter.plotter`` lines in examples and user facing API.

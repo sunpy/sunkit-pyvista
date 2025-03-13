@@ -44,8 +44,8 @@ tests = [
   "pytest-doctestplus",
   "pytest-xdist",
   "scikit-image",
-  "streamtracer", # Required by sunkit-magex
-  "sunkit-magex",
+  "streamtracer>2.3.0", # Required by sunkit-magex
+  "sunkit-magex>=1.0.0",
   "sunkit_pyvista[all]",
 ]
 docs = [

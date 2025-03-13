@@ -1,3 +1,14 @@
+0.4.0 (2025-03-12)
+==================
+
+Breaking Changes
+----------------
+
+- Instead of wrapping `pyvista.Plotter`, we now inherit from it.
+  This allows us to drop the ``plotter.plotter`` lines in examples and user facing API. (`#138 <https://github.com/sunpy/sunkit-pyvista/pull/138>`__)
+- Updated minimum required version of ``sunpy`` 6.0.0. (`#165 <https://github.com/sunpy/sunkit-pyvista/pull/165>`__)
+
+
 0.3.0 (2024-06-13)
 ==================
 

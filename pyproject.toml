@@ -40,7 +40,7 @@ tests = [
   "pytest",
   "pytest-astropy",
   "scikit-image",
-  "sunkit-magex",
+  "sunkit-magex>=1.1.0",
   "sunkit_pyvista[all]",
 ]
 docs = [
@@ -51,7 +51,7 @@ docs = [
   "sunkit_pyvista[all]",
   "sphinx-design",
   "sphinx-gallery",
-  "sunkit-magex",
+  "sunkit-magex>=1.1.0",
 ]
 dev = ["sunkit_pyvista[tests,docs]"]
 

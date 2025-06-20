@@ -64,7 +64,7 @@ rss = 1.5
 input_ = pfss.Input(gong_map, nrho, rss)
 output_ = pfss.pfss(input_)
 seeds = SkyCoord(lon, lat, 1.2 * R_sun, frame=gong_map.coordinate_frame)
-tracer = tracing.FortranTracer()
+tracer = tracing.PerformanceTracer()
 field_lines = tracer.trace(seeds, output_)
 
 ###############################################################################

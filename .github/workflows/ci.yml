@@ -31,12 +31,12 @@ jobs:
   core:
     uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@v1
     with:
-      display: false
+      display: true
       submodules: false
       coverage: codecov
       toxdeps: tox-pypi-filter
       envs: |
-        - linux: py313
+        - windows: py313
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 

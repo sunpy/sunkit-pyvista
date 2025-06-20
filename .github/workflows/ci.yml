@@ -36,7 +36,7 @@ jobs:
       coverage: codecov
       toxdeps: tox-pypi-filter
       envs: |
-        - linux: py313
+        - linux: py312
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 

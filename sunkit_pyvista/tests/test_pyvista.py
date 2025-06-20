@@ -162,7 +162,7 @@ def test_loop_through_meshes(plotter):
     outer_block = pv.MultiBlock([inner_block, sphere2])
     plotter._loop_through_meshes(outer_block)  # NOQA: SLF001
 
-    assert plotter.mesh.center == (0.0, 1.0, 1.0)
+    np.testing.assert_array_equal(plotter.mesh.center, [0, 1, 1])
 
 
 def test_plot_limb(aia171_test_map, plotter):

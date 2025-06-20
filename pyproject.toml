@@ -10,7 +10,7 @@ build-backend = "setuptools.build_meta"
 name = "sunkit_pyvista"
 dynamic = ["version"]
 description = "3D visualisation of solar physics data with pyvista"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 readme = { file = "README.rst", content-type = "text/x-rst" }
 license = { file = "licenses/LICENSE.rst" }
 authors = [
@@ -24,14 +24,13 @@ classifiers = [
   "Operating System :: OS Independent",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Topic :: Scientific/Engineering :: Visualization",
 ]
 dependencies = [
-  "numpy<2.3.0",
-  "pyvista[all]>= 0.44.0",
+  "pyvista[all]>=0.44.0",
   "sunpy[map]>=6.0.0",
 ]
 
@@ -40,12 +39,8 @@ all = ["sunkit_pyvista"]
 tests = [
   "pytest",
   "pytest-astropy",
-  "pytest-cov",
-  "pytest-doctestplus",
-  "pytest-xdist",
   "scikit-image",
-  "streamtracer", # Required by sunkit-magex
-  "sunkit-magex",
+  "sunkit-magex>=1.1.0",
   "sunkit_pyvista[all]",
 ]
 docs = [
@@ -56,8 +51,7 @@ docs = [
   "sunkit_pyvista[all]",
   "sphinx-design",
   "sphinx-gallery",
-  "sunkit-magex",
-  "streamtracer", # Required by sunkit-magex
+  "sunkit-magex>=1.1.0",
 ]
 dev = ["sunkit_pyvista[tests,docs]"]
 

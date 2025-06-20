@@ -39,12 +39,9 @@ all = ["sunkit_pyvista"]
 tests = [
   "pytest",
   "pytest-astropy",
-  "pytest-cov",
   "pytest-doctestplus",
-  "pytest-xdist",
   "scikit-image",
-  "streamtracer>2.3.0", # Required by sunkit-magex
-  "sunkit-magex>=1.0.0",
+  "sunkit-magex>=1.0.0,<1.1.0",
   "sunkit_pyvista[all]",
 ]
 docs = [
@@ -56,7 +53,6 @@ docs = [
   "sphinx-design",
   "sphinx-gallery",
   "sunkit-magex",
-  "streamtracer", # Required by sunkit-magex
 ]
 dev = ["sunkit_pyvista[tests,docs]"]
 

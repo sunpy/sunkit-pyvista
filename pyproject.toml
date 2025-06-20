@@ -10,7 +10,7 @@ build-backend = "setuptools.build_meta"
 name = "sunkit_pyvista"
 dynamic = ["version"]
 description = "3D visualisation of solar physics data with pyvista"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 readme = { file = "README.rst", content-type = "text/x-rst" }
 license = { file = "licenses/LICENSE.rst" }
 authors = [
@@ -24,7 +24,6 @@ classifiers = [
   "Operating System :: OS Independent",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",

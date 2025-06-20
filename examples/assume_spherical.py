@@ -6,7 +6,7 @@ Ignoring off-limb pixels
 How to not plot off-limb pixels.
 
 By default ``sunkit-pyvista`` plots all pixels in a map, using
-:meth:`~sunpy.coordinates.screens.SphericalScreen` to
+`~sunpy.coordinates.screens.SphericalScreen` to
 project off-limb pixels on to a spherical screen.
 
 This example shows how off-limb pixels can be ignored altogether.

@@ -278,7 +278,7 @@ class SunpyPlotter(pv.Plotter):
             interval bounded by the two numbers.
         assume_spherical_screen : bool, optional
             If `True` (default) then off-limb pixels are plotted using
-            :meth:`sunpy.coordinates.screens.SphericalScreen`.
+            `sunpy.coordinates.screens.SphericalScreen`.
             If `False`, off-limb pixels are not plotted.
         **kwargs :
             Keyword arguments are handed to `pyvista.Plotter.add_mesh`.

@@ -39,9 +39,8 @@ all = ["sunkit_pyvista"]
 tests = [
   "pytest",
   "pytest-astropy",
-  "pytest-doctestplus",
   "scikit-image",
-  "sunkit-magex>=1.0.0,<1.1.0",
+  "sunkit-magex",
   "sunkit_pyvista[all]",
 ]
 docs = [

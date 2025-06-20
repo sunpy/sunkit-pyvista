@@ -36,6 +36,7 @@ jobs:
       coverage: codecov
       toxdeps: tox-pypi-filter
       envs: |
+        # Linux is crashing
         - windows: py313
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

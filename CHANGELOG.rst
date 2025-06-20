@@ -94,7 +94,7 @@ Internal Changes
 - Increases test coverage for :class:`~sunkit_pyvista.plotter.SunpyPlotter`. (`#23 <https://github.com/sunpy/sunkit-pyvista/pull/23>`__)
 - Rearranged existing examples and added an example brightest pixel with :meth:`~sunkit_pyvista.plotter.SunpyPlotter.plot_coordinates`. (`#30 <https://github.com/sunpy/sunkit-pyvista/pull/30>`__)
 - :meth:`~sunkit_pyvista.plotter.SunpyPlotter.plot_quadrangle` uses a :meth`~pyvista.utilities.Spline` for combining the individual points. (`#52 <https://github.com/sunpy/sunkit-pyvista/pull/52>`__)
-- Adds an example using :meth:`~sunpy.coordinates.frames.Helioprojective.assume_spherical_screen`. (`#69 <https://github.com/sunpy/sunkit-pyvista/pull/69>`__)
+- Adds an example using ``~sunpy.coordinates.frames.Helioprojective.assume_spherical_screen``. (`#69 <https://github.com/sunpy/sunkit-pyvista/pull/69>`__)
 - Changed the manner that colors or colormaps are saved.
   Changed default of meshes to be white. (`#73 <https://github.com/sunpy/sunkit-pyvista/pull/73>`__)
 - Removes colorbars when displaying plots. (`#79 <https://github.com/sunpy/sunkit-pyvista/pull/79>`__)

@@ -11,7 +11,8 @@ from astropy.coordinates import Longitude, SkyCoord
 from astropy.visualization import AsymmetricPercentileInterval
 from astropy.visualization.wcsaxes import Quadrangle
 
-from sunpy.coordinates import HeliocentricInertial, Helioprojective
+from sunpy.coordinates import HeliocentricInertial
+from sunpy.coordinates.screens import SphericalScreen
 from sunpy.coordinates.utils import get_rectangle_coordinates
 from sunpy.map.maputils import all_corner_coords_from_map
 
@@ -205,7 +206,7 @@ class SunpyPlotter(pv.Plotter):
         corner_coords = all_corner_coords_from_map(m)
 
         if assume_spherical:
-            context = Helioprojective.assume_spherical_screen(
+            context = SphericalScreen(
                 m.observer_coordinate,
                 only_off_disk=True,
             )
@@ -277,7 +278,7 @@ class SunpyPlotter(pv.Plotter):
             interval bounded by the two numbers.
         assume_spherical_screen : bool, optional
             If `True` (default) then off-limb pixels are plotted using
-            :meth:`sunpy.coordinates.Helioprojective.assume_spherical_screen`.
+            :meth:`sunpy.coordinates.screens.SphericalScreen`.
             If `False`, off-limb pixels are not plotted.
         **kwargs :
             Keyword arguments are handed to `pyvista.Plotter.add_mesh`.

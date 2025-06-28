@@ -628,9 +628,6 @@ class CartesianPlotter(pv.Plotter):
         All other keyword arguments are passed through to `pyvista.Plotter`.
     """
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
     def define_vector_field(self, vectors, *args, **kwargs):
         """
         Define a 3D vector field.

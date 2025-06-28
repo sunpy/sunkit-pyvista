@@ -655,7 +655,7 @@ class CartesianPlotter(pv.Plotter):
         self._create_mesh()
         self.add_mesh(self.mesh.outline(), color=color, **kwargs)
 
-    def plot_boundary(self, boundary="bottom", component=2, cmap="gray", **kwargs):
+    def plot_boundary(self, boundary="bottom", *, component=2, cmap="gray", **kwargs):
         """
         Plot the boundary of the 3D vector field.
 
@@ -703,6 +703,7 @@ class CartesianPlotter(pv.Plotter):
     def plot_field_lines(
         self,
         seeds,
+        *,
         render_lines_as_tubes=True,
         radius=1,
         max_steps=10000,

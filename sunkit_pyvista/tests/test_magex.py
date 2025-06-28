@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import pytest
 import pyvista as pv
 from matplotlib import colors
 
@@ -9,16 +8,14 @@ import astropy.units as u
 from astropy.coordinates import SkyCoord
 
 import sunpy.map as smap
+from sunkit_magex import pfss
+from sunkit_magex.pfss import tracing
+from sunkit_magex.pfss.sample_data import get_gong_map
 
 from sunkit_pyvista import SunpyPlotter
 
 
 def test_field_lines_figure(aia171_test_map, plotter, verify_cache_image):
-    pfss = pytest.importorskip("sunkit_magex.pfss")
-
-    from sunkit_magex.pfss import tracing
-    from sunkit_magex.pfss.sample_data import get_gong_map
-
     gong_fname = get_gong_map()
     gong_map = smap.Map(gong_fname)
     nrho = 35
@@ -45,11 +42,6 @@ def test_field_lines_figure(aia171_test_map, plotter, verify_cache_image):
 
 
 def test_field_lines_and_color_func(plotter):
-    pfss = pytest.importorskip("sunkit_magex.pfss")
-
-    from sunkit_magex.pfss import tracing
-    from sunkit_magex.pfss.sample_data import get_gong_map
-
     gong_fname = get_gong_map()
     gong_map = smap.Map(gong_fname)
     nrho = 35

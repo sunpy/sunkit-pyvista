@@ -44,11 +44,9 @@ def verify_cache_images(plotter):
     Assign this only once for each test you'd like to validate the
     previous image of. This will not work with parameterized tests.
     """
-    import vtk
-
-    if not vtk.__version__ >= "9.2.0" or platform.system() != "Linux":
-        pytest.skip("VTK 9.2 or above and linux required for figure tests.")
-
+    if not platform.system().lower() == "linux":
+        pytest.skip("Linux required for figure tests.")
+        return None
     # Since each test must contain a unique name,
     # we can use the function test to name the image.
     stack = inspect.stack()

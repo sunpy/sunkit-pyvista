@@ -37,6 +37,11 @@ jobs:
       toxdeps: tox-pypi-filter
       envs: |
         - linux: py313
+          libraries:
+            apt:
+              - libosmesa6
+              - libglfw3-dev
+              - libgles2-mesa-dev
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
@@ -64,7 +69,17 @@ jobs:
         - windows: py311
         - macos: py312
         - linux: py311-oldestdeps
+          libraries:
+            apt:
+              - libosmesa6
+              - libglfw3-dev
+              - libgles2-mesa-dev
         - linux: py313-devdeps
+          libraries:
+            apt:
+              - libosmesa6
+              - libglfw3-dev
+              - libgles2-mesa-dev
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 

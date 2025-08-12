@@ -499,7 +499,7 @@ class SunpyPlotter(pv.Plotter):
 
     def plot_current_sheet(self, pfss_out, **kwargs):
         """
-        Plot current sheet "(Br=0)".
+        Plot current sheet, where :math:`B_r=0`.
 
         Parameters
         ----------

@@ -63,7 +63,7 @@ Internal Changes
 Features
 --------
 
-- Creation of :class:`~sunkit_pyvista.plotter.SunpyPlotter` class which allows for plotting of a :class:`~sunpy.map.GenericMap` through pyvista. (`#4 <https://github.com/sunpy/sunkit-pyvista/pull/4>`__)
+- Creation of :class:`~sunkit_pyvista.plotter.SunpyPlotter` class which allows for plotting of a `~sunpy.map.GenericMap` through pyvista. (`#4 <https://github.com/sunpy/sunkit-pyvista/pull/4>`__)
 - Adds :meth:`~sunkit_pyvista.plotter.SunpyPlotter.set_camera_coordinate` which allows for specifying the initial camera coordinates. (`#10 <https://github.com/sunpy/sunkit-pyvista/pull/10>`__)
 - Added :meth:`~sunkit_pyvista.plotter.SunpyPlotter.plot_field_lines` method which allows for plotting of magnetic field lines from ``pfsspy`` through pyvista. (`#12 <https://github.com/sunpy/sunkit-pyvista/pull/12>`__)
 - Adds :meth:`~sunkit_pyvista.plotter.SunpyPlotter.set_view_angle` which allows for setting of the camera's width/view angle. (`#16 <https://github.com/sunpy/sunkit-pyvista/pull/16>`__)

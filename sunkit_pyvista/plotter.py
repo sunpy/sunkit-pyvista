@@ -11,6 +11,7 @@ from astropy.coordinates import Longitude, SkyCoord
 from astropy.visualization import AsymmetricPercentileInterval
 from astropy.visualization.wcsaxes import Quadrangle
 
+from sunkit_magex.pfss.coords import strum2cart
 from sunpy.coordinates import HeliocentricInertial
 from sunpy.coordinates.screens import SphericalScreen
 from sunpy.coordinates.utils import get_rectangle_coordinates
@@ -495,6 +496,31 @@ class SunpyPlotter(pv.Plotter):
             field_line_meshes.append(spline)
 
         self._add_mesh_to_dict(block_name="field_lines", mesh=spline)
+
+    def plot_current_sheet(self, pfss_out, **kwargs):
+        """
+        Plot current sheet, where :math:`B_r=0`.
+
+        Parameters
+        ----------
+        pfss_out : `sunkit_magex.pfss.output.Output`
+            Magnetic field calculated by `sunkit_magex`.
+        **kwargs :
+            Keyword arguments are passed to `pyvista.Plotter.add_mesh`.
+        """
+        sc_vect = pfss_out.grid.sc
+        pc_vect = np.insert(pfss_out.grid.pc, 0, pfss_out.grid.pc[-1])
+        rg_vect = pfss_out.grid.rg
+        coord = SkyCoord((pfss_out.input_map.meta["crval1"] * u.deg).to(u.rad), 0.0 * u.rad, frame=HeliocentricInertial)
+        coord = coord.transform_to(self.coordinate_frame)
+        bc_r = np.insert(pfss_out.bc[0], 0, pfss_out.bc[0][-1], axis=0)
+        [s_arr, p_arr, r_arr] = np.meshgrid(sc_vect, pc_vect, rg_vect)
+        x_arr, y_arr, z_arr = strum2cart(r_arr, s_arr, p_arr + coord.lon.to(u.rad).value)
+        pfss_out_pv = pv.StructuredGrid(x_arr, y_arr, z_arr)
+        pfss_out_pv["Br"] = bc_r.ravel("F")
+        isos_br = pfss_out_pv.contour(isosurfaces=1, rng=[0, 0])
+        self.add_mesh(isos_br, **kwargs)
+        self._add_mesh_to_dict(block_name="current_sheet", mesh=isos_br)
 
     def save(self, filepath, *, overwrite=False):
         """

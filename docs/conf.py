@@ -101,7 +101,7 @@ intersphinx_mapping = {
         (None, "http://www.astropy.org/astropy-data/intersphinx/numpy.inv"),
     ),
     "matplotlib": (
-        "https://matplotlib.org/",
+        "https://matplotlib.org/stable/objects.inv",
         (None, "http://www.astropy.org/astropy-data/intersphinx/matplotlib.inv"),
     ),
     "astropy": ("https://docs.astropy.org/en/stable/", None),

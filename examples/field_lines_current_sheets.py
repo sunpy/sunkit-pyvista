@@ -1,11 +1,14 @@
 """
-======================================
-Plotting Field Lines from sunkit-magex
-======================================
+=========================================================
+Plotting field lines and current sheets from sunkit-magex
+=========================================================
 
 ``sunkit-pyvista`` can be used to plot field lines from ``sunkit-magex``.
 
 This example requires the `streamtracer <https://streamtracer.readthedocs.io/en/stable/>`__ package.
+
+This example uses specific sample data from ``sunkit-magex`` to demonstrate the plotting of field lines and current sheets.
+If you want to adapt this, you have to make sure that the input magnetic field data has the same date as the AIA image.
 """
 
 import matplotlib.pyplot as plt
@@ -26,33 +29,16 @@ from sunkit_pyvista import SunpyPlotter
 from sunkit_pyvista.sample import LOW_RES_AIA_193
 
 ###############################################################################
-# We will be using an AIA 193 image from the sunpy sample data as the base image.
-
-# sphinx_gallery_defer_figures
-
-# Start by creating a plotter
-plotter = SunpyPlotter()
-
-# Plot a map
-plotter.plot_map(LOW_RES_AIA_193, clip_interval=[1, 99] * u.percent, assume_spherical_screen=False)
-# Add an arrow to show the solar rotation axis
-plotter.plot_solar_axis()
-
-###############################################################################
-# We now need to do the magnetic field extrapolation using ``sunkit-magex``.
-
-# sphinx_gallery_defer_figures
+# We will start by doing the magnetic field extrapolation using ``sunkit-magex``.
 
 # We load a gong_map from sunkit-magex
 gong_fname = get_gong_map()
 gong_map = sunpy.map.Map(gong_fname)
-# Now we plot the Gong Map to fill in the farside.
-plotter.plot_map(gong_map, cmap="hmimag", clip_interval=[1, 99] * u.percent)
 
-# Create points spaced between lat={-90, 90} degrees
+# Create points spaced between lat={-89, 89} degrees
 lat = np.linspace(-np.pi / 2, np.pi / 2, 32, endpoint=False)
 # Create 32 points spaced between long={0, 360} degrees
-lon = np.linspace(0, 2 * np.pi, 32, endpoint=False)
+lon = np.linspace(1, 2 * np.pi, 32, endpoint=False)
 # Make a 2D grid from these 1D points
 lat, lon = np.meshgrid(lat, lon, indexing="ij")
 # Create lon, lat and radial coordinate values by using a sunkit-magex
@@ -62,10 +48,25 @@ lat, lon = lat.ravel() * u.rad, lon.ravel() * u.rad
 nrho = 30
 rss = 1.5
 input_ = pfss.Input(gong_map, nrho, rss)
-output_ = pfss.pfss(input_)
+pfss_output = pfss.pfss(input_)
 seeds = SkyCoord(lon, lat, 1.2 * R_sun, frame=gong_map.coordinate_frame)
-tracer = tracing.PerformanceTracer()
-field_lines = tracer.trace(seeds, output_)
+tracer = tracing.PythonTracer()
+field_lines = tracer.trace(seeds, pfss_output)
+
+###############################################################################
+# We will be using an AIA 193 image from the sunpy sample data as the base image.
+
+# sphinx_gallery_defer_figures
+
+# Start by creating a plotter
+plotter = SunpyPlotter()
+
+# Plot the AIA  map
+plotter.plot_map(LOW_RES_AIA_193, clip_interval=[1, 99] * u.percent, assume_spherical_screen=False)
+# Add an arrow to show the solar rotation axis
+plotter.plot_solar_axis()
+# Now we plot the Gong Map to fill in the farside.
+plotter.plot_map(gong_map, cmap="hmimag", clip_interval=[1, 99] * u.percent)
 
 ###############################################################################
 # We can also specify a color function while plotting the field lines.
@@ -82,6 +83,8 @@ def my_fline_color_func(field_line):
 
 # Plotting the field lines
 plotter.plot_field_lines(field_lines, color_func=my_fline_color_func)
+# Plotting the current sheet
+plotter.plot_current_sheet(pfss_output, opacity=0.5)
 
 # Set the camera coordinate to view the plot correctly
 camera_coord = SkyCoord(

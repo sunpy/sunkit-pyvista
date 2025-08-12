@@ -48,10 +48,10 @@ lat, lon = lat.ravel() * u.rad, lon.ravel() * u.rad
 nrho = 30
 rss = 1.5
 input_ = pfss.Input(gong_map, nrho, rss)
-output_ = pfss.pfss(input_)
+pfss_output = pfss.pfss(input_)
 seeds = SkyCoord(lon, lat, 1.2 * R_sun, frame=gong_map.coordinate_frame)
-tracer = tracing.PerformanceTracer()
-field_lines = tracer.trace(seeds, output_)
+tracer = tracing.PythonTracer()
+field_lines = tracer.trace(seeds, pfss_output)
 
 ###############################################################################
 # We will be using an AIA 193 image from the sunpy sample data as the base image.
@@ -84,7 +84,7 @@ def my_fline_color_func(field_line):
 # Plotting the field lines
 plotter.plot_field_lines(field_lines, color_func=my_fline_color_func)
 # Plotting the current sheet
-plotter.plot_current_sheet(output_)
+plotter.plot_current_sheet(pfss_output, opacity=0.5)
 
 # Set the camera coordinate to view the plot correctly
 camera_coord = SkyCoord(

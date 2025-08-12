@@ -37,13 +37,18 @@ jobs:
       toxdeps: tox-pypi-filter
       envs: |
         - linux: py313
+          libraries:
+            apt:
+              - libosmesa6
+              - libglfw3-dev
+              - libgles2-mesa-dev
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   sdist_verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
@@ -64,7 +69,17 @@ jobs:
         - windows: py311
         - macos: py312
         - linux: py311-oldestdeps
+          libraries:
+            apt:
+              - libosmesa6
+              - libglfw3-dev
+              - libgles2-mesa-dev
         - linux: py313-devdeps
+          libraries:
+            apt:
+              - libosmesa6
+              - libglfw3-dev
+              - libgles2-mesa-dev
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 

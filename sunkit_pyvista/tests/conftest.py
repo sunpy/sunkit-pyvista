@@ -1,4 +1,5 @@
 import pytest
+
 import sunpy.data.test as test
 import sunpy.map as smap
 

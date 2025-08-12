@@ -8,10 +8,12 @@ sunkit-pyvista also extends :meth:`~sunpy.map.GenericMap.draw_quadrangle` from
 to produce them in 3D.
 """
 
-import astropy.units as u
 import numpy as np
+
+import astropy.units as u
 from astropy.constants import R_sun
 from astropy.coordinates import SkyCoord
+
 from sunpy.coordinates import frames
 
 from sunkit_pyvista import SunpyPlotter

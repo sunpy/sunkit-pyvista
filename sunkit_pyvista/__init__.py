@@ -1,6 +1,3 @@
-try:
-    from ._version import __version__
-except ImportError:
-    __version__ = "0.0.0.0"
+from .version import version as __version__
 
 from .plotter import *  # NOQA: F403

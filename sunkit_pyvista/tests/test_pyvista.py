@@ -1,17 +1,19 @@
 import pathlib
 
-import astropy.constants as const
-import astropy.units as u
 import numpy as np
 import pytest
 import pyvista as pv
+
+import astropy.constants as const
+import astropy.units as u
 from astropy.coordinates import SkyCoord
+
 from sunpy.coordinates import HeliocentricInertial, HeliographicStonyhurst
 
 
 @pytest.mark.display_server()
 def test_basic(plotter):
-    assert isinstance(plotter.plotter, pv.Plotter)
+    assert isinstance(plotter, pv.Plotter)
     plotter.show()
 
 
@@ -44,14 +46,14 @@ def test_set_view_angle(plotter):
 
 def test_plot_map(aia171_test_map, plotter):
     plotter.plot_map(aia171_test_map)
-    assert plotter.plotter.mesh.n_cells == 16384
-    assert plotter.plotter.mesh.n_points == 16641
+    assert plotter.mesh.n_cells == 16384
+    assert plotter.mesh.n_points == 16641
 
 
 def test_plot_solar_axis(plotter):
     plotter.plot_solar_axis()
-    assert plotter.plotter.mesh.n_cells == 43
-    assert plotter.plotter.mesh.n_points == 101
+    assert plotter.mesh.n_cells == 43
+    assert plotter.mesh.n_points == 101
 
 
 def test_plot_quadrangle(aia171_test_map, plotter):
@@ -67,8 +69,8 @@ def test_plot_quadrangle(aia171_test_map, plotter):
         height=60 * u.deg,
         color="blue",
     )
-    assert plotter.plotter.mesh.n_cells == 22
-    assert plotter.plotter.mesh.n_points == 80060
+    assert plotter.mesh.n_cells == 22
+    assert plotter.mesh.n_points == 80060
 
 
 def test_plot_coordinates(aia171_test_map, plotter):
@@ -80,8 +82,8 @@ def test_plot_coordinates(aia171_test_map, plotter):
         frame="heliocentricinertial",
     )
     plotter.plot_coordinates(line)
-    assert plotter.plotter.mesh.n_cells == 1
-    assert plotter.plotter.mesh.n_points == 3
+    assert plotter.mesh.n_cells == 1
+    assert plotter.mesh.n_points == 3
 
     # Tests plotting of a small sphere
     sphere = SkyCoord(
@@ -91,22 +93,22 @@ def test_plot_coordinates(aia171_test_map, plotter):
         frame="heliocentricinertial",
     )
     plotter.plot_coordinates(sphere)
-    assert plotter.plotter.mesh.n_cells == 1680
-    assert plotter.plotter.mesh.n_points == 842
+    assert plotter.mesh.n_cells == 1680
+    assert plotter.mesh.n_points == 842
     expected_center = [-0.5000000149011612, -0.5, 0.7071067690849304]
-    assert np.allclose(plotter.plotter.mesh.center, expected_center)
+    assert np.allclose(plotter.mesh.center, expected_center)
 
     pixel_pos = np.argwhere(aia171_test_map.data == aia171_test_map.data.max()) * u.pixel
     hpc_max = aia171_test_map.pixel_to_world(pixel_pos[:, 1], pixel_pos[:, 0])
     plotter.plot_coordinates(hpc_max, color="blue")
-    assert plotter.plotter.mesh.n_cells == 1680
-    assert plotter.plotter.mesh.n_points == 842
+    assert plotter.mesh.n_cells == 1680
+    assert plotter.mesh.n_points == 842
 
 
 def test_clip_interval(aia171_test_map, plotter):
     plotter.plot_map(aia171_test_map, clip_interval=(1, 99) * u.percent)
     clim = plotter._get_clim(  # NOQA: SLF001
-        data=plotter.plotter.mesh["data"],
+        data=plotter.mesh["data"],
         clip_interval=(1, 99) * u.percent,
     )
     expected_clim = [0.006716044038535769, 0.8024368512284383]
@@ -114,7 +116,7 @@ def test_clip_interval(aia171_test_map, plotter):
 
     expected_clim = [0, 1]
     clim = plotter._get_clim(  # NOQA: SLF001
-        data=plotter.plotter.mesh["data"],
+        data=plotter.mesh["data"],
         clip_interval=(0, 100) * u.percent,
     )
     assert np.allclose(clim, expected_clim)
@@ -138,12 +140,12 @@ def test_save_and_load(aia171_test_map, plotter, tmp_path):
     filepath = tmp_path / "save_data.vtm"
     plotter.save(filepath=filepath)
 
-    plotter.plotter.clear()
+    plotter.clear()
     plotter.load(filepath)
 
-    assert plotter.plotter.mesh.n_cells == 16384
-    assert plotter.plotter.mesh.n_points == 16641
-    assert dict(plotter.plotter.mesh.field_data)["cmap"][0] == "sdoaia171"
+    assert plotter.mesh.n_cells == 16384
+    assert plotter.mesh.n_points == 16641
+    assert dict(plotter.mesh.field_data)["cmap"][0] == "sdoaia171"
 
     with pytest.raises(ValueError, match="VTM file"):
         plotter.save(filepath=filepath)
@@ -160,10 +162,10 @@ def test_loop_through_meshes(plotter):
     outer_block = pv.MultiBlock([inner_block, sphere2])
     plotter._loop_through_meshes(outer_block)  # NOQA: SLF001
 
-    assert plotter.plotter.mesh.center == [0, 1, 1]
+    np.testing.assert_array_equal(plotter.mesh.center, [0, 1, 1])
 
 
 def test_plot_limb(aia171_test_map, plotter):
     plotter.plot_limb(aia171_test_map)
-    assert plotter.plotter.mesh.n_cells == 22
-    assert plotter.plotter.mesh.n_points == 20040
+    assert plotter.mesh.n_cells == 22
+    assert plotter.mesh.n_points == 20040

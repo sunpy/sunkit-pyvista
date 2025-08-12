@@ -2,13 +2,15 @@
 This file contains tests for the main plotting routines.
 """
 
-import astropy.constants as const
-import astropy.units as u
 import pytest
 import pyvista as pv
+
+import astropy.constants as const
+import astropy.units as u
+from astropy.coordinates import SkyCoord
+
 import sunpy.data.test as test
 import sunpy.map as smap
-from astropy.coordinates import SkyCoord
 from sunpy.coordinates import frames
 
 from sunkit_pyvista import SunpyPlotter

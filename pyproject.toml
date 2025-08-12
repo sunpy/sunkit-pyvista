@@ -1,22 +1,20 @@
 [build-system]
 requires = [
-  "setuptools",
-  "setuptools_scm[toml]",
+  "setuptools>=62.1",
+  "setuptools_scm[toml]>=8.0.0",
   "wheel",
 ]
-build-backend = 'setuptools.build_meta'
-
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "sunkit_pyvista"
 dynamic = ["version"]
-description = "3D visualisation of solar physics data with pyvista."
-readme = "README.rst"
-requires-python = ">=3.10"
-license = {file = "LICENSE.txt"}
-keywords = ["solar physics", "solar", "science", "3d", "plotting", "visualisation"]
+description = "3D visualisation of solar physics data with pyvista"
+requires-python = ">=3.11"
+readme = { file = "README.rst", content-type = "text/x-rst" }
+license = { file = "licenses/LICENSE.rst" }
 authors = [
-  { name = "The SunPy Community", email = "sunpy@googlegroups.com" }
+  { name = "The SunPy Community", email = "sunpy@googlegroups.com" },
 ]
 classifiers = [
   "Development Status :: 3 - Alpha",
@@ -26,109 +24,112 @@ classifiers = [
   "Operating System :: OS Independent",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Topic :: Scientific/Engineering :: Visualization",
 ]
 dependencies = [
-  'pyvista[all]>= 0.43.9',
-  'sunpy[map]>=5.0.0',
+  "pyvista[all]>=0.46.1",
+  "sunpy[map]>=7.0.0",
 ]
-
-[project.urls]
-changelog = "https://docs.sunpy.org/projects/sunkit-magex/en/stable/changelog"
-documentation = "https://docs.sunpy.org/projects/sunkit-magex/en/stable/"
-homepage = "https://sunpy.org/"
-issue_tracker = "https://github.com/sunpy/sunkit-pyvista/issues"
-repository = "https://github.com/sunpy/sunkit-pyvista"
 
 [project.optional-dependencies]
 all = ["sunkit_pyvista"]
 tests = [
-  "sunkit_pyvista[all]",
-  'pytest-astropy',
+  "pytest",
+  "pytest-astropy",
   "scikit-image",
-  "streamtracer", # Required by sunkit-magex
-  "sunkit-magex",
+  "sunkit-magex>=1.1.0",
+  "sunkit_pyvista[all]",
 ]
 docs = [
+  "sphinx",
+  "sphinx-automodapi",
+  "sphinx-changelog",
+  "sunpy-sphinx-theme",
   "sunkit_pyvista[all]",
-  'sphinx-automodapi',
-  'sphinx-changelog',
-  'sphinx-design',
-  'sphinx-gallery',
-  'sphinx',
-  'sunkit-magex',
-  'sunpy-sphinx-theme',
-  "streamtracer", # Required by sunkit-magex
+  "sphinx-design",
+  "sphinx-gallery",
+  "sunkit-magex>=1.1.0",
 ]
 dev = ["sunkit_pyvista[tests,docs]"]
 
-[tool.setuptools_scm]
-write_to = "sunkit_pyvista/_version.py"
+[project.urls]
+Homepage = "https://sunpy.org"
+"Source Code" = "https://github.com/sunpy/sunkit-pyvista"
+Download = "https://pypi.org/project/sunkit-pyvista"
+Documentation = "https://docs.sunpy.org/projects/sunkit-pyvista"
+Changelog = "https://docs.sunpy.org/projects/sunkit-pyvista/en/stable/whatsnew/changelog.html"
+"Issue Tracker" = "https://github.com/sunpy/sunkit-pyvista/issues"
 
 [tool.setuptools]
+zip-safe = false
 include-package-data = true
-platforms = ["any"]
-provides = ["sunkit_pyvista"]
-license-files = ["LICENSE.rst"]
 
 [tool.setuptools.packages.find]
-exclude = ["sunkit_pyvista._dev"]
-namespaces = false
+include = ["sunkit_pyvista*"]
+exclude = ["sunkit_pyvista._dev*"]
 
-[ tool.gilesbot ]
-  [ tool.gilesbot.pull_requests ]
-    enabled = true
+[tool.setuptools_scm]
+version_file = "sunkit_pyvista/_version.py"
 
-  [ tool.gilesbot.towncrier_changelog ]
-    enabled = true
-    verify_pr_number = true
-    changelog_skip_label = "No Changelog Entry Needed"
-    help_url = "https://github.com/sunpy/sunpy/blob/main/changelog/README.rst"
-    changelog_missing_long = "There isn't a changelog file in this pull request. Please add a changelog file to the `changelog/` directory following the instructions in the changelog [README](https://github.com/sunpy/sunpy/blob/main/changelog/README.rst)."
-    type_incorrect_long = "The changelog file you added is not one of the allowed types. Please use one of the types described in the changelog [README](https://github.com/sunpy/sunpy/blob/main/changelog/README.rst)"
-    number_incorrect_long = "The number in the changelog file you added does not match the number of this pull request. Please rename the file."
+[tool.gilesbot]
+  [tool.gilesbot.pull_requests]
+  enabled = true
 
+  [tool.gilesbot.towncrier_changelog]
+  enabled = true
+  verify_pr_number = true
+  changelog_skip_label = "No Changelog Entry Needed"
+  help_url = "https://github.com/sunpy/sunkit-pyvista/blob/main/changelog/README.rst"
+
+  changelog_missing_long = "There isn't a changelog file in this pull request. Please add a changelog file to the `changelog/` directory following the instructions in the changelog [README](https://github.com/sunpy/sunkit-pyvista/blob/main/changelog/README.rst)."
+
+  type_incorrect_long = "The changelog file you added is not one of the allowed types. Please use one of the types described in the changelog [README](https://github.com/sunpy/sunkit-pyvista/blob/main/changelog/README.rst)"
+
+  number_incorrect_long = "The number in the changelog file you added does not match the number of this pull request. Please rename the file."
+
+# TODO: This should be in towncrier.toml but Giles currently only works looks in
+# pyproject.toml we should move this back when it's fixed.
 [tool.towncrier]
-    package = "sunkit_pyvista"
-    filename = "CHANGELOG.rst"
-    directory = "changelog/"
-    issue_format = "`#{issue} <https://github.com/sunpy/sunkit-pyvista/pull/{issue}>`__"
-    title_format = "{version} ({project_date})"
+  package = "sunkit_pyvista"
+  filename = "CHANGELOG.rst"
+  directory = "changelog/"
+  issue_format = "`#{issue} <https://github.com/sunpy/sunkit-pyvista/pull/{issue}>`__"
+  title_format = "{version} ({project_date})"
 
-    [[tool.towncrier.type]]
-      directory = "breaking"
-      name = "Breaking Changes"
-      showcontent = true
+  [[tool.towncrier.type]]
+  directory = "breaking"
+  name = "Breaking Changes"
+  showcontent = true
 
-    [[tool.towncrier.type]]
-      directory = "removal"
-      name = "Removals"
-      showcontent = true
+  [[tool.towncrier.type]]
+  directory = "deprecation"
+  name = "Deprecations"
+  showcontent = true
 
-    [[tool.towncrier.type]]
-      directory = "deprecations"
-      name = "Deprecations"
-      showcontent = true
+  [[tool.towncrier.type]]
+  directory = "removal"
+  name = "Removals"
+  showcontent = true
 
-    [[tool.towncrier.type]]
-      directory = "feature"
-      name = "Features"
-      showcontent = true
+  [[tool.towncrier.type]]
+  directory = "feature"
+  name = "New Features"
+  showcontent = true
 
-    [[tool.towncrier.type]]
-      directory = "bugfix"
-      name = "Bug Fixes"
-      showcontent = true
+  [[tool.towncrier.type]]
+  directory = "bugfix"
+  name = "Bug Fixes"
+  showcontent = true
 
-    [[tool.towncrier.type]]
-      directory = "doc"
-      name = "Documentation"
-      showcontent = true
+  [[tool.towncrier.type]]
+  directory = "doc"
+  name = "Documentation"
+  showcontent = true
 
-    [[tool.towncrier.type]]
-      directory = "trivial"
-      name = "Internal Changes"
-      showcontent = true
+  [[tool.towncrier.type]]
+  directory = "trivial"
+  name = "Internal Changes"
+  showcontent = true

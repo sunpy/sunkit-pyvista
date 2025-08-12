@@ -13,12 +13,12 @@ except Exception as e:  # NOQA: BLE001
     msg = f"Could not start xvfb server:\n{e}"
     logging.info(msg)
 
-IMAGE_CACHE_DIR = Path(__file__).parent.absolute() / "tests" / "image_cache"
+IMAGE_CACHE_DIR = Path(__file__).parent.absolute() / "sunkit_pyvista" / "tests" / "image_cache"
 if not IMAGE_CACHE_DIR.is_dir():
     IMAGE_CACHE_DIR.mkdir()
 # Normal image warning/error thresholds (assumes using use_vtk)
-IMAGE_REGRESSION_ERROR = 400  # major differences
-IMAGE_REGRESSION_WARNING = 200  # minor differences
+IMAGE_REGRESSION_ERROR = 200  # major differences
+IMAGE_REGRESSION_WARNING = 100  # minor differences
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -29,8 +29,8 @@ def _get_cmd_opt(pytestconfig):
 
 
 def pytest_addoption(parser):
-    parser.addoption("--update_image_cache", action="store_true", default=False)
-    parser.addoption("--ignore_image_cache", action="store_true", default=False)
+    parser.addoption("--update_image_cache", action="store", default=False)
+    parser.addoption("--ignore_image_cache", action="store", default=False)
 
 
 def verify_cache_images(plotter):
@@ -44,11 +44,9 @@ def verify_cache_images(plotter):
     Assign this only once for each test you'd like to validate the
     previous image of. This will not work with parameterized tests.
     """
-    import vtk
-
-    if not vtk.__version__ >= "9.2.0" or platform.system() != "Linux":
-        pytest.skip("VTK 9.2 or above and linux required for figure tests.")
-
+    if not platform.system().lower() == "linux":
+        pytest.skip("Linux required for figure tests.")
+        return None
     # Since each test must contain a unique name,
     # we can use the function test to name the image.
     stack = inspect.stack()
@@ -64,10 +62,7 @@ def verify_cache_images(plotter):
     allowed_warning = IMAGE_REGRESSION_WARNING
 
     if test_name is None:
-        msg = (
-            "Unable to identify calling test function. This function "
-            "should only be used within a pytest environment."
-        )
+        msg = "Unable to identify calling test function. This function should only be used within a pytest environment."
         raise RuntimeError(
             msg,
         )
@@ -83,13 +78,13 @@ def verify_cache_images(plotter):
 
     error = pyvista.compare_images(str(image_filename), plotter)
     if error > allowed_error:
-        msg = "Exceeded image regression error of " f"{IMAGE_REGRESSION_ERROR} with an image error of " f"{error}"
+        msg = f"Exceeded image regression error of {IMAGE_REGRESSION_ERROR} with an image error of {error}"
         raise RuntimeError(
             msg,
         )
     if error > allowed_warning:
         warnings.warn(
-            "Exceeded image regression warning of " f"{IMAGE_REGRESSION_WARNING} with an image error of " f"{error}",
+            f"Exceeded image regression warning of {IMAGE_REGRESSION_WARNING} with an image error of {error}",
             stacklevel=2,
         )
     return None
@@ -97,4 +92,4 @@ def verify_cache_images(plotter):
 
 @pytest.fixture()
 def verify_cache_image():
-    return verify_cache_images
+    return lambda plotter: verify_cache_images(plotter)

@@ -11,13 +11,15 @@ This example uses specific sample data from ``sunkit-magex`` to demonstrate the 
 If you want to adapt this, you have to make sure that the input magnetic field data has the same date as the AIA image.
 """
 
-import astropy.units as u
 import matplotlib.pyplot as plt
 import numpy as np
-import sunpy.map
+from matplotlib import colors
+
+import astropy.units as u
 from astropy.constants import R_sun
 from astropy.coordinates import SkyCoord
-from matplotlib import colors
+
+import sunpy.map
 from sunkit_magex import pfss
 from sunkit_magex.pfss import tracing
 from sunkit_magex.pfss.sample_data import get_gong_map
@@ -48,7 +50,7 @@ rss = 1.5
 input_ = pfss.Input(gong_map, nrho, rss)
 output_ = pfss.pfss(input_)
 seeds = SkyCoord(lon, lat, 1.2 * R_sun, frame=gong_map.coordinate_frame)
-tracer = tracing.FortranTracer()
+tracer = tracing.PerformanceTracer()
 field_lines = tracer.trace(seeds, output_)
 
 ###############################################################################

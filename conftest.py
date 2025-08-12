@@ -13,12 +13,12 @@ except Exception as e:  # NOQA: BLE001
     msg = f"Could not start xvfb server:\n{e}"
     logging.info(msg)
 
-IMAGE_CACHE_DIR = Path(__file__).parent.absolute() / "tests" / "image_cache"
+IMAGE_CACHE_DIR = Path(__file__).parent.absolute() / "sunkit_pyvista" / "tests" / "image_cache"
 if not IMAGE_CACHE_DIR.is_dir():
     IMAGE_CACHE_DIR.mkdir()
 # Normal image warning/error thresholds (assumes using use_vtk)
-IMAGE_REGRESSION_ERROR = 400  # major differences
-IMAGE_REGRESSION_WARNING = 200  # minor differences
+IMAGE_REGRESSION_ERROR = 200  # major differences
+IMAGE_REGRESSION_WARNING = 100  # minor differences
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -29,8 +29,8 @@ def _get_cmd_opt(pytestconfig):
 
 
 def pytest_addoption(parser):
-    parser.addoption("--update_image_cache", action="store_true", default=False)
-    parser.addoption("--ignore_image_cache", action="store_true", default=False)
+    parser.addoption("--update_image_cache", action="store", default=False)
+    parser.addoption("--ignore_image_cache", action="store", default=False)
 
 
 def verify_cache_images(plotter):
@@ -92,4 +92,4 @@ def verify_cache_images(plotter):
 
 @pytest.fixture()
 def verify_cache_image():
-    return verify_cache_images
+    return lambda plotter: verify_cache_images(plotter)

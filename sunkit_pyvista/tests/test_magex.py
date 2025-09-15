@@ -1,5 +1,10 @@
+"""
+This file contains tests for any methods that use sunkit-magex.
+"""
+
 import matplotlib.pyplot as plt
 import numpy as np
+import pytest
 import pyvista as pv
 from matplotlib import colors
 
@@ -13,6 +18,8 @@ from sunkit_magex.pfss import tracing
 from sunkit_magex.pfss.sample_data import get_gong_map
 
 from sunkit_pyvista import SunpyPlotter
+
+pv.OFF_SCREEN = True
 
 
 def test_field_lines_figure(aia171_test_map, plotter, verify_cache_image):
@@ -41,7 +48,12 @@ def test_field_lines_figure(aia171_test_map, plotter, verify_cache_image):
     plotter.show(cpos=(0, 1, 0), before_close_callback=verify_cache_image)
 
 
-def test_field_lines_and_color_func(plotter):
+def test_field_lines_and_color_func(plotter, verify_cache_image):
+    pfss = pytest.importorskip("sunkit_magex.pfss")
+
+    from sunkit_magex.pfss import tracing
+    from sunkit_magex.pfss.sample_data import get_gong_map
+
     gong_fname = get_gong_map()
     gong_map = smap.Map(gong_fname)
     nrho = 35
@@ -66,3 +78,19 @@ def test_field_lines_and_color_func(plotter):
 
     plotter = SunpyPlotter()
     plotter.plot_field_lines(field_lines, color_func=color_func)
+    plotter.show(before_close_callback=verify_cache_image)
+
+
+def test_current_sheet_figure(plotter, verify_cache_image):
+    pfss = pytest.importorskip("sunkit_magex.pfss")
+
+    from sunkit_magex.pfss.sample_data import get_gong_map
+
+    gong_fname = get_gong_map()
+    gong_map = smap.Map(gong_fname)
+    nrho = 35
+    rss = 2.5
+    input_ = pfss.Input(gong_map, nrho, rss)
+    output_ = pfss.pfss(input_)
+    plotter.plot_current_sheet(output_)
+    plotter.show(before_close_callback=verify_cache_image)

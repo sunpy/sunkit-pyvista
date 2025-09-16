@@ -634,7 +634,7 @@ class CartesianPlotter(pv.Plotter):
 
         Parameters
         ----------
-        vectors : ndarray
+        vectors : numpy.ndarray
             A (nx, ny, nz, 3) array representing the 3D vector field.
         args: list
             arguments for `streamtracer.VectorGrid`.
@@ -644,28 +644,26 @@ class CartesianPlotter(pv.Plotter):
         if kwargs.get("grid_spacing") is None:
             if kwargs.get("grid_coords") is None:
                 kwargs["grid_spacing"] = [1, 1, 1]
-        self.grid = VectorGrid(vectors.astype(np.float64), *args, **kwargs)
-        self.xcoords = self.grid.xcoords.astype(np.float64)
-        self.ycoords = self.grid.ycoords.astype(np.float64)
-        self.zcoords = self.grid.zcoords.astype(np.float64)
-        self.x, self.y, self.z = np.meshgrid(self.xcoords, self.ycoords, self.zcoords, indexing="ij")
-
-    def _create_mesh(self):
-        """
-        Create a `pyvista.StructuredGrid` mesh from the 3D vector field.
-        """
-        mesh = pv.StructuredGrid(self.x, self.y, self.z)
-        vectors = self.grid.vectors.transpose(2, 1, 0, 3).reshape(-1, 3)
+        self._grid = VectorGrid(vectors.astype(np.float64), *args, **kwargs)
+        # Create a `pyvista.StructuredGrid` mesh from the 3D vector field.
+        x, y, z = np.meshgrid(
+            self._grid.xcoords, 
+            self._grid.ycoords, 
+            self._grid.zcoords, 
+            indexing="ij"
+        )
+        mesh = pv.StructuredGrid(x, y, z)
+        vectors = self._grid.vectors.transpose(2, 1, 0, 3).reshape(-1, 3)
         mesh["vectors"] = vectors
         mesh.active_vectors_name = "vectors"
         magnitudes = np.linalg.norm(vectors, axis=-1)
         mesh["magnitudes"] = magnitudes
         mesh.active_scalars_name = "magnitudes"
-        self.mesh = mesh
+        self._mesh = mesh
 
-    def plot_outline(self, color="black", **kwargs):
+    def show_outline(self, color="black", **kwargs):
         """
-        Plot the outline of the 3D vector field.
+        Show the outline of the 3D vector field.
 
         Parameters
         ----------
@@ -675,12 +673,11 @@ class CartesianPlotter(pv.Plotter):
         kwargs : dict
             Keyword arguments for `pyvista.Plotter.add_mesh`.
         """
-        self._create_mesh()
-        self.add_mesh(self.mesh.outline(), color=color, **kwargs)
+        self.add_mesh(self._mesh.outline(), color=color, **kwargs)
 
-    def plot_boundary(self, boundary="bottom", *, component=2, cmap="gray", **kwargs):
+    def show_boundary(self, boundary="bottom", *, component=2, cmap="gray", **kwargs):
         """
-        Plot the boundary of the 3D vector field.
+        Show the boundary of the 3D vector field.
 
         Parameters
         ----------
@@ -698,8 +695,7 @@ class CartesianPlotter(pv.Plotter):
         kwargs : dict
             Keyword arguments for `pyvista.Plotter.add_mesh`.
         """
-        self._create_mesh()
-        nx, ny, nz = self.mesh.dimensions
+        nx, ny, nz = self._mesh.dimensions
         x_min, y_min, z_min = 0, 0, 0
         x_max, y_max, z_max = nx - 1, ny - 1, nz - 1
 
@@ -718,7 +714,7 @@ class CartesianPlotter(pv.Plotter):
         else:
             raise ValueError("Invalid boundary. Choose from 'bottom', 'top', 'left', 'right', 'front', or 'back'.")
 
-        surface = self.mesh.extract_subset(subset).extract_surface()
+        surface = self._mesh.extract_subset(subset).extract_surface()
         surface.active_vectors_name = "vectors"
         surface.active_scalars_name = "magnitudes"
         self.add_mesh(surface, scalars="vectors", component=component, cmap=cmap, lighting=False, **kwargs)
@@ -739,7 +735,7 @@ class CartesianPlotter(pv.Plotter):
 
         Parameters
         ----------
-        seeds : ndarray
+        seeds : numpy.ndarray
             A (N, 3) array representing the seeds.
         render_lines_as_tubes : bool, optional
             Whether to render field lines as tubes.
@@ -760,7 +756,7 @@ class CartesianPlotter(pv.Plotter):
             Keyword arguments for `pyvista.Plotter.add_mesh`.
         """
         tracer = StreamTracer(max_steps, step_size)
-        tracer.trace(seeds, self.grid)
+        tracer.trace(seeds, self._grid)
         tracer_xs = []
         tracer_xs.append(tracer.xs)
         tracer_xs = [item for sublist in tracer_xs for item in sublist]

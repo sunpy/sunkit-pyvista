@@ -3,41 +3,24 @@ This file contains tests for the main plotting routines.
 """
 
 import numpy as np
-import pytest
 import pyvista as pv
 
 import astropy.constants as const
 import astropy.units as u
 from astropy.coordinates import SkyCoord
 
-import sunpy.data.test as test
-import sunpy.map as smap
 from sunpy.coordinates import frames
 
-from sunkit_pyvista import CartesianPlotter, SunpyPlotter
+from sunkit_pyvista import SunpyPlotter
+from sunkit_pyvista.tests.helpers import figure_test
 
 pv.OFF_SCREEN = True
 
 
-@pytest.fixture()
-def aia171_test_map():
-    return smap.Map(test.get_test_filepath("aia_171_level1.fits"))
-
-
-@pytest.fixture()
-def plotter():
-    return SunpyPlotter()
-
-
-@pytest.fixture()
-def cartesian_plotter():
-    return CartesianPlotter()
-
-
+@figure_test
 def test_plot_map_with_functionality(
     aia171_test_map,
     plotter,
-    verify_cache_image,
     tmp_path,
 ):
     plotter.plot_map(aia171_test_map, clip_interval=(0, 99) * u.percent)
@@ -78,11 +61,11 @@ def test_plot_map_with_functionality(
 
     plotter = SunpyPlotter()
     plotter.load(filepath)
+    return plotter
 
-    plotter.show(cpos=(0, 1, 0), before_close_callback=verify_cache_image)
 
-
-def test_cartesian_plotter(cartesian_plotter, verify_cache_image):
+@figure_test
+def test_cartesian_plotter(cartesian_plotter):
     def Bx(x, y, z):
         return x * 0 - 2
 
@@ -126,4 +109,4 @@ def test_cartesian_plotter(cartesian_plotter, verify_cache_image):
     plotter.camera.azimuth = 200
     plotter.camera.elevation = -5
     plotter.camera.zoom(0.8)
-    plotter.show(before_close_callback=verify_cache_image)
+    return plotter

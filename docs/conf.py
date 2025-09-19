@@ -108,6 +108,7 @@ intersphinx_mapping = {
     "sunpy": ("https://docs.sunpy.org/en/stable", None),
     "pyvista": ("https://docs.pyvista.org/version/stable", None),
     "sunkit_magex": ("https://docs.sunpy.org/projects/sunkit-magex/en/stable/", None),
+    "streamtracer": ("https://docs.sunpy.org/projects/streamtracer/en/stable/", None),
 }
 
 # -- Options for HTML output -------------------------------------------------

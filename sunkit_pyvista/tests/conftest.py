@@ -3,7 +3,7 @@ import pytest
 import sunpy.data.test as test
 import sunpy.map as smap
 
-from sunkit_pyvista import SunpyPlotter
+from sunkit_pyvista import CartesianPlotter, SunpyPlotter
 
 
 @pytest.fixture()
@@ -14,3 +14,8 @@ def aia171_test_map():
 @pytest.fixture()
 def plotter():
     return SunpyPlotter()
+
+
+@pytest.fixture()
+def cartesian_plotter():
+    return CartesianPlotter()

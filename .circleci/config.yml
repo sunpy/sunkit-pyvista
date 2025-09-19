@@ -46,7 +46,7 @@ jobs:
           name: Running X virtual framebuffer
           command: Xvfb :99 -screen 0 1280x1024x24
           background: true
-      - run: tox -v
+      - run: xvfb-run -a tox -v
       - run:
           name: Running codecov
           command: bash -e .circleci/codecov_upload.sh -f ".tmp/${TOXENV}/coverage.xml"

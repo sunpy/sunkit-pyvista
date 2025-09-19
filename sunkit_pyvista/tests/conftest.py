@@ -3,7 +3,7 @@ import pytest
 import sunpy.data.test as test
 import sunpy.map as smap
 
-from sunkit_pyvista import SunpyPlotter, CartesianPlotter
+from sunkit_pyvista import CartesianPlotter, SunpyPlotter
 
 
 @pytest.fixture()

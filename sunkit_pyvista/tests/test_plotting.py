@@ -2,6 +2,7 @@
 This file contains tests for the main plotting routines.
 """
 
+import numpy as np
 import pytest
 import pyvista as pv
 
@@ -13,7 +14,7 @@ import sunpy.data.test as test
 import sunpy.map as smap
 from sunpy.coordinates import frames
 
-from sunkit_pyvista import SunpyPlotter, CartesianPlotter
+from sunkit_pyvista import CartesianPlotter, SunpyPlotter
 
 pv.OFF_SCREEN = True
 
@@ -81,17 +82,12 @@ def test_plot_map_with_functionality(
     plotter.show(cpos=(0, 1, 0), before_close_callback=verify_cache_image)
 
 
-def test_cartesian_plotter(
-    cartesian_plotter, 
-    verify_cache_image
-):
-    import numpy as np
-
+def test_cartesian_plotter(cartesian_plotter, verify_cache_image):
     def Bx(x, y, z):
         return x * 0 - 2
 
     def By(x, y, z, t=2):
-        return -z - t * (1 - z**2) / (1 + z**2 / 25)**2 / (1 + x**2 / 25)
+        return -z - t * (1 - z**2) / (1 + z**2 / 25) ** 2 / (1 + x**2 / 25)
 
     def Bz(x, y, z):
         return y
@@ -100,7 +96,7 @@ def test_cartesian_plotter(
     x1 = np.linspace(-20, 20, nx)
     y1 = np.linspace(-20, 20, ny)
     z1 = np.linspace(0, 40, nz)
-    x, y, z = np.meshgrid(x1, y1, z1, indexing='ij')
+    x, y, z = np.meshgrid(x1, y1, z1, indexing="ij")
     bx, by, bz = Bx(x, y, z), By(x, y, z), Bz(x, y, z)
     b = np.stack([bx, by, bz], axis=-1)  # (64, 64, 64, 3)
 
@@ -109,30 +105,23 @@ def test_cartesian_plotter(
     seeds = np.array([[x, y, 0] for x in x_seed for y in y_seed])  # (64, 3)
 
     plotter = cartesian_plotter
-    plotter.set_background('antiquewhite')
+    plotter.set_background("antiquewhite")
     plotter.define_vector_field(b, grid_coords=(x1, y1, z1))
     plotter.show_bounds()
-    plotter.show_outline(color='black')
+    plotter.show_outline(color="black")
     plotter.show_boundary(
-        'bottom',
+        "bottom",
         component=2,
-        cmap='gray',
+        cmap="gray",
         clim=[-10, 10],
         show_scalar_bar=True,
         scalar_bar_args=dict(
-            title='Bz',
+            title="Bz",
             vertical=True,
-        )
+        ),
     )
     plotter.plot_field_lines(
-        seeds, 
-        color='cyan', 
-        radius=0.1,
-        seeds_config=dict(
-            show_seeds=True, 
-            color='red', 
-            point_size=10
-        )
+        seeds, color="cyan", radius=0.1, seeds_config=dict(show_seeds=True, color="red", point_size=10)
     )
     plotter.camera.azimuth = 200
     plotter.camera.elevation = -5

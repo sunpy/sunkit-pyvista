@@ -11,13 +11,12 @@ from astropy.coordinates import Longitude, SkyCoord
 from astropy.visualization import AsymmetricPercentileInterval
 from astropy.visualization.wcsaxes import Quadrangle
 
+from streamtracer import StreamTracer, VectorGrid
 from sunkit_magex.pfss.coords import strum2cart
 from sunpy.coordinates import HeliocentricInertial
 from sunpy.coordinates.screens import SphericalScreen
 from sunpy.coordinates.utils import get_rectangle_coordinates
 from sunpy.map.maputils import all_corner_coords_from_map
-
-from streamtracer import VectorGrid, StreamTracer
 
 from sunkit_pyvista.utils import get_limb_coordinates
 
@@ -646,12 +645,7 @@ class CartesianPlotter(pv.Plotter):
                 kwargs["grid_spacing"] = [1, 1, 1]
         self._grid = VectorGrid(vectors.astype(np.float64), *args, **kwargs)
         # Create a `pyvista.StructuredGrid` mesh from the 3D vector field.
-        x, y, z = np.meshgrid(
-            self._grid.xcoords, 
-            self._grid.ycoords, 
-            self._grid.zcoords, 
-            indexing="ij"
-        )
+        x, y, z = np.meshgrid(self._grid.xcoords, self._grid.ycoords, self._grid.zcoords, indexing="ij")
         mesh = pv.StructuredGrid(x, y, z)
         vectors = self._grid.vectors.transpose(2, 1, 0, 3).reshape(-1, 3)
         mesh["vectors"] = vectors

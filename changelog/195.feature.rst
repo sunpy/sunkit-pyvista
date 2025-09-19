@@ -1,0 +1,2 @@
+Added `sunkit_pyvista.plotter.CartesianPlotter` for visualizing active region magnetic fields in a local Cartesian box.
+See :ref:`sphx_glr_generated_gallery_field_lines_cartesian_box.py` for an example.

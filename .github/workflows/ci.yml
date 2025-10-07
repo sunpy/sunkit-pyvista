@@ -35,13 +35,13 @@ jobs:
       submodules: false
       coverage: codecov
       toxdeps: tox-pypi-filter
+      libraries: |
+        apt:
+          - libosmesa6
+          - libglfw3-dev
+          - libgles2-mesa-dev
       envs: |
         - linux: py313
-          libraries:
-            apt:
-              - libosmesa6
-              - libglfw3-dev
-              - libgles2-mesa-dev
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
@@ -65,21 +65,17 @@ jobs:
       submodules: false
       coverage: codecov
       toxdeps: tox-pypi-filter
+      libraries: |
+        apt:
+          - libosmesa6
+          - libglfw3-dev
+          - libgles2-mesa-dev
       envs: |
-        - windows: py311
+        - linux: py314
+        - windows: py312
         - macos: py312
-        - linux: py311-oldestdeps
-          libraries:
-            apt:
-              - libosmesa6
-              - libglfw3-dev
-              - libgles2-mesa-dev
-        - linux: py313-devdeps
-          libraries:
-            apt:
-              - libosmesa6
-              - libglfw3-dev
-              - libgles2-mesa-dev
+        - linux: py312-oldestdeps
+        - linux: py314-devdeps
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 

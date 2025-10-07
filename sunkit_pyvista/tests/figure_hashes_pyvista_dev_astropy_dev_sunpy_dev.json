@@ -1,0 +1,7 @@
+{
+  "sunkit_pyvista.tests.test_magex.test_field_lines_figure": "b988779ed9e44ab423cfa14406b8cc1bf97b66baa0518e1d6ab7046ecf01a20d",
+  "sunkit_pyvista.tests.test_magex.test_field_lines_and_color_func": "f9ef4edf7dbc0fa549426aa2546dcbacb3787431ee7d90bd74991c0f9b92e4c0",
+  "sunkit_pyvista.tests.test_magex.test_current_sheet_figure": "45a9baad2b4dc2388795519561ad50d7aca64a4043a1e9b46b3f5fb673d5c018",
+  "sunkit_pyvista.tests.test_plotting.test_plot_map_with_functionality": "c4e366bb35e1563d26b3447f5312e5c5bad46d63160d0412306f86b9d1ceef85",
+  "sunkit_pyvista.tests.test_plotting.test_cartesian_plotter": "c2cd087ffeab32e0977795bf4295c03eb16dd3a4d92726718d56fbf9e40c9209"
+}

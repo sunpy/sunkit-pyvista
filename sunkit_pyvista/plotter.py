@@ -20,10 +20,32 @@ from sunpy.map.maputils import all_corner_coords_from_map
 
 from sunkit_pyvista.utils import get_limb_coordinates
 
-__all__ = ["SunpyPlotter", "CartesianPlotter"]
+__all__ = ["SaveMixIn", "SunpyPlotter", "CartesianPlotter"]
 
 
-class SunpyPlotter(pv.Plotter):
+class SaveMixIn:
+    """
+    A mixin class to add savefig used for pytest-mpl figure comparison testing.
+    """
+
+    def savefig(self, filename, **kwargs):
+        """
+        Save a screenshot of the current figure.
+
+        This is a wrapper around `pyvista.Plotter.screenshot` and was written
+        so we use pytest-mpl's figure comparison testing.
+
+        Parameters
+        ----------
+        filename : str
+            The name of the file to save the screenshot to.
+        kwargs : dict
+            Keyword arguments are ignored.
+        """
+        self.screenshot(filename)
+
+
+class SunpyPlotter(SaveMixIn, pv.Plotter):
     """
     A plotter for 3D data.
 
@@ -614,7 +636,7 @@ class SunpyPlotter(pv.Plotter):
         self._add_mesh_to_dict(block_name="limbs", mesh=limb_block)
 
 
-class CartesianPlotter(pv.Plotter):
+class CartesianPlotter(SaveMixIn, pv.Plotter):
     """
     A plotter for 3D data in a Cartesian box.
 

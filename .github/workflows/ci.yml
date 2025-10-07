@@ -35,24 +35,20 @@ jobs:
       submodules: false
       coverage: codecov
       toxdeps: tox-pypi-filter
+      libraries: |
+        apt:
+          - libosmesa6
+          - libglfw3-dev
+          - libgles2-mesa-dev
       envs: |
         - linux: py313
-          libraries:
-            apt:
-              - libosmesa6
-              - libglfw3-dev
-              - libgles2-mesa-dev
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   sdist_verify:
     runs-on: ubuntu-latest
     steps:
-<<<<<<<
       - uses: actions/checkout@v5
-=======
-      - uses: actions/checkout@v4
->>>>>>>
       - uses: actions/setup-python@v6
         with:
           python-version: '3.13'
@@ -69,30 +65,17 @@ jobs:
       submodules: false
       coverage: codecov
       toxdeps: tox-pypi-filter
+      libraries: |
+        apt:
+          - libosmesa6
+          - libglfw3-dev
+          - libgles2-mesa-dev
       envs: |
         - linux: py314
         - windows: py312
         - macos: py312
-<<<<<<<
-        - linux: py311-oldestdeps
-          libraries:
-            apt:
-              - libosmesa6
-              - libglfw3-dev
-              - libgles2-mesa-dev
-        - linux: py313-devdeps
-=======
         - linux: py312-oldestdeps
         - linux: py314-devdeps
-    secrets:
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
->>>>>>>
-          libraries:
-            apt:
-              - libosmesa6
-              - libglfw3-dev
-              - libgles2-mesa-dev
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
@@ -100,10 +83,7 @@ jobs:
     needs: [core]
     uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@v2
     with:
-<<<<<<<
       display: true
-=======
->>>>>>>
       default_python: '3.13'
       submodules: false
       pytest: false

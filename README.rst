@@ -63,6 +63,7 @@ For more information or to ask questions about sunkit-pyvista, check out:
 .. _SunPy Element Channel: https://app.element.io/#/room/#sunpy:openastronomy.org
 
 Usage of Generative AI
+<<<<<<<
 ======================
 
 We expect authentic engagement in our community.
@@ -71,6 +72,23 @@ If you use generative AI tools as an aid in developing code or documentation cha
 
 Contributing
 ============
+=======
+----------------------
+
+We expect authentic engagement in our community.
+**Do not post the output from Large Language Models or similar generative AI as code, issues or comments on GitHub or any other platform.**
+If you use generative AI tools as an aid in developing code or documentation changes, ensure that you fully understand the proposed changes and can explain why they are the correct approach and an improvement to the current state.
+For more information see our documentation on fair and appropriate `AI usage <https://docs.sunpy.org/en/latest/dev_guide/contents/ai_usage.html>`__.
+
+License
+-------
+
+This project is Copyright (c) The SunPy Community and licensed under
+the terms of the BSD 3-Clause license. This package is based upon
+the `Openastronomy packaging guide <https://github.com/OpenAstronomy/packaging-guide>`__
+which is licensed under the BSD 3-clause licence. See the licenses folder for
+more information.
+>>>>>>>
 
 If you would like to get involved, check out the `Developers Guide`_ section of the SunPy docs.
 Stop by our chat room `#sunpy:openastronomy.org`_ if you have any questions.
@@ -86,6 +104,16 @@ For more information on contributing to SunPy, please read our `Newcomers' guide
 Code of Conduct
 ===============
 
+<<<<<<<
 When you are interacting with the SunPy community you are asked to follow our `Code of Conduct`_.
 
 .. _Code of Conduct: https://sunpy.org/coc
+=======
+the errors and assumptions that seasoned contributors have glossed over.
+
+Note: This disclaimer was originally written by
+`Adrienne Lowe <https://github.com/adriennefriend>`__ for a
+`PyCon talk <https://www.youtube.com/watch?v=6Uj746j9Heo>`__, and was adapted by
+sunkit-pyvista based on its use in the README file for the
+`MetPy project <https://github.com/Unidata/MetPy>`__.
+>>>>>>>

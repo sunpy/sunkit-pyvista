@@ -84,15 +84,6 @@ For more information on contributing to SunPy, please read our `Newcomers' guide
 .. _issues page: https://github.com/sunpy/sunkit-pyvista/issues
 .. _Newcomers' guide: https://docs.sunpy.org/en/latest/dev_guide/contents/newcomers.html
 
-License
-=======
-
-This project is Copyright (c) The SunPy Community and licensed under
-the terms of the BSD 3-Clause license. This package is based upon
-the `Openastronomy packaging guide <https://github.com/OpenAstronomy/packaging-guide>`__
-which is licensed under the BSD 3-clause licence. See the licenses folder for
-more information.
-
 Code of Conduct
 ===============
 

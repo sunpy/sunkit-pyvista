@@ -1,6 +1,7 @@
-**************
-sunkit-pyvista
-**************
+``sunkit-pyvista``
+==================
+
+3D visualisation of solar physics data with pyvista.
 
 |Latest Version| |Latest Documentation| |codecov| |matrix| |Powered by NumFOCUS|
 
@@ -16,15 +17,13 @@ sunkit-pyvista
 .. |Powered by NumFOCUS| image:: https://img.shields.io/badge/powered%20by-NumFOCUS-orange.svg?style=flat&colorA=E1523D&colorB=007D8A
    :target: https://numfocus.org
 
-The goal of sunkit-pyvista is to allow 3D visualization of solar physics data with pyvista.
-
 Installation
-============
+------------
 
 See the `installation instructions <https://docs.sunpy.org/projects/sunkit-pyvista/en/latest/installing.html>`__ for more information.
 
 Developing
-==========
+----------
 
 If you want to develop sunkit-pyvista you will need to install it from GitHub.
 For detailed installation instructions, see `Development installation`_ in the sunpy docs.
@@ -33,7 +32,7 @@ These are for "sunpy" but the same works for sunkt-pyvista with a quick name sub
 .. _Development installation:  https://docs.sunpy.org/en/latest/dev_guide/contents/newcomers.html#setting-up-a-development-environment
 
 Running Figure tests
---------------------
+####################
 
 You need to use your local environment and make sure its up to date.
 This does not with tox for now.
@@ -52,7 +51,7 @@ Example usage:
 Using tox for this does not work for now.
 
 Getting Help
-============
+------------
 
 For more information or to ask questions about sunkit-pyvista, check out:
 
@@ -63,7 +62,7 @@ For more information or to ask questions about sunkit-pyvista, check out:
 .. _SunPy Element Channel: https://app.element.io/#/room/#sunpy:openastronomy.org
 
 Usage of Generative AI
-======================
+----------------------
 
 We expect authentic engagement in our community.
 **Do not post the output from Large Language Models or similar generative AI as code, issues or comments on GitHub or any other platform.**
@@ -71,7 +70,10 @@ If you use generative AI tools as an aid in developing code or documentation cha
 For more information see our documentation on fair and appropriate `AI usage <https://docs.sunpy.org/en/latest/dev_guide/contents/ai_usage.html>`__.
 
 Contributing
-============
+------------
+
+We love contributions! sunkit-pyvista is open source,
+built on open source, and we'd love to have you hang out in our community.
 
 If you would like to get involved, check out the `Developers Guide`_ section of the SunPy docs.
 Stop by our chat room `#sunpy:openastronomy.org`_ if you have any questions.
@@ -84,9 +86,4 @@ For more information on contributing to SunPy, please read our `Newcomers' guide
 .. _issues page: https://github.com/sunpy/sunkit-pyvista/issues
 .. _Newcomers' guide: https://docs.sunpy.org/en/latest/dev_guide/contents/newcomers.html
 
-Code of Conduct
-===============
-
-When you are interacting with the SunPy community you are asked to follow our `Code of Conduct`_.
-
-.. _Code of Conduct: https://sunpy.org/coc
+When you are interacting with the SunPy community you are asked at to follow our `code of conduct <https://sunpy.org/coc>`__.

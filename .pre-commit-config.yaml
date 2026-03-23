@@ -8,15 +8,11 @@ repos:
     rev: "v0.15.4"
     hooks:
       - id: ruff
-<<<<<<<
-        args: ["--fix", "--unsafe-fixes"]
-      - id: ruff-format
-=======
         args: ["--fix"]
-        types: [python]
         # Define here once and then reference using YAML anchor
         exclude: &exclude_dirs ^sunkit_pyvista/(data|extern)/
->>>>>>>
+      - id: ruff-format
+        exclude: *exclude_dirs
   - repo: https://github.com/PyCQA/isort
     rev: 8.0.1
     hooks:

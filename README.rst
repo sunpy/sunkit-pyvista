@@ -1,6 +1,13 @@
 ``sunkit-pyvista``
 ==================
 
+<<<<<<<
+=======
+3D visualisation of solar physics data with pyvista.
+
+Usage of Generative AI
+----------------------
+>>>>>>>
 3D visualisation of solar physics data with pyvista.
 
 |Latest Version| |Latest Documentation| |codecov| |matrix| |Powered by NumFOCUS|

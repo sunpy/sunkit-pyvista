@@ -8,8 +8,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sunkit_pyvista"
+<<<<<<<
 dynamic = ["version"]
 description = "3D visualisation of solar physics data with pyvista"
+=======
+description = "3D visualisation of solar physics data with pyvista."
+>>>>>>>
 requires-python = ">=3.12"
 readme = { file = "README.rst", content-type = "text/x-rst" }
 license-files = ["licenses/LICENSE.rst"]

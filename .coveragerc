@@ -4,6 +4,8 @@ omit =
   sunkit_pyvista/*setup_package*
   sunkit_pyvista/extern/*
   sunkit_pyvista/version*
+  sunkit_pyvista/_dev/*
+  */sunkit_pyvista/_dev/*
   */sunkit_pyvista/conftest.py
   */sunkit_pyvista/*setup_package*
   */sunkit_pyvista/extern/*

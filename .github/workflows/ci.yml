@@ -41,6 +41,9 @@ jobs:
       libraries: |
         apt:
           - libegl1
+          - libosmesa6
+          - libglfw3-dev
+          - libgles2-mesa-dev
       envs: |
         - linux: py313
 
@@ -70,6 +73,9 @@ jobs:
       libraries: |
         apt:
           - libegl1
+          - libosmesa6
+          - libglfw3-dev
+          - libgles2-mesa-dev
       envs: |
         - windows: py313
         - macos: py313

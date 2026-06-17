@@ -24,7 +24,7 @@ apt-run: &apt-install
   name: Install apt packages
   command: |
     sudo apt update
-    sudo apt install -y libglfw3-dev libgles2-mesa-dev libegl1-mesa-dev mesa-utils
+    sudo apt install -y libegl1
 
 jobs:
   figure:

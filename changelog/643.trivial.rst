@@ -1,0 +1,1 @@
+Remove Xvfb in favor of off-screen rendering via EGL (VTK>=9.5).

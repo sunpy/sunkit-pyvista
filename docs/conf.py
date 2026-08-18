@@ -175,9 +175,6 @@ pyvista.global_theme.window_size = [512, 512]
 pyvista.OFF_SCREEN = True
 pyvista.set_error_output_file("errors.txt")
 pyvista.set_plot_theme("document")
-# We also need to start this on CI services and GitHub Actions has a CI env var
-if on_rtd or os.environ.get("CI"):
-    pyvista.start_xvfb()
 
 # -- Sphinx Gallery ------------------------------------------------------------
 

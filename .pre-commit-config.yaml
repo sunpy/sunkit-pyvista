@@ -7,6 +7,7 @@ repos:
         args: ["--fix"]
         # Define here once and then reference using YAML anchor
         exclude: &exclude_dirs ^sunkit_pyvista/(data|extern)/
+<<<<<<<
       - id: ruff-format
         exclude: *exclude_dirs
   - repo: https://github.com/PyCQA/isort
@@ -15,6 +16,8 @@ repos:
       - id: isort
         types: [python]
         exclude: *exclude_dirs
+=======
+>>>>>>>
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:

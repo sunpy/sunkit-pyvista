@@ -1,6 +1,6 @@
 import warnings
-from pathlib import Path
 from functools import wraps
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import pytest

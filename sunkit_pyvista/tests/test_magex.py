@@ -6,15 +6,15 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pyvista as pv
 from matplotlib import colors
+from sunkit_magex import pfss
+from sunkit_magex.pfss import tracing
+from sunkit_magex.pfss.sample_data import get_gong_map
 
 import astropy.constants as const
 import astropy.units as u
 from astropy.coordinates import SkyCoord
 
 import sunpy.map as smap
-from sunkit_magex import pfss
-from sunkit_magex.pfss import tracing
-from sunkit_magex.pfss.sample_data import get_gong_map
 
 from sunkit_pyvista import SunpyPlotter
 from sunkit_pyvista.tests.helpers import figure_test

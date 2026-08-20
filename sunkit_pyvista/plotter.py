@@ -4,6 +4,8 @@ from pathlib import Path
 import numpy as np
 import pyvista as pv
 from matplotlib import colors
+from streamtracer import StreamTracer, VectorGrid
+from sunkit_magex.pfss.coords import strum2cart
 
 import astropy.units as u
 from astropy.constants import R_sun
@@ -11,8 +13,6 @@ from astropy.coordinates import Longitude, SkyCoord
 from astropy.visualization import AsymmetricPercentileInterval
 from astropy.visualization.wcsaxes import Quadrangle
 
-from streamtracer import StreamTracer, VectorGrid
-from sunkit_magex.pfss.coords import strum2cart
 from sunpy.coordinates import HeliocentricInertial
 from sunpy.coordinates.screens import SphericalScreen
 from sunpy.coordinates.utils import get_rectangle_coordinates

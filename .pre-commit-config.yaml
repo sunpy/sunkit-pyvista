@@ -9,12 +9,6 @@ repos:
         exclude: &exclude_dirs ^sunkit_pyvista/(data|extern)/
       - id: ruff-format
         exclude: *exclude_dirs
-  - repo: https://github.com/PyCQA/isort
-    rev: 8.0.1
-    hooks:
-      - id: isort
-        types: [python]
-        exclude: *exclude_dirs
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
@@ -46,6 +40,12 @@ repos:
     hooks:
       - id: codespell
         args: [ "--write-changes" ]
+        types_or: [python, rst]
+        exclude: *exclude_dirs
+  - repo: https://github.com/sphinx-contrib/sphinx-lint
+    rev: v1.0.2
+    hooks:
+      - id: sphinx-lint
         types_or: [python, rst]
         exclude: *exclude_dirs
 ci:

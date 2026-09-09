@@ -78,7 +78,6 @@ jobs:
           - libgles2-mesa-dev
       envs: |
         - windows: py313
-          display: true
         - macos: py313
         - linux: py312-oldestdeps
         - linux: py314-devdeps

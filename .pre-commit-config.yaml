@@ -4,12 +4,8 @@ repos:
     rev: "v0.16.5"
     hooks:
       - id: ruff-check
-<<<<<<<
-        args: ["--fix"]
-=======
         args: ["--fix", "--show-fixes"]
         types: [python]
->>>>>>>
         # Define here once and then reference using YAML anchor
         exclude: &exclude_dirs ^sunkit_pyvista/(data|extern)/
       - id: ruff-format

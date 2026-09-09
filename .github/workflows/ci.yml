@@ -86,7 +86,6 @@ jobs:
     needs: [core]
     uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@22ddf09dfabb443adddfb9f861b7d41a787d6b1a  # v3.0.3
     with:
-      display: true
       default_python: '3.13'
       submodules: false
       pytest: false
@@ -94,6 +93,7 @@ jobs:
       libraries: |
         apt:
           - graphviz
+          - libosmesa6
       envs: |
         - linux: build_docs
 

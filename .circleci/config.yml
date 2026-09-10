@@ -33,6 +33,7 @@ jobs:
         type: string
     docker:
       - image: cimg/python:3.13
+    resource_class: large.gen2
     environment:
       TOXENV=<< parameters.jobname >>
     steps:

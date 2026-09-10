@@ -1,10 +1,14 @@
-0.5.0 (2026-09-10)
+0.4.0 (2026-09-10)
 ==================
 
 Breaking Changes
 ----------------
 
 - Increased minimum Python version to 3.12. (`#219 <https://github.com/sunpy/sunkit-pyvista/pull/219>`__)
+- Instead of wrapping `pyvista.Plotter`, we now inherit from it.
+  This allows us to drop the ``plotter.plotter`` lines in examples and user facing API. (`#138 <https://github.com/sunpy/sunkit-pyvista/pull/138>`__)
+- Updated minimum required version of ``sunpy`` to v6.0.0. (`#165 <https://github.com/sunpy/sunkit-pyvista/pull/165>`__)
+- Updated minimum required version of ``python`` to v3.11. (`#165 <https://github.com/sunpy/sunkit-pyvista/pull/165>`__)
 
 
 New Features
@@ -19,18 +23,6 @@ Internal Changes
 ----------------
 
 - Remove Xvfb in favor of off-screen rendering via EGL (VTK>=9.5). (`#244 <https://github.com/sunpy/sunkit-pyvista/pull/244>`__)
-
-
-0.4.0 (2025-07-01)
-==================
-
-Breaking Changes
-----------------
-
-- Instead of wrapping `pyvista.Plotter`, we now inherit from it.
-  This allows us to drop the ``plotter.plotter`` lines in examples and user facing API. (`#138 <https://github.com/sunpy/sunkit-pyvista/pull/138>`__)
-- Updated minimum required version of ``sunpy`` to v6.0.0. (`#165 <https://github.com/sunpy/sunkit-pyvista/pull/165>`__)
-- Updated minimum required version of ``python`` to v3.11. (`#165 <https://github.com/sunpy/sunkit-pyvista/pull/165>`__)
 
 
 0.3.0 (2024-06-13)

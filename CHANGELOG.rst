@@ -1,3 +1,26 @@
+0.4.0 (2026-09-10)
+==================
+
+Breaking Changes
+----------------
+
+- Increased minimum Python version to 3.12. (`#219 <https://github.com/sunpy/sunkit-pyvista/pull/219>`__)
+
+
+New Features
+------------
+
+- Added a method to plot a current sheet via :meth:`~sunkit_pyvista.plotter.SunpyPlotter.plot_current_sheet`. (`#143 <https://github.com/sunpy/sunkit-pyvista/pull/143>`__)
+- Added `sunkit_pyvista.plotter.CartesianPlotter` for visualizing active region magnetic fields in a local Cartesian box.
+  See :ref:`sphx_glr_generated_gallery_field_lines_cartesian_box.py` for an example. (`#195 <https://github.com/sunpy/sunkit-pyvista/pull/195>`__)
+
+
+Internal Changes
+----------------
+
+- Remove Xvfb in favor of off-screen rendering via EGL (VTK>=9.5). (`#244 <https://github.com/sunpy/sunkit-pyvista/pull/244>`__)
+
+
 0.4.0 (2025-07-01)
 ==================
 

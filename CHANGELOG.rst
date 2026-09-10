@@ -4,11 +4,14 @@
 Breaking Changes
 ----------------
 
-- Increased minimum Python version to 3.12. (`#219 <https://github.com/sunpy/sunkit-pyvista/pull/219>`__)
+- Increased minimum versions of:
+  - Python to 3.12. (`#219 <https://github.com/sunpy/sunkit-pyvista/pull/219>`__)
+  - ``sunpy`` to v7.0.0 (`#211 <https://github.com/sunpy/sunkit-pyvista/pull/211>`__)
+  - ``pyvista`` to v0.46.3 (`#211 <https://github.com/sunpy/sunkit-pyvista/pull/211>`__)
+  - ``numpy`` to v1.26.0 (`#244 <https://github.com/sunpy/sunkit-pyvista/pull/244>`__)
+  - ``astropy`` to v7.2.0 (`#244 <https://github.com/sunpy/sunkit-pyvista/pull/244>`__)
 - Instead of wrapping `pyvista.Plotter`, we now inherit from it.
   This allows us to drop the ``plotter.plotter`` lines in examples and user facing API. (`#138 <https://github.com/sunpy/sunkit-pyvista/pull/138>`__)
-- Updated minimum required version of ``sunpy`` to v6.0.0. (`#165 <https://github.com/sunpy/sunkit-pyvista/pull/165>`__)
-- Updated minimum required version of ``python`` to v3.11. (`#165 <https://github.com/sunpy/sunkit-pyvista/pull/165>`__)
 
 
 New Features

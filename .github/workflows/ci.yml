@@ -117,6 +117,7 @@ jobs:
       submodules: false
       save_artifacts: true
       upload_to_pypi: false
+      libraries: "libosmesa6 libegl1"
 
   publish:
     if: startsWith(github.ref, 'refs/tags/v')

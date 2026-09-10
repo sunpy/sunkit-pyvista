@@ -24,7 +24,7 @@ apt-run: &apt-install
   name: Install apt packages
   command: |
     sudo apt update
-    sudo apt install -y xvfb libglfw3-dev libgles2-mesa-dev libegl1-mesa-dev mesa-utils
+    sudo apt install -y libegl1
 
 jobs:
   figure:
@@ -33,6 +33,7 @@ jobs:
         type: string
     docker:
       - image: cimg/python:3.13
+    resource_class: large.gen2
     environment:
       TOXENV=<< parameters.jobname >>
     steps:
@@ -42,11 +43,7 @@ jobs:
       - run: *merge-check
       - run: *apt-install
       - run: pip install --user -U tox tox-pypi-filter
-      - run:
-          name: Running X virtual framebuffer
-          command: Xvfb :99 -screen 0 1280x1024x24
-          background: true
-      - run: xvfb-run -a tox -v
+      - run: tox -v
       - run:
           name: Running codecov
           command: bash -e .circleci/codecov_upload.sh -f ".tmp/${TOXENV}/coverage.xml"

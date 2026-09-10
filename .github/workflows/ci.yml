@@ -35,12 +35,12 @@ jobs:
     permissions:
       id-token: write
     with:
-      display: true
       submodules: false
       coverage: codecov-oidc
       toxdeps: tox-pypi-filter
       libraries: |
         apt:
+          - libegl1
           - libosmesa6
           - libglfw3-dev
           - libgles2-mesa-dev
@@ -67,17 +67,18 @@ jobs:
     permissions:
       id-token: write
     with:
-      display: true
       submodules: false
       coverage: codecov-oidc
       toxdeps: tox-pypi-filter
       libraries: |
         apt:
+          - libegl1
           - libosmesa6
           - libglfw3-dev
           - libgles2-mesa-dev
       envs: |
         - windows: py313
+          display: true
         - macos: py313
         - linux: py312-oldestdeps
         - linux: py314-devdeps
@@ -94,6 +95,7 @@ jobs:
         apt:
           - graphviz
           - libosmesa6
+          - libegl1
       envs: |
         - linux: build_docs
 

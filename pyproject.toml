@@ -17,21 +17,14 @@ classifiers = [
   "Programming Language :: Python :: 3.14",
   "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Python :: Implementation :: CPython",
-]
-authors = [
-  { name = "The SunPy Community", email = "sunpy@googlegroups.com" },
-]
-classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Science/Research",
   "Natural Language :: English",
   "Operating System :: OS Independent",
-  "Programming Language :: Python",
-  "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: 3.13",
   "Topic :: Scientific/Engineering :: Visualization",
+]
+authors = [
+  { name = "The SunPy Community", email = "sunpy@googlegroups.com" },
 ]
 dependencies = [
   "pyvista[all]>=0.46.3",

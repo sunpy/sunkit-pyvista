@@ -11,20 +11,20 @@ description = "3D visualisation of solar physics data with pyvista."
 requires-python = ">=3.12"
 readme = { file = "README.rst", content-type = "text/x-rst" }
 license-files = ["licenses/LICENSE.rst"]
-authors = [
-  { name = "The SunPy Community", email = "sunpy@googlegroups.com" },
-]
 classifiers = [
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: Implementation :: CPython",
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Science/Research",
   "Natural Language :: English",
   "Operating System :: OS Independent",
-  "Programming Language :: Python",
-  "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: 3.13",
   "Topic :: Scientific/Engineering :: Visualization",
+]
+authors = [
+  { name = "The SunPy Community", email = "sunpy@googlegroups.com" },
 ]
 dependencies = [
   "pyvista[all]>=0.46.3",
